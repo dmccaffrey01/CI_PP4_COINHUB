@@ -1,0 +1,87 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <title>CoinHub</title>
+</head>
+<body>
+    <!-- Header Logo, Nav Bar and Social Links -->
+    <header>
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="logo-container">
+                <a href="index.html" class="logo">
+                    <div class="logo-img-container">
+                        <img src="./assets/images/mcatee-group-logo-without-text.png" alt="CoinHub Logo"
+                            class="logo-img">
+                        <div class="logo-text">CoinHub</div>
+                    </div>
+                </a>
+            </div>
+            <!-- Nav Bar -->
+            <nav class="nav-bar">
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item nav-dropdown-btn">
+                        <a href="#" class="nav-link nav-dropdown-link">Buy / Sell <i
+                                class="fa-solid fa-chevron-down nav-dropdown-icon"></i></a>
+                        <div class="nav-dropdown-container">
+                            <ul class="nav-dropdown">
+                                <li class="nav-item"><a href="buy.html" class="nav-link">Buy</a></li>
+                                <li class="nav-item"><a href="sell.html" class="nav-link">Sell</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="coaching.html" class="nav-link">Coaching</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </nav>
+            <!-- Account Buttons -->
+            <div class="account-container">
+                <div class="btn">
+                    Login
+                </div>
+                <div class="btn">
+                    Register
+                </div>
+            </div>
+        </div>
+    </header>
+    {% block content %}
+    {% endblock %}
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <!-- Copyright -->
+            <div class="copyright">
+                © Copyrights 2023
+                CoinHub
+            </div>
+            <!-- Privacy -->
+            <div class="privacy">
+                <a href="#" class="privacy-link">
+                    Privacy
+                </a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
