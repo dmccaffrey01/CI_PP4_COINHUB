@@ -363,7 +363,7 @@ footer {
 /* Welcome Section */
 
 .section {
-    width: 100vw;
+    width: 100%;
     max-width: 100%;
     padding: 100px 0;
     display: flex;
@@ -417,14 +417,55 @@ footer {
 .img-container {
     width: 500px;
     height: 500px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .img-container img {
     width: 100%;
     height: auto;
+}
+
+@media (max-width: 1200px) {
+    .section-container {
+        width: 100%;
+        padding: 0 50px;
+    }
+    
+    .img-container {
+        width: calc(50vw - 150px);
+        height: 0;
+        padding-bottom: calc(50vw - 150px);
+    }
+}
+
+@media (max-width: 1000px) {
+    .img-container {
+        display: none;
+    }
+
+    .welcome-content-container {
+        padding: 0;
+        width: calc(100% - 200px);
+        align-items: center;
+        text-align: center;
+    }
+
+    .welcome-heading {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .welcome-content-container {
+        width: calc(100% - 40px);
+    }
+
+    .dark-text {
+        font-size: 1.3rem;
+    }
+
+    .heading {
+        font-size: 3rem;
+    }
 }
 
 /* Stats Section */
@@ -452,6 +493,7 @@ footer {
 
 .stat-heading {
     font-size: 3rem;
+    font-weight: bold;
 }
 
 .stat-subheading {
