@@ -200,10 +200,6 @@ header {
         width: calc(100vw - 40px);
     }
 
-    .nav-menu {
-        gap: 30px;
-    }
-
 }
 
 @media (max-width: 1200px) {
@@ -235,14 +231,14 @@ header {
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        background-color: var(--BLUE-1);
+        background-color: var(--BLUE-DARK-1);
         width: 100vw;
         max-width: 100%;
         height: fit-content;
         text-align: center;
         transition: 0.3s;
         z-index: 999;
-        padding: 50px 0;
+        padding: 100px 0;
         gap: 30px;
     }
 
@@ -280,10 +276,8 @@ header {
         transform: rotate(0);
     }
 
-    /* Socials */
-
-    .socials-container {
-        width: 90px;
+    .nav-link {
+        color: var(--WHITE);
     }
 }
 
