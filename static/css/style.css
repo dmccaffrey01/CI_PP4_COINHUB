@@ -426,3 +426,34 @@ footer {
     width: 100%;
     height: auto;
 }
+
+/* Stats Section */
+
+.stats-section {
+    padding: 70px 0;
+}
+
+.stats-container {
+    gap: 100px;
+}
+
+.dark-blue-1 {
+    background-color: var(--BLUE-DARK-1);
+}
+
+.stat-col {
+    gap: 10px;
+}
+
+.white-text {
+    color: var(--WHITE);
+    font-size: 1.5rem;
+}
+
+.stat-heading {
+    font-size: 3rem;
+}
+
+.stat-subheading {
+    font-size: 1.5rem;
+}
