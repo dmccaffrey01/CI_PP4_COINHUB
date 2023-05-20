@@ -359,3 +359,70 @@ footer {
     gap: 30px;
     font-size: 1.5rem;
 }
+
+/* Welcome Section */
+
+.section {
+    width: 100vw;
+    max-width: 100%;
+    padding: 100px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-section {
+    padding: 200px 0 100px 0;
+}
+
+.light-gray-1 {
+    background-color: var(--GRAY-LIGHT-1);
+}
+
+.section-container {
+    width: 1000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.welcome-content-container {
+    width: 500px;
+    align-items: flex-start;
+    padding: 0 50px 0 0;
+    gap: 30px;
+}
+
+.dark-text {
+    font-size: 1.5rem;
+    color: var(--GRAY-DARK);
+}
+
+.heading {
+    font-size: 4rem;
+}
+
+.welcome-heading {
+    width: 300px;
+    align-self: flex-start;
+}
+
+.img-container {
+    width: 500px;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img-container img {
+    width: 100%;
+    height: auto;
+}
