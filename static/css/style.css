@@ -8,11 +8,14 @@
 }
 
 :root {
-    --Neon-Pink: #fc4960;
-    --Electric-Blue: #00FFFF;
-    --Purple-Haze: #1b122b;
-    --Orange: #fa514c;
     --WHITE: #ffffff;
+    --GRAY-DARK: #333333;
+    --GRAY-LIGHT-1: #f5f5f5;
+    --GRAY-LIGHT-2: #e6e6e6;
+    --TRANSPARENT-DARK: #00000070;
+    --BLUE-LIGHT-1: #00e8fc;
+    --BLUE-DARK-1: #044a72;
+    --BLUE-DARK-2: #053554;
 }
 
 body {
@@ -23,12 +26,12 @@ body {
 }
 
 a:visited {
-    color: var(--WHITE);
+    color: var(--GRAY-DARK);
 }
 
 a {
     text-decoration: none;
-    color: var(--WHITE);
+    color: var(--GRAY-DARK);
 }
 
 /* Header */
@@ -36,7 +39,6 @@ a {
 header {
     width: 100vw;
     max-width: 100%;
-    background-color: var(--GRAY-LIGHT-1);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -44,7 +46,7 @@ header {
     top: 0;
     font-family: "Montserrat", sans-serif;
     z-index: 2;
-    border-bottom: 1px solid var(--GRAY-DARK);
+    border-bottom: 1px solid var(--GRAY-LIGHT-2);
 }
 
 .header-container {
@@ -59,8 +61,8 @@ header {
 /* Logo */
 
 .logo-container {
-    height: 90px;
-    width: 90px;
+    height: 100px;
+    width: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -75,8 +77,8 @@ header {
 }
 
 .logo-img-container {
-    width: 100%;
-    height: 100%;
+    width: 75px;
+    height: 75px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -94,6 +96,10 @@ header {
     text-decoration: none;
 }
 
+.logo-text {
+    font-size: 2rem;
+}
+
 /* Nav Bar */
 
 .nav-bar {
@@ -108,7 +114,7 @@ header {
     justify-content: center;
     align-items: center;
     gap: 60px;
-    width: 800px;
+    width: calc(100vw - 760px);
     height: 100%;
 }
 
@@ -122,49 +128,6 @@ header {
     align-items: center;
     width: fit-content;
     position: relative;
-}
-
-.nav-dropdown-container {
-    visibility: hidden;
-    opacity: 0;
-    transition: all 0.2s ease-in-out;
-    transform: translateY(-50%);
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1;
-    width: 100%;
-}
-
-.nav-dropdown {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-    padding: 20px 0px;
-    border-radius: 0 0 5px 5px;
-    background-color: var(--MAIN-TP);
-}
-
-.nav-dropdown-btn:hover .nav-dropdown-container {
-    visibility: visible;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.nav-dropdown-icon {
-    color: var(--WHITE);
-    font-size: 0.8rem;
-    display: inline-flex;
-    align-items: center;
-    margin-left: 5px;
-    transition: all 0.2s ease;
-}
-
-.nav-dropdown-btn:hover .nav-dropdown-icon {
-    transform: rotate(-180deg);
 }
 
 .nav-link {
@@ -192,19 +155,30 @@ header {
 
 /* Social Links */
 
-.socials-container {
-    width: 90px;
+.account-login-container {
+    width: 300px;
     height: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 30px;
 }
 
-.social-link {
-    color: var(--WHITE);
-    font-size: 2.5rem;
-    text-decoration: none;
+.login-btn {
+    font-size: 1.5rem;
 }
+
+.btn {
+    background-color: var(--BLUE-LIGHT-1);
+    padding: 15px 25px;
+    color: var(--GRAY-DARK);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    text-align: center;
+    width: fit-content;
+}
+
 
 @media (max-width: 1400px) {
     /* Nav Bar */
@@ -394,5 +368,46 @@ footer {
     }
 
 }
+
+/* Hero Image Section */
+
+.hero-image-container {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    max-width: 100%;
+    position: relative;
+}
+
+.hero-image-container img {
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+    min-width: 100%;
+    max-width: none;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--TRANSPARENT-DARK);
+}
+
+.hero-content-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 
 
