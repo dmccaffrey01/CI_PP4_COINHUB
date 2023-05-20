@@ -427,7 +427,7 @@ footer {
 @media (max-width: 1200px) {
     .section-container {
         width: 100%;
-        padding: 0 50px;
+        padding: 0 40px;
     }
     
     .img-container {
@@ -498,4 +498,18 @@ footer {
 
 .stat-subheading {
     font-size: 1.5rem;
+}
+
+@media (max-width: 1200px) {
+    .stats-container {
+        justify-content: space-evenly;
+        gap: 0px;
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-container {
+        flex-direction: column;
+        gap: 50px;
+    }
 }
