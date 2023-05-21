@@ -1,0 +1,6 @@
+<h2>Cryptocurrency List</h2>
+{% for crypto in cryptocurrencies %}
+<p>
+    {{ crypto.rank }}  {{ crypto.name }}  {{ crypto.symbol }}  {{ crypto.price }}  {{ crypto.change }}
+</p>
+{% endfor %}
