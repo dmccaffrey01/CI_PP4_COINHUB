@@ -1,11 +1,15 @@
-from django.shortcuts import render
-from cloudinary.utils import cloudinary_url
-from .models import CryptoCurrency
+import os
 import requests
+from django.shortcuts import render
+from .models import CryptoCurrency
 
 
 def crypto_list(request):
-    response = requests.get('https://api.coincap.io/v2/assets')
+    headers = {
+        'x-access-token': os.environ.get('COINRANKING_API_KEY')
+    }
+
+    response = requests.get("https://api.coinranking.com/v2/coins", headers=headers)
 
     if response.status_code == 200:
         print('API request successful')
@@ -17,14 +21,14 @@ def crypto_list(request):
     CryptoCurrency.objects.all().delete()
 
     if 'data' in data:
-        crypto_data = data['data']
+        crypto_data = data['data']['coins']
         for crypto in crypto_data:
             CryptoCurrency.objects.create(
                 rank=crypto['rank'],
                 name=crypto['name'],
                 symbol=crypto['symbol'],
-                price=crypto['priceUsd'],
-                change=crypto['changePercent24Hr'],
+                price=crypto['price'],
+                change=crypto['change'],
             )
     else:
         print('Invalid data format')
@@ -35,11 +39,12 @@ def crypto_list(request):
         'cryptocurrencies': cryptocurrencies,
     }
 
-
     return render(request, 'crypto_list.html', context)
 
 
 def index(request):
+    crypto_list(request)
+    
     cryptocurrencies = CryptoCurrency.objects.all()
 
     popular_crypto = ['Bitcoin', 'Ethereum', 'Polkadot', 'Solana', 'Dogecoin']
