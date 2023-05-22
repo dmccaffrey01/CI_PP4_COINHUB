@@ -10,12 +10,14 @@
 :root {
     --WHITE: #ffffff;
     --GRAY-DARK: #333333;
+    --GRAY-DARK-2: #636363;
     --GRAY-LIGHT-1: #f5f5f5;
     --GRAY-LIGHT-2: #d8d8d8;
     --TRANSPARENT-DARK: #00000070;
     --BLUE-LIGHT-1: #00e8fc;
     --BLUE-DARK-1: #044a72;
     --BLUE-DARK-2: #053554;
+    --GREEN-1: #4ec437;
 }
 
 body {
@@ -543,18 +545,54 @@ footer {
     color: var(--BLUE-LIGHT-1);
 }
 
-.crypto-list-home-table {
-    border-collapse: collapse;
-    border: 2px solid var(--GRAY-DARK);
+.table-wrapper {
+    border: 1px solid var(--GRAY-LIGHT-2);
+    border-radius: 5px;
 }
 
+.crypto-list-home-table {
+    border-collapse: collapse;
+}
 
-.crypto-list-home-table th, .crypto-list-home-table td {
-    border-bottom: 2px solid var(--GRAY-DARK);
-    padding: 8px;
+.crypto-list-home-table td, .crypto-list-home-table th {
+    border-bottom: 1px solid var(--GRAY-LIGHT-2);
+    font-size: 1.3rem;
+    padding: 20px 0;
+}
+
+.crypto-list-home-table td:first-child, .crypto-list-home-table th:first-child {
+    padding: 20px;
+}
+
+.crypto-list-home-table tr:last-child td {
+    border-bottom: none;
 }
 
 .crypto-list-home-table th {
     text-align: left;
-    border-top: 2px solid var(--GRAY-DARK);
+    font-weight: normal;
+    color: var(--GRAY-DARK-2);
+}
+
+.crypto-list-home-table td.crypto-name-symbol {
+    width: 50%;
+}
+
+.crypto-list-home-table td.crypto-price,
+.crypto-list-home-table td.crypto-change,
+.crypto-list-home-table td.crypto-chart,
+.crypto-list-home-table td.crypto-trade {
+    width: 12.5%;
+}
+
+.crypto-list-home-table .crypto-symbol {
+    font-size: 1.1rem;
+    color: var(--GRAY-DARK-2);
+    padding-left: 5px;
+}
+
+.crypto-list-home-table .buy-btn {
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    background-color: var(--GREEN-1);
 }

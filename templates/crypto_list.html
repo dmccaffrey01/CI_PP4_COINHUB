@@ -1,24 +1,28 @@
-<table class="crypto-list-home-table w-100">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Change</th>
-            <th>Chart</th>
-            <th>Trade</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for crypto in cryptocurrencies %}
+<div class="table-wrapper w-100">
+    <table class="crypto-list-home-table w-100">
+        <thead>
             <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ crypto.name }} {{ crypto.symbol }}</td>
-                <td>{{ crypto.price }}</td>
-                <td>{{ crypto.change }}</td>
-                <td></td>
-                <td></td>
+                <th class="crypto-name-symbol">Name</th>
+                <th class="crypto-price">Price</th>
+                <th class="crypto-change">Change</th>
+                <th class="crypto-chart">Chart</th>
+                <th class="crypto-trade">Trade</th>
             </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            {% for crypto in cryptocurrencies %}
+                <tr>
+                    <td class="crypto-name-symbol">
+                        <span class="crypto-name">{{ crypto.name }}</span> <span class="crypto-symbol">{{ crypto.symbol }}</span>
+                    </td>
+                    <td class="crypto-price">{{ crypto.price }}</td>
+                    <td class="crypto-change">{{ crypto.change }}</td>
+                    <td class="crypto-chart"></td>
+                    <td class="crypto-trade">
+                        <div class="buy-btn btn">Buy</div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
