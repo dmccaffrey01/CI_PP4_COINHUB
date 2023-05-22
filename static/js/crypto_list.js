@@ -71,7 +71,7 @@ const createSparklines = () => {
           pointBackgroundColor: 'transparent', 
           pointBorderColor: 'transparent', 
           pointRadius: 0, 
-          borderWidth: 2,
+          borderWidth: 3,
           label: ""
         }]
       },
