@@ -26,9 +26,9 @@ const priceConversion = async (usdAmount) => {
 
     const eurAmount = usdAmount * exchangeRate;
 
-    return ['€', eurAmount.toFixed(2)]; // Round to 2 decimal places
+    return ['€', eurAmount.toFixed(2)];
   } catch (error) {
-    return ['$', usdAmount.toFixed(2)]; // Round to 2 decimal places
+    return ['$', usdAmount.toFixed(2)];
   }
 };
 

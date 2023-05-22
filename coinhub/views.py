@@ -9,7 +9,11 @@ def crypto_list(request):
         'x-access-token': os.environ.get('COINRANKING_API_KEY')
     }
 
-    response = requests.get("https://api.coinranking.com/v2/coins", headers=headers)
+    params = {
+        'limit': 50
+    }
+
+    response = requests.get("https://api.coinranking.com/v2/coins", headers=headers, params=params)
 
     if response.status_code == 200:
         print('API request successful')
