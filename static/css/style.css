@@ -513,3 +513,48 @@ footer {
         gap: 50px;
     }
 }
+
+/* Crypto List Home Section */
+
+.crypto-list-home-heading-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.pb-50 {
+    padding-bottom: 50px;
+}
+
+.crypto-list-heading {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.view-more-markets-link {
+    font-size: 1.2rem;
+}
+
+.view-more-markets-link:hover {
+    color: var(--BLUE-LIGHT-1);
+}
+
+.crypto-list-home-table {
+    border-collapse: collapse;
+    border: 2px solid var(--GRAY-DARK);
+}
+
+
+.crypto-list-home-table th, .crypto-list-home-table td {
+    border-bottom: 2px solid var(--GRAY-DARK);
+    padding: 8px;
+}
+
+.crypto-list-home-table th {
+    text-align: left;
+    border-top: 2px solid var(--GRAY-DARK);
+}

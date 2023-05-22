@@ -16,8 +16,6 @@ def crypto_list(request):
 
     CryptoCurrency.objects.all().delete()
 
-    print(data)
-
     if 'data' in data:
         crypto_data = data['data']
         for crypto in crypto_data:
@@ -34,8 +32,9 @@ def crypto_list(request):
     cryptocurrencies = CryptoCurrency.objects.all()
 
     context = {
-        'cryptocurrencies': cryptocurrencies
+        'cryptocurrencies': cryptocurrencies,
     }
+
 
     return render(request, 'crypto_list.html', context)
 
@@ -43,8 +42,12 @@ def crypto_list(request):
 def index(request):
     cryptocurrencies = CryptoCurrency.objects.all()
 
+    popular_crypto = ['Bitcoin', 'Ethereum', 'Polkadot', 'Solana', 'Dogecoin']
+
+    filtered_cryptocurrencies = [crypto for crypto in cryptocurrencies if crypto.name in popular_crypto]
+
     context = {
-        'cryptocurrencies': cryptocurrencies
+        'cryptocurrencies': filtered_cryptocurrencies,
     }
 
     return render(request, 'index.html', context)

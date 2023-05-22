@@ -38,7 +38,15 @@
 </section>
 
 <section class="crypto-list-home-section section light-gray-1">
-    {% include 'crypto_list.html' %}
+    <div class="section-container crypto-list-home-container">
+        <div class="content-container w-100">
+            <div class="crypto-list-home-heading-container w-100 pb-50">
+                <div class="crypto-list-heading">Popular cryptocurrencies</div>
+                <a href="#" class="view-more-markets-link">View more markets <i class="fa-solid fa-chevron-right"></i></a>
+            </div>
+            {% include 'crypto_list.html' %}
+        </div>
+    </div>
 </section>
 
 {% endblock %}

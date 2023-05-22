@@ -1,6 +1,24 @@
-<h2>Cryptocurrency List</h2>
-{% for crypto in cryptocurrencies %}
-<p>
-    {{ crypto.rank }}  {{ crypto.name }}  {{ crypto.symbol }}  {{ crypto.price }}  {{ crypto.change }}
-</p>
-{% endfor %}
+<table class="crypto-list-home-table w-100">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Change</th>
+            <th>Chart</th>
+            <th>Trade</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for crypto in cryptocurrencies %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ crypto.name }} {{ crypto.symbol }}</td>
+                <td>{{ crypto.price }}</td>
+                <td>{{ crypto.change }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
