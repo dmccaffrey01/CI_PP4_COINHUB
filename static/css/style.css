@@ -607,8 +607,8 @@ footer {
 }
 
 .crypto-icon-container {
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
 }
 
 .crypto-icon {
@@ -616,9 +616,16 @@ footer {
     height: 100%;
 }
 
-.crypto-name-symbol {
+.crypto-name-symbol-wrapper {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    gap: 15px;
+}
+
+.crypto-details {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
     gap: 10px;
 }

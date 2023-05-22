@@ -6,7 +6,7 @@ from .models import CryptoCurrency
 
 def crypto_list(request):
     headers = {
-        'x-access-token': os.environ.get('COINRANKING_API')
+        # 'x-access-token': os.environ.get('COINRANKING_API')
     }
 
     params = {
