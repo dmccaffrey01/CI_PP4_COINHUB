@@ -2,7 +2,7 @@
     <table class="crypto-list-home-table w-100">
         <thead>
             <tr>
-                <th class="crypto-name-symbol">Name</th>
+                <th class="crypto-name-symbol-heading">Name</th>
                 <th class="crypto-price-heading">Price</th>
                 <th class="crypto-change">Change</th>
                 <th class="crypto-chart">Chart</th>
@@ -13,7 +13,11 @@
             {% for crypto in cryptocurrencies %}
                 <tr>
                     <td class="crypto-name-symbol">
-                        <span class="crypto-name">{{ crypto.name }}</span> <span class="crypto-symbol">{{ crypto.symbol }}</span>
+                        <div class="crypto-icon-container">
+                            <img src="{{ crypto.icon }}" alt="{{ crypto.name }} Icon" class="crypto-icon" />
+                        </div>
+                        <div class="crypto-name">{{ crypto.name }}</div>
+                        <div class="crypto-symbol">{{ crypto.symbol }}</div>
                     </td>
                     <td class="crypto-price">{{ crypto.price }}</td>
                     <td class="crypto-change">{{ crypto.change }}%</td>

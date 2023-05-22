@@ -6,14 +6,14 @@ from .models import CryptoCurrency
 
 def crypto_list(request):
     headers = {
-        'x-access-token': os.environ.get('COINRANKING_API_KEY')
+        'x-access-token': os.environ.get('COINRANKING_API')
     }
 
     params = {
         'limit': 50
     }
 
-    response = requests.get("https://api.coinranking.com/v2/coins", headers=headers, params=params)
+    response = requests.request("GET", "https://api.coinranking.com/v2/coins", headers=headers, params=params)
 
     if response.status_code == 200:
         print('API request successful')
@@ -33,6 +33,7 @@ def crypto_list(request):
                 symbol=crypto['symbol'],
                 price=crypto['price'],
                 change=crypto['change'],
+                icon=crypto['iconUrl'],
             )
     else:
         print('Invalid data format')
