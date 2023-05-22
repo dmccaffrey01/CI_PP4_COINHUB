@@ -2,6 +2,7 @@ import os
 import requests
 from django.shortcuts import render
 from .models import CryptoCurrency
+import json
 
 
 def crypto_list(request):
@@ -10,7 +11,8 @@ def crypto_list(request):
     }
 
     params = {
-        'limit': 50
+        'limit': 50,
+        'convert': 'EUR',
     }
 
     response = requests.request("GET", "https://api.coinranking.com/v2/coins", headers=headers, params=params)
@@ -34,6 +36,7 @@ def crypto_list(request):
                 price=crypto['price'],
                 change=crypto['change'],
                 icon=crypto['iconUrl'],
+                sparkline=json.dumps(crypto['sparkline']),
             )
     else:
         print('Invalid data format')
@@ -56,8 +59,11 @@ def index(request):
 
     filtered_cryptocurrencies = [crypto for crypto in cryptocurrencies if crypto.name in popular_crypto]
 
+    sparkline_data = [json.loads(crypto.sparkline) for crypto in filtered_cryptocurrencies]
+
     context = {
         'cryptocurrencies': filtered_cryptocurrencies,
+        'sparkline_data': json.dumps(sparkline_data),
     }
 
     return render(request, 'index.html', context)

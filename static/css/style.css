@@ -585,6 +585,7 @@ footer {
 .crypto-list-home-table .crypto-chart,
 .crypto-list-home-table .crypto-trade {
     width: 12.5%;
+    text-align: center;
 }
 
 .crypto-list-home-table .crypto-symbol {
@@ -628,4 +629,19 @@ footer {
     justify-content: center;
     align-items: flex-end;
     gap: 10px;
+}
+
+#json-data {
+    display: none;
+}
+
+canvas.price-sparkline {
+    width: 80px;
+    height: 20px;
+}
+
+.crypto-list-home-table .table-content-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

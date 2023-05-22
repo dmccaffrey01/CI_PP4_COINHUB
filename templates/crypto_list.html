@@ -25,9 +25,15 @@
                     </td>
                     <td class="crypto-price">{{ crypto.price }}</td>
                     <td class="crypto-change">{{ crypto.change }}%</td>
-                    <td class="crypto-chart"></td>
+                    <td class="crypto-chart">
+                        <div class="table-content-wrapper w-100">
+                            <canvas class="price-sparkline"></canvas>
+                        </div>
+                    </td>
                     <td class="crypto-trade">
-                        <div class="buy-btn btn">Buy</div>
+                        <div class="table-content-wrapper w-100">
+                            <div class="buy-btn btn">Buy</div>
+                        </div>
                     </td>
                 </tr>
             {% endfor %}
