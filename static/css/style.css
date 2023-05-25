@@ -45,8 +45,6 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    top: 0;
     font-family: "Montserrat", sans-serif;
     z-index: 2;
     border-bottom: 1px solid var(--GRAY-LIGHT-2);
@@ -324,8 +322,6 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    bottom: -100px;
     font-family: "Source-Sans-Pro", sans-serif;
     border-top: 1px solid var(--GRAY-LIGHT-2);
 }
@@ -337,37 +333,56 @@ footer {
 
 .footer-container {
     height: 100px;
-    width: calc(100vw - 80px);
+    width: calc(100vw - 200px);
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 30px;
     color: var(--GRAY-DARK-1);
 }
 
 .copyright {
-    width: 180px;
-    font-size: 1.3rem;
-    color: var(--GRAY-DARK-1);
-}
-
-.privacy {
-    width: 300px;
+    font-size: 1rem;
+    color: var(--GRAY-DARK-2);
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.privacy-link {
-    color: var(--GRAY-DARK-1);
-    font-size: 1.5rem;
+    justify-content: center;
+    text-align: center;
 }
 
 .disclaimer {
     font-size: 1rem;
-    width: 400px;
     color: var(--GRAY-DARK-2);
+    display: flex;
+    justify-content: center;
+    text-align: center;
 }
+
+.footer-logo-img-container {
+    width: 60px;
+    height: 60px;
+}
+
+.footer-logo {
+    width: 100%;
+    height: auto;
+}
+
+/* Media Queries */
+
+@media (max-width: 1000px) {
+    .footer-container {
+        height: 200px;
+        padding: 20px 0;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        width: calc(100% - 80px);
+        padding: 10px 0;
+    }
+}
+
 /* Welcome Section */
 
 .section {
@@ -380,7 +395,7 @@ footer {
 }
 
 .welcome-section {
-    padding: 200px 0 100px 0;
+    padding: 100px 0 100px 0;
 }
 
 .light-gray-1 {
@@ -404,7 +419,6 @@ footer {
 .welcome-content-container {
     width: 500px;
     align-items: flex-start;
-    padding: 0 50px 0 0;
     gap: 30px;
 }
 
@@ -656,3 +670,53 @@ canvas.price-sparkline {
 }
 
 /* Media Queries */
+
+@media (max-width: 768px) {
+    .crypto-list-home-heading-container {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+
+    .crypto-list-home-table td, .crypto-list-home-table th {
+        font-size: 1.1rem;
+    }
+
+    .crypto-list-home-table td:first-child, .crypto-list-home-table th:first-child {
+        padding: 20px 0 20px 10px;
+    }
+
+    .crypto-list-home-table td.crypto-name-symbol, .crypto-list-home-table .crypto-name-symbol-heading {
+        width: 33%;
+        text-align: center;
+    }
+    
+    .crypto-list-home-table .crypto-price,
+    .crypto-list-home-table .crypto-price-heading,
+    .crypto-list-home-table .crypto-change,
+    .crypto-list-home-table .crypto-trade {
+        width: 33%;
+    }
+
+    .crypto-list-home-table .crypto-chart, .crypto-list-home-table .crypto-symbol, .crypto-list-home-table .crypto-change {
+        display: none;
+    }
+
+    .crypto-list-home-table .crypto-symbol {
+        display: none;
+    }
+
+    .crypto-icon-container {
+        width: 25px;
+        height: 25px;
+    }
+
+    .crypto-name-symbol-wrapper {
+        gap: 5px;
+    }
+
+    .crypto-details {
+        gap: 5px;
+    }
+    
+}
