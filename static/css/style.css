@@ -195,6 +195,7 @@ header {
     width: fit-content;
 }
 
+/* Media Queries */
 
 @media (max-width: 1400px) {
     /* Nav Bar */
@@ -431,6 +432,8 @@ footer {
     height: auto;
 }
 
+/* Media Queries */
+
 @media (max-width: 1200px) {
     .section-container {
         width: 100%;
@@ -506,6 +509,8 @@ footer {
 .stat-subheading {
     font-size: 1.5rem;
 }
+
+/* Media Queries */
 
 @media (max-width: 1200px) {
     .stats-container {
@@ -649,3 +654,5 @@ canvas.price-sparkline {
     justify-content: center;
     align-items: center;
 }
+
+/* Media Queries */
