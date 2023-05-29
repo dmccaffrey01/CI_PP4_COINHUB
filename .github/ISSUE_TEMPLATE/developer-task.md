@@ -10,4 +10,4 @@ assignees: ''
 As the developer I have to <task>
 
 Tasks:
-- []
+- [ ]
