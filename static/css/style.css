@@ -124,7 +124,6 @@ header {
 .nav-item {
     list-style-type: none;
     font-size: 1.5rem;
-    text-transform: uppercase;
     height: 100%;
     display: flex;
     justify-content: center;
