@@ -730,6 +730,7 @@ canvas.price-sparkline {
 
 .heading-3 {
     font-size: 3rem;
+    font-weight: bold;
 }
 
 .sub-heading-3 {
@@ -794,5 +795,31 @@ canvas.price-sparkline {
     width: 750px;
     height: 500px;
     background-color: var(--BLUE-DARK-1);
+    border-radius: 5px;
+    position: relative;
 }
 
+.phone-portfolio-img-container {
+    width: 220px;
+    height: 400px;
+    background-color: var(--BLUE-LIGHT-1);
+    position: absolute;
+    right: 70px;
+    bottom: -50px;
+    border-radius: 30px;
+}
+
+.box-shadow {
+    box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Trust Section */
+
+.reason-icon-container {
+    width: 100px;
+    height: 100px;
+}
+
+.reason-heading {
+    font-size: 2rem;
+}
