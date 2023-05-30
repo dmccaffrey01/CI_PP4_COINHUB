@@ -397,16 +397,12 @@ footer {
     align-items: center;
 }
 
-.welcome-section {
-    padding: 100px 0 100px 0;
-}
-
 .light-gray-1 {
     background-color: var(--GRAY-LIGHT-1);
 }
 
 .section-container {
-    width: 1000px;
+    width: 1200px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -417,6 +413,12 @@ footer {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+
+.content-container-rows {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .welcome-content-container {
@@ -723,3 +725,74 @@ canvas.price-sparkline {
     }
     
 }
+
+/* Portfolio Home Section */
+
+.heading-3 {
+    font-size: 3rem;
+}
+
+.sub-heading-3 {
+    font-size: 2rem;
+}
+
+.pb-20 {
+    padding-bottom: 20px;
+}
+
+.text-gd-2 {
+    color: var(--GRAY-DARK-2);
+}
+
+.gp-50 {
+    gap: 50px;
+}
+
+.gp-20 {
+    gap: 20px;
+}
+
+.gp-10 {
+    gap: 10px;
+}
+
+.benefit-item {
+    justify-content: flex-start;
+}
+
+.portfolio-benefits {
+    align-items: flex-start;
+    width: 500px;
+}
+
+.benefit-icon-container {
+    width: 100px;
+    height: 100px;
+    padding: 20px;
+    border-radius: 50%;
+    background-color: var(--WHITE);
+    box-shadow: 0px 5px 3px rgba(0, 0, 0, 0.2);
+}
+
+.icon {
+    width: 100%;
+    height: auto;
+}
+
+.benefit-text-container {
+    text-align: left;
+    justify-content: flex-start;
+    width: 400px;
+}
+
+.benefit-heading {
+    font-size: 2rem;
+    align-self: start;
+}
+
+.portfolio-home-img-container {
+    width: 750px;
+    height: 500px;
+    background-color: var(--BLUE-DARK-1);
+}
+
