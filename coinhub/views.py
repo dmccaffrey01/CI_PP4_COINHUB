@@ -3,6 +3,7 @@ import requests
 from django.shortcuts import render
 from .models import CryptoCurrency
 import json
+from django.http import JsonResponse
 
 
 def crypto_list(request):
@@ -84,4 +85,7 @@ def markets(request):
 def crypto_search_results(request):
     query = request.GET.get('query')
     results = CryptoCurrency.objects.filter(name__icontains=query)
-    return render(request, 'crypto_search_results.html', {'results': results})
+    print(results)
+    results_data = [{'name': result.name} for result in results]
+    print(results_data)
+    return JsonResponse(results_data, safe=False)
