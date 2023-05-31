@@ -68,3 +68,15 @@ def index(request):
 
     return render(request, 'index.html', context)
 
+
+def markets(request):
+    crypto_list(request)
+
+    crytpocurrencies = CryptoCurrency.objects.all()
+
+    context = {
+        'cryptocurrencies': crytpocurrencies,
+    }
+
+    return render(request, 'markets.html', context)
+
