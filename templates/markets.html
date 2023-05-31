@@ -3,11 +3,12 @@
 
 {% block content %}
 
+<div class="crypto-search-section section light-gray-1">
 {% include 'crypto_search.html' %}
-
+</div>
 {% for crypto in cryptocurrencies %}
 
-<p>{{ crypto.rank }} {{ crypto.name }}</p>
+<!--<p>{{ crypto.rank }} {{ crypto.name }}</p>-->
 
 {% endfor %}
 

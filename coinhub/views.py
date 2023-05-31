@@ -80,3 +80,8 @@ def markets(request):
 
     return render(request, 'markets.html', context)
 
+
+def crypto_search_results(request):
+    query = request.GET.get('query')
+    results = CryptoCurrency.objects.filter(name__icontains=query)
+    return render(request, 'crypto_search_results.html', {'results': results})
