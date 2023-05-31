@@ -68,7 +68,6 @@ const loadJson = (selector) => {
  */
 const createSparklines = () => {
   var sparklineData = loadJson('#sparkline-data');
-
   $('.price-sparkline').each(function(index, sparkline) {
     let change = $('.crypto-change')[index + 1];
     let computedStyle = getComputedStyle(change);

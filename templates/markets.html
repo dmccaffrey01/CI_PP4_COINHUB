@@ -6,15 +6,19 @@
     <div class="content-container gp-50">
         <div class="heading-container content-container gp-10">
             <div class="heading-3 dark-text">Find your cryptocurrency</div>
-            <div class="sub-heading-3 dark-text text-gd-2">In the past 24 hours the market is ...</div>
+            <div class="sub-heading-3 dark-text text-gd-2">In the past 24 hours the market is <span class="market-change">...</span></div>
         </div>
         
         <div class="content-container search-container gp-20">
             <form class="crypto-search-form" method="GET">
-                <input type="text" class="crypto-search-input" name="query" placeholder="Enter your search query">
+                <div class="input-container">
+                    <input type="text" autocomplete="off" class="crypto-search-input" name="query" placeholder="Search for an asset">
+                    <span class="search-icon"><i class="fas fa-search"></i></span>
+                    <span class="close-icon"><i class="fa-solid fa-xmark"></i></span>
+                </div>
             </form>
-    
-            <div class="crypto-search-results"></div>
+
+            <div class="crypto-search-results content-container"></div>
         </div>
     </div>
 </section>

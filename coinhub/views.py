@@ -12,7 +12,7 @@ def crypto_list(request):
     }
 
     params = {
-        'limit': 50,
+        'limit': 100,
         'convert': 'EUR',
     }
 
@@ -24,7 +24,6 @@ def crypto_list(request):
         print('API request failed')
 
     data = response.json()
-
     CryptoCurrency.objects.all().delete()
 
     if 'data' in data:
@@ -38,6 +37,7 @@ def crypto_list(request):
                 change=crypto['change'],
                 icon=crypto['iconUrl'],
                 sparkline=json.dumps(crypto['sparkline']),
+                market_cap=crypto['marketCap'],
             )
     else:
         print('Invalid data format')
@@ -85,7 +85,31 @@ def markets(request):
 def crypto_search_results(request):
     query = request.GET.get('query')
     results = CryptoCurrency.objects.filter(name__icontains=query)
-    print(results)
-    results_data = [{'name': result.name} for result in results]
-    print(results_data)
+    results_data = [{
+        'name': result.name, 
+        'icon': result.icon, 
+        'symbol': result.symbol
+        } for result in results]
     return JsonResponse(results_data, safe=False)
+
+
+def get_market_data(request):
+    coins = CryptoCurrency.objects.all()
+    coins_data = [{
+        'name': coin.name, 
+        'currentPrice': coin.price, 
+        'change': coin.change,
+        'price24hrAgo': coin.price + (coin.price * coin.change), 
+        'marketCap': coin.market_cap,
+        } for coin in coins]
+    
+    totalMarketCap = sum(coin['marketCap'] for coin in coins_data)
+    weights = sum(coin['marketCap'] + (coin['change'] * coin['marketCap']) for coin in coins_data)
+    totalChange = round(weights / totalMarketCap, 2)
+
+    market_data = {
+        'marketCap': totalMarketCap,
+        'totalChange': totalChange,
+    }
+
+    return JsonResponse(market_data, safe=False)

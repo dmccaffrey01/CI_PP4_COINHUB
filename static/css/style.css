@@ -903,3 +903,79 @@ canvas.price-sparkline {
 .light-gray-3 {
     background-color: var(--GRAY-LIGHT-3);
 }
+
+/* Crypto Search Section */
+
+.search-container {
+    position: relative;
+}
+
+.input-container {
+    position: relative;
+}
+
+.crypto-search-input {
+    width: 600px;
+    padding: 30px 60px;
+    border-radius: 50px;
+    font-size: 1.5rem;
+    border: 3px solid var(--GRAY-DARK-1);
+}
+
+.crypto-search-input.search {
+    border: 3px solid var(--BLUE-LIGHT-1);
+    outline: none;
+}
+
+.search-icon, .close-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: var(--GRAY-DARK-1);
+}
+
+.search-icon.search, .close-icon.search {
+    color: var(--BLUE-LIGHT-1);
+}
+
+.search-icon {
+    left: 20px;
+}
+
+.close-icon {
+    right: 20px;
+    font-size: 2rem;
+}
+
+.crypto-search-results {
+    width: 100%;
+    position: absolute;
+    top: calc(100% + 20px);
+    padding: 20px;
+    height: fit-content;
+    max-height: 350px;
+    border: 1px solid var(--GRAY-DARK-2);
+    border-radius: 15px;
+    z-index: 3;
+    background-color: var(--GRAY-LIGHT-1);
+    justify-content: flex-start;
+    display: none;
+}
+
+.crypto-search-result {
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.crypto-search-result:hover {
+    background-color: var(--GRAY-LIGHT-3);
+    cursor: pointer;
+}
+
+.pt-20 {
+    padding-top: 20px;
+}
