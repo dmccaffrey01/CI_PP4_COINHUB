@@ -55,76 +55,87 @@ const convertPrices = async () => {
 convertPrices();
 
 /**
- * Gets the json data stored in the data-sparkline div and returns parsed json data
+ * Get the popular crypto in the form json string
  */
-const loadJson = (selector) => {
-  const jsonAttribute = document.querySelector(selector).getAttribute('data-sparkline');
-  return JSON.parse(jsonAttribute);
+const getPopularCrypto = async () => {
+  try {
+    const response = await fetch(`/get_popular_crypto/`);
+    const results = await response.json();
+    return results;
+  } catch (error) {
+    return null;
+  }
 };
 
 /**
  * Create the sparklines for the crypto list
  * Gets the data for the sparkline and plots a chart to represent the data
  */
-const createSparklines = () => {
-  var sparklineData = loadJson('#sparkline-data');
-  $('.price-sparkline').each(function(index, sparkline) {
+const createSparklines = async (coins) => {
+  var sparklineData = coins;
+  $('.price-sparkline').each(function (index, sparkline) {
     let change = $('.crypto-change')[index + 1];
     let computedStyle = getComputedStyle(change);
     let color = computedStyle.color;
-    
-    var priceData = sparklineData[index];
-
+    var priceData = sparklineData[index]['sparkline'];
+    if (!Array.isArray(priceData)) {
+      priceData = JSON.parse(priceData);
+    }
+    priceData = priceData.map((price) => parseFloat(price));
     var ctx = sparkline.getContext('2d');
 
     new Chart(ctx, {
       type: 'line',
       data: {
-        labels: priceData.map(function(_, index) {
+        labels: priceData.map(function (_, index) {
           return index;
         }),
-        datasets: [{
-          data: priceData,
-          borderColor: color,
-          backgroundColor: 'transparent',
-          pointBackgroundColor: 'transparent', 
-          pointBorderColor: 'transparent', 
-          pointRadius: 0, 
-          borderWidth: 3,
-          label: ""
-        }]
+        datasets: [
+          {
+            data: priceData,
+            borderColor: color,
+            backgroundColor: 'transparent',
+            pointBackgroundColor: 'transparent',
+            pointBorderColor: 'transparent',
+            pointRadius: 0,
+            borderWidth: 3,
+            label: '',
+          },
+        ],
       },
       options: {
-        responsive: false, 
+        responsive: false,
         maintainAspectRatio: true,
         legend: {
-          display: false
+          display: false,
         },
         scales: {
           x: {
-            display: false
+            display: false,
           },
           y: {
-            display: false
-          }
+            display: false,
+          },
         },
         elements: {
           line: {
-            tension: 0
-          }
+            tension: 0,
+          },
         },
         layout: {
           padding: {
             left: -100,
             right: -100,
             top: -100,
-            bottom: -100
-          }
-        }
-      }
+            bottom: -100,
+          },
+        },
+      },
     });
   });
 };
 
-createSparklines();
-
+(async () => {
+  let popularCrypto = await getPopularCrypto();
+  await createSparklines(popularCrypto);
+})();

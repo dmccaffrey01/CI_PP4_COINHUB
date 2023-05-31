@@ -1,9 +1,45 @@
 import os
 import requests
 from django.shortcuts import render
-from .models import CryptoCurrency
+from .models import CryptoCurrency, PopularCryptoCurrency
 import json
 from django.http import JsonResponse
+
+
+def index(request):
+    crypto_list(request)
+
+    get_popular_crypto(request)
+    
+    popular_crypto = PopularCryptoCurrency.objects.all()
+
+    context = {
+        'cryptocurrencies': popular_crypto,
+    }
+
+    return render(request, 'index.html', context)
+
+
+def get_popular_crypto(request):
+    popular_crypto_list = ['Bitcoin', 'Ethereum', 'Polkadot', 'Solana', 'Dogecoin']
+    filtered_cryptocurrencies = CryptoCurrency.objects.filter(name__in=popular_crypto_list)
+    PopularCryptoCurrency.objects.all().delete()
+
+    for crypto in filtered_cryptocurrencies:
+        PopularCryptoCurrency.objects.create(
+            rank=crypto.rank,
+            name=crypto.name,
+            symbol=crypto.symbol,
+            price=crypto.price,
+            change=crypto.change,
+            icon=crypto.icon,
+            sparkline=crypto.sparkline,
+            market_cap=crypto.market_cap,
+        )
+
+    json_filtered_crypto = filtered_cryptocurrencies.values()
+
+    return JsonResponse(list(json_filtered_crypto), safe=False)
 
 
 def crypto_list(request):
@@ -49,25 +85,6 @@ def crypto_list(request):
     }
 
     return render(request, 'crypto_list.html', context)
-
-
-def index(request):
-    crypto_list(request)
-    
-    cryptocurrencies = CryptoCurrency.objects.all()
-
-    popular_crypto = ['Bitcoin', 'Ethereum', 'Polkadot', 'Solana', 'Dogecoin']
-
-    filtered_cryptocurrencies = [crypto for crypto in cryptocurrencies if crypto.name in popular_crypto]
-
-    sparkline_data = [json.loads(crypto.sparkline) for crypto in filtered_cryptocurrencies]
-
-    context = {
-        'cryptocurrencies': filtered_cryptocurrencies,
-        'sparkline_data': json.dumps(sparkline_data),
-    }
-
-    return render(request, 'index.html', context)
 
 
 def markets(request):

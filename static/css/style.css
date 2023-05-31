@@ -677,10 +677,6 @@ footer {
     gap: 10px;
 }
 
-#json-data {
-    display: none;
-}
-
 canvas.price-sparkline {
     width: 80px;
     height: 20px;
