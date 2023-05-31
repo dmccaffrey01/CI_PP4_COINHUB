@@ -3,12 +3,19 @@
 
 {% block content %}
 <section class="crypto-search-section section light-gray-1">
-    <div class="content-container">
-        <form class="crypto-search-form" method="GET">
-            <input type="text" class="crypto-search-input" name="query" placeholder="Enter your search query">
-        </form>
-
-        <div class="crypto-search-results"></div>
+    <div class="content-container gp-50">
+        <div class="heading-container content-container gp-10">
+            <div class="heading-3 dark-text">Find your cryptocurrency</div>
+            <div class="sub-heading-3 dark-text text-gd-2">In the past 24 hours the market is ...</div>
+        </div>
+        
+        <div class="content-container search-container gp-20">
+            <form class="crypto-search-form" method="GET">
+                <input type="text" class="crypto-search-input" name="query" placeholder="Enter your search query">
+            </form>
+    
+            <div class="crypto-search-results"></div>
+        </div>
     </div>
 </section>
 
