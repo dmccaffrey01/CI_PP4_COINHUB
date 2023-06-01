@@ -1,7 +1,7 @@
 import os
 import requests
 from django.shortcuts import render
-from .models import CryptoCurrency, PopularCryptoCurrency
+from .models import CryptoCurrency, PopularCryptoCurrency, TopGainerCrypto, TopLoserCrypto
 import json
 from django.http import JsonResponse
 
@@ -20,26 +20,27 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-def get_popular_crypto(request):
-    popular_crypto_list = ['Bitcoin', 'Ethereum', 'Polkadot', 'Solana', 'Dogecoin']
-    filtered_cryptocurrencies = CryptoCurrency.objects.filter(name__in=popular_crypto_list)
-    PopularCryptoCurrency.objects.all().delete()
+def markets(request):
+    create_crypto_list(request)
+    crytpocurrencies = CryptoCurrency.objects.all()
 
-    for crypto in filtered_cryptocurrencies:
-        PopularCryptoCurrency.objects.create(
-            rank=crypto.rank,
-            name=crypto.name,
-            symbol=crypto.symbol,
-            price=crypto.price,
-            change=crypto.change,
-            icon=crypto.icon,
-            sparkline=crypto.sparkline,
-            market_cap=crypto.market_cap,
-        )
+    get_popular_crypto(request)
+    popular_cryto = PopularCryptoCurrency.objects.all()[:3]
 
-    json_filtered_crypto = filtered_cryptocurrencies.values()
+    get_top_gainers(request)
+    top_gainers = TopGainerCrypto.objects.all()[:3]
 
-    return JsonResponse(list(json_filtered_crypto), safe=False)
+    get_top_losers(request)
+    top_losers = TopLoserCrypto.objects.all()[:3]
+
+    context = {
+        'cryptocurrencies': crytpocurrencies,
+        'popular_cryto': popular_cryto,
+        'top_gainers': top_gainers,
+        'top_losers': top_losers,
+    }
+
+    return render(request, 'markets.html', context)
 
 
 def create_crypto_list(request):
@@ -83,16 +84,66 @@ def create_crypto_list(request):
     return JsonResponse(list(cryptocurrencies), safe=False)
 
 
-def markets(request):
-    create_crypto_list(request)
+def get_popular_crypto(request):
+    popular_crypto_list = ['Bitcoin', 'Ethereum', 'Polkadot', 'Solana', 'Dogecoin']
+    filtered_cryptocurrencies = CryptoCurrency.objects.filter(name__in=popular_crypto_list)
+    PopularCryptoCurrency.objects.all().delete()
 
-    crytpocurrencies = CryptoCurrency.objects.all()
+    for crypto in filtered_cryptocurrencies:
+        PopularCryptoCurrency.objects.create(
+            rank=crypto.rank,
+            name=crypto.name,
+            symbol=crypto.symbol,
+            price=crypto.price,
+            change=crypto.change,
+            icon=crypto.icon,
+            sparkline=crypto.sparkline,
+            market_cap=crypto.market_cap,
+        )
 
-    context = {
-        'cryptocurrencies': crytpocurrencies,
-    }
+    json_filtered_crypto = filtered_cryptocurrencies.values()
 
-    return render(request, 'markets.html', context)
+    return JsonResponse(list(json_filtered_crypto), safe=False)
+
+
+def get_top_gainers(request):
+    top_gainers = CryptoCurrency.objects.order_by('-change')[:5]
+    TopGainerCrypto.objects.all().delete()
+
+    for crypto in top_gainers:
+        TopGainerCrypto.objects.create(
+            rank=crypto.rank,
+            name=crypto.name,
+            symbol=crypto.symbol,
+            price=crypto.price,
+            change=crypto.change,
+            icon=crypto.icon,
+            sparkline=crypto.sparkline,
+            market_cap=crypto.market_cap,
+        )
+
+    top_gainer_data = TopGainerCrypto.objects.all().values()
+    return JsonResponse(list(top_gainer_data), safe=False)
+
+
+def get_top_losers(request):
+    top_losers = CryptoCurrency.objects.order_by('change')[:5]
+    TopLoserCrypto.objects.all().delete()
+
+    for crypto in top_losers:
+        TopLoserCrypto.objects.create(
+            rank=crypto.rank,
+            name=crypto.name,
+            symbol=crypto.symbol,
+            price=crypto.price,
+            change=crypto.change,
+            icon=crypto.icon,
+            sparkline=crypto.sparkline,
+            market_cap=crypto.market_cap,
+        )
+
+    top_loser_data = TopLoserCrypto.objects.all().values()
+    return JsonResponse(list(top_loser_data), safe=False)
 
 
 def crypto_search_results(request):
