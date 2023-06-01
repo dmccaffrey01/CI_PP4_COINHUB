@@ -975,3 +975,80 @@ canvas.price-sparkline {
 .pt-20 {
     padding-top: 20px;
 }
+
+/* Trending Crypto Section */
+
+.trending-crypto-container {
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.trending-crypto-item {
+    justify-content: space-between;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.w-33 {
+    width: 33%;
+}
+
+.p-20 {
+    padding: 20px;
+}
+
+.trending-name-symbol {
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.trending-icon-container {
+    width: 45px;
+    height: 45px;
+}
+
+.trending-crypto-card {
+    border: 1px solid var(--GRAY-DARK-2);
+    border-radius: 5px;
+    padding: 30px;
+}
+
+.trending-icon-name-symbol {
+    justify-content: flex-start;
+    width: 50%;
+}
+
+.trending-crypto-price-container {
+    display: flex;
+    justify-content: flex-start;
+    width: 30%;
+}
+
+.trending-crypto-change {
+    display: flex;
+    justify-content: flex-end;
+    width: 20%;
+}
+
+/* Crypto Markets Section */
+
+.crypto-list-markets-table .crypto-price,
+.crypto-list-markets-table .crypto-price-heading,
+.crypto-list-markets-table .crypto-change,
+.crypto-list-markets-table .crypto-chart,
+.crypto-list-markets-table .crypto-trade,
+.crypto-list-markets-table .crypto-market-cap,
+.crypto-list-markets-table .crypto-market-cap-heading,
+.crypto-list-markets-table .crypto-volume,
+.crypto-list-markets-table .crypto-volume-heading {
+    width: 12.5%;
+    text-align: center;
+}
+
+.crypto-list-markets-table td.crypto-name-symbol, .crypto-list-markets-table .crypto-name-symbol-heading {
+    width: 25%;
+}
+
+.markets-table-wrapper {
+    display: none;
+}

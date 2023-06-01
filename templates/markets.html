@@ -23,7 +23,145 @@
     </div>
 </section>
 
+<section class="trending-crypto-section section light-gray-1">
+    <div class="content-container gp-50 section-container">
+        <div class="heading-container content-container gp-10">
+            <div class="heading-3 dark-text">Explore what's hot in the crypto economy</div>
+            <div class="sub-heading-3 dark-text text-gd-2">Here's some popular, top gainers and top losers in the last 24 hours</div>
+        </div>
+
+        <div class="trending-crypto-container content-container-rows w-100">
+            <div class="content-container gp-20 w-33">
+                <div class="sub-heading-3 dark-text text-gd-2">Popular Crypto</div>
+                <div class="trending-crypto-card content-container gp-20 w-100 p-20">
+                    {% for crypto in popular_crypto %}
+                    <div class="trending-crypto-item content-container-rows w-100">
+                        <div class="trending-icon-name-symbol content-container-rows gp-10">
+                            <div class="crypto-icon-container trending-icon-container">
+                                <img src="{{ crypto.icon }}" alt="{{ crypto.name }} icon" class="crypto-icon">
+                            </div>
+                            <div class="trending-name-symbol content-container">
+                                <div class="crypto-symbol trending-crypto-symbol">{{ crypto.symbol }}</div>
+                            </div>
+                        </div>
+                        <div class="trending-crypto-price-container">
+                            <div class="crypto-price trending-crypto-price">{{ crypto.price }}</div>
+                        </div>
+                        <div class="crypto-change trending-crypto-change">{{ crypto.change }}%</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="content-container gp-20 w-33">
+                <div class="sub-heading-3 dark-text text-gd-2">Top Gainers</div>
+                <div class="trending-crypto-card content-container gp-20 w-100 p-20">
+                    {% for crypto in top_gainers %}
+                    <div class="trending-crypto-item content-container-rows w-100">
+                        <div class="trending-icon-name-symbol content-container-rows gp-10">
+                            <div class="crypto-icon-container trending-icon-container">
+                                <img src="{{ crypto.icon }}" alt="{{ crypto.name }} icon" class="crypto-icon">
+                            </div>
+                            <div class="trending-name-symbol content-container">
+                                <div class="crypto-symbol trending-crypto-symbol">{{ crypto.symbol }}</div>
+                            </div>
+                        </div>
+                        <div class="trending-crypto-price-container">
+                            <div class="crypto-price trending-crypto-price">{{ crypto.price }}</div>
+                        </div>
+                        <div class="crypto-change trending-crypto-change">{{ crypto.change }}%</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="content-container gp-20 w-33">
+                <div class="sub-heading-3 dark-text text-gd-2">Top Losers</div>
+                <div class="trending-crypto-card content-container gp-20 w-100">
+                    {% for crypto in top_losers %}
+                    <div class="trending-crypto-item content-container-rows w-100">
+                        <div class="trending-icon-name-symbol content-container-rows gp-10">
+                            <div class="crypto-icon-container trending-icon-container">
+                                <img src="{{ crypto.icon }}" alt="{{ crypto.name }} icon" class="crypto-icon">
+                            </div>
+                            <div class="trending-name-symbol content-container">
+                                <div class="crypto-symbol trending-crypto-symbol">{{ crypto.symbol }}</div>
+                            </div>
+                        </div>
+                        <div class="trending-crypto-price-container">
+                            <div class="crypto-price trending-crypto-price">{{ crypto.price }}</div>
+                        </div>
+                        <div class="crypto-change trending-crypto-change">{{ crypto.change }}%</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Crypto Markets List -->
+<section class="crypto-list-markets-section section light-gray-1">
+    <div class="section-container crypto-list-markets-container content-container gp-50">
+        <div class="heading-container content-container gp-10">
+            <div class="heading-3 dark-text">Crypto Markets</div>
+            <div class="sort-btns-container content-container-rows">
+
+            </div>
+        </div>
+        <div class="content-container w-100 gp-10">
+            <!-- Markets List -->
+            <div class="markets-table-wrapper table-wrapper w-100">
+                <table class="crypto-list-home-table crypto-list-markets-table w-100">
+                    <thead>
+                        <tr>
+                            <th class="crypto-name-symbol-heading">Name</th>
+                            <th class="crypto-price-heading">Price</th>
+                            <th class="crypto-change">Change</th>
+                            <th class="crypto-chart">Chart</th>
+                            <th class="crypto-market-cap-heading">Market Cap</th>
+                            <th class="crypto-volume-heading">Volume (24h)</th>
+                            <th class="crypto-trade">Trade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for crypto in cryptocurrencies %}
+                            <tr>
+                                <td class="crypto-name-symbol">
+                                    <div class="crypto-name-symbol-wrapper">
+                                        <div class="crypto-icon-container">
+                                            <img src="{{ crypto.icon }}" alt="{{ crypto.name }} Icon" class="crypto-icon" />
+                                        </div>
+                                        <div class="crypto-details">
+                                            <div class="crypto-name">{{ crypto.rank }}  {{ crypto.name }}</div>
+                                            <div class="crypto-symbol">{{ crypto.symbol }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="crypto-price">{{ crypto.price }}</td>
+                                <td class="crypto-change">{{ crypto.change }}%</td>
+                                <td class="crypto-chart">
+                                    <div class="table-content-wrapper w-100">
+                                        <canvas class="price-sparkline"></canvas>
+                                    </div>
+                                </td>
+                                <td class="crypto-market-cap">{{ crypto.market_cap }}</td>
+                                <td class="crypto-volume">{{ crypto.volume }}</td>
+                                <td class="crypto-trade">
+                                    <div class="table-content-wrapper w-100">
+                                        <div class="buy-btn btn">Buy</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{% static 'js/crypto_search.js' %}"></script>
+<script src="{% static 'js/crypto-search.js' %}"></script>
+<script src="{% static 'js/crypto-list.js' %}"></script>
+<script src="{% static 'js/format-numbers.js' %}"></script>
 {% endblock %}

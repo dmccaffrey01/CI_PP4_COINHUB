@@ -23,7 +23,9 @@ const changePriceColors = () => {
 
 changePriceColors();
 
-const prices = document.querySelectorAll('.crypto-price');
+const cryptoPrices = document.querySelectorAll('.crypto-price');
+const marketCaps = document.querySelectorAll('.crypto-market-cap');
+const volumes = document.querySelectorAll('.crypto-volume');
 
 /**
  * Change the price from USD to EUR
@@ -45,14 +47,50 @@ const priceConversion = async (usdAmount) => {
 /**
  * Update the price from USD to EUR
  */
-const convertPrices = async () => {
+const convertPrices = async (prices, type) => {
   for (const price of prices) {
-    const convertedPrice = await priceConversion(parseFloat(price.innerText));
+    const marketList = document.querySelector('.crypto-list-markets-section');
+    const homeList = document.querySelector('.crypto-list-home-section');
+    if (marketList) {
+      if (marketList.contains(price)) {
+        var parent = 'normal';
+      } else {
+        var parent = 'letter';
+      }
+    } else if (homeList) {
+      if (homeList.contains(price)) {
+        var parent = 'normal';
+      } else {
+        var parent = 'letter';
+      }
+    }
+    let num = parseFloat(price.innerText);
+    const convertedPrice = await priceConversion(num);
+    if (type === "normal" && parent === "normal") {
+      convertedPrice[1] = addCommasToNumber(convertedPrice[1])
+      console.log(convertedPrice[1]);
+    }
     price.innerText = `${convertedPrice[0]}${convertedPrice[1]}`;
   }
 };
 
-convertPrices();
+function addCommasToNumber(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+const currencyConversion = function () {
+  convertPrices(cryptoPrices, "normal");
+  if (marketCaps) {
+    convertPrices(marketCaps, "letter");
+  }
+
+  if (volumes) {
+    convertPrices(volumes, "letter");
+  }
+}
+
+currencyConversion();
+
 
 /**
  * Get the popular crypto in the form json string
@@ -68,13 +106,28 @@ const getPopularCrypto = async () => {
 };
 
 /**
+ * Get the crytocurrencies in the form json string
+ */
+
+const createCryptoList = async () => {
+  try {
+    const response = await fetch(`/create-crypto-list/`);
+    const results = await response.json();
+    return results;
+  } catch (error) {
+    return null;
+  }
+};
+
+
+/**
  * Create the sparklines for the crypto list
  * Gets the data for the sparkline and plots a chart to represent the data
  */
-const createSparklines = async (coins) => {
+const createSparklines = async (coins, changeIndex) => {
   var sparklineData = coins;
   $('.price-sparkline').each(function (index, sparkline) {
-    let change = $('.crypto-change')[index + 1];
+    let change = $('.crypto-change')[index + changeIndex];
     let computedStyle = getComputedStyle(change);
     let color = computedStyle.color;
     var priceData = sparklineData[index]['sparkline'];
@@ -140,6 +193,16 @@ const createSparklines = async (coins) => {
  * Get popular crypto then create sparklines
  */
 (async () => {
-  let popularCrypto = await getPopularCrypto();
-  await createSparklines(popularCrypto);
+  let homeList = document.querySelector('.crypto-list-home-section');
+  let marketsList = document.querySelector('.crypto-list-markets-section');
+  if (homeList) {
+    let changeIndex = 1;
+    let popularCrypto = await getPopularCrypto();
+    await createSparklines(popularCrypto, changeIndex);
+  } else if (marketsList) {
+    let changeIndex = 10;
+    let crypto = await createCryptoList();
+    await createSparklines(crypto, changeIndex);
+  } else {
+  }
 })();

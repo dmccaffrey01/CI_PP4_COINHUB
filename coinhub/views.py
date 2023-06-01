@@ -4,6 +4,7 @@ from django.shortcuts import render
 from .models import CryptoCurrency, PopularCryptoCurrency, TopGainerCrypto, TopLoserCrypto
 import json
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 
 
 def index(request):
@@ -22,10 +23,10 @@ def index(request):
 
 def markets(request):
     create_crypto_list(request)
-    crytpocurrencies = CryptoCurrency.objects.all()
+    cryptocurrencies = CryptoCurrency.objects.all()
 
     get_popular_crypto(request)
-    popular_cryto = PopularCryptoCurrency.objects.all()[:3]
+    popular_crypto = PopularCryptoCurrency.objects.all()[:3]
 
     get_top_gainers(request)
     top_gainers = TopGainerCrypto.objects.all()[:3]
@@ -34,8 +35,8 @@ def markets(request):
     top_losers = TopLoserCrypto.objects.all()[:3]
 
     context = {
-        'cryptocurrencies': crytpocurrencies,
-        'popular_cryto': popular_cryto,
+        'cryptocurrencies': cryptocurrencies,
+        'popular_crypto': popular_crypto,
         'top_gainers': top_gainers,
         'top_losers': top_losers,
     }
@@ -75,6 +76,7 @@ def create_crypto_list(request):
                 icon=crypto['iconUrl'],
                 sparkline=json.dumps(crypto['sparkline']),
                 market_cap=crypto['marketCap'],
+                volume=crypto['24hVolume'],
             )
     else:
         print('Invalid data format')

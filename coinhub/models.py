@@ -11,6 +11,7 @@ class CryptoCurrency(models.Model):
     icon = models.TextField(default="")
     sparkline = models.TextField(default="")
     market_cap = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    volume = models.DecimalField(max_digits=20, decimal_places=2, default=0)
 
     def __str__(self):
         return self.name
