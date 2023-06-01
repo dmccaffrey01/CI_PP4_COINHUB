@@ -7,7 +7,7 @@ from django.http import JsonResponse
 
 
 def index(request):
-    crypto_list(request)
+    create_crypto_list(request)
 
     get_popular_crypto(request)
     
@@ -42,7 +42,7 @@ def get_popular_crypto(request):
     return JsonResponse(list(json_filtered_crypto), safe=False)
 
 
-def crypto_list(request):
+def create_crypto_list(request):
     headers = {
         # 'x-access-token': os.environ.get('COINRANKING_API')
     }
@@ -78,17 +78,13 @@ def crypto_list(request):
     else:
         print('Invalid data format')
 
-    cryptocurrencies = CryptoCurrency.objects.all()
+    cryptocurrencies = CryptoCurrency.objects.all().values()
 
-    context = {
-        'cryptocurrencies': cryptocurrencies,
-    }
-
-    return render(request, 'crypto_list.html', context)
+    return JsonResponse(list(cryptocurrencies), safe=False)
 
 
 def markets(request):
-    crypto_list(request)
+    create_crypto_list(request)
 
     crytpocurrencies = CryptoCurrency.objects.all()
 

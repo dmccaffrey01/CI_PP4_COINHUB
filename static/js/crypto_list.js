@@ -135,6 +135,10 @@ const createSparklines = async (coins) => {
   });
 };
 
+
+/**
+ * Get popular crypto then create sparklines
+ */
 (async () => {
   let popularCrypto = await getPopularCrypto();
   await createSparklines(popularCrypto);
