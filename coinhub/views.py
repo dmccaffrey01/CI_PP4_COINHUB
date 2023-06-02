@@ -44,6 +44,16 @@ def markets(request):
     return render(request, 'markets.html', context)
 
 
+def crypto_details(request, symbol):
+    cryptocurrency = CryptoCurrency.objects.get(symbol=symbol)
+
+    context = {
+        'cryptocurrency': cryptocurrency,
+    }
+
+    return render(request, 'crypto_details.html', context)
+
+
 def create_crypto_list(request):
     headers = {
         # 'x-access-token': os.environ.get('COINRANKING_API')
