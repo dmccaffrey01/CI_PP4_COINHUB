@@ -15,7 +15,8 @@ searchInput.addEventListener("input", () => {
         if (results.length > 0) {
             const html = results.map(
                 (result) => {
-                    return `<div class="crypto-search-result content-container-rows">
+                    const url = `/crypto/${result.symbol}`;
+                    return `<a href="${url}" class="crypto-search-result content-container-rows">
                         <div class="crypto-search-result-icon-name content-container-rows gp-20">
                             <div class="crypto-search-result-icon-container crypto-icon-container">
                                 <img class="crypto-icon" src="${result.icon}" alt="${result.name} icon" />
@@ -23,7 +24,7 @@ searchInput.addEventListener("input", () => {
                             <div class="crypto-search-result-name dark-text">${result.name}</div>
                         </div>
                         <div class="crypto-search-result-symbol dark-text">${result.symbol}</div>
-                    </div>`
+                    </a>`
                 }).join('');
             searchResults.innerHTML = html;
             searchResults.style.display = "flex";

@@ -1,7 +1,7 @@
 import os
 import requests
 from django.shortcuts import render
-from .models import CryptoCurrency, PopularCryptoCurrency, TopGainerCrypto, TopLoserCrypto
+from .models import CryptoCurrency, PopularCryptoCurrency, TopGainerCrypto, TopLoserCrypto, CryptoDetail
 import json
 from django.http import JsonResponse
 from django.core.paginator import Paginator
@@ -47,6 +47,10 @@ def markets(request):
 def crypto_details(request, symbol):
     cryptocurrency = CryptoCurrency.objects.get(symbol=symbol)
 
+    CryptoDetail.objects.all().delete()
+
+
+
     context = {
         'cryptocurrency': cryptocurrency,
     }
@@ -61,7 +65,6 @@ def create_crypto_list(request):
 
     params = {
         'limit': 100,
-        'convert': 'EUR',
     }
 
     response = requests.request("GET", "https://api.coinranking.com/v2/coins", headers=headers, params=params)

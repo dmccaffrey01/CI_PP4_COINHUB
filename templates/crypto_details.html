@@ -1,1 +1,12 @@
-<h1>Crypto Details</h1>
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="section light-gray-1 crypto-detail-heading-section">
+    <div class="section-container">
+        <div class="content-container-rows">{{ cryptocurrency.name }}</div>
+    </div>
+</section>
+
+{% endblock %}

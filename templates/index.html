@@ -63,7 +63,7 @@
                         {% for crypto in cryptocurrencies %}
                             <tr>
                                 <td class="crypto-name-symbol">
-                                    <div class="crypto-name-symbol-wrapper">
+                                    <a href="{% url 'crypto_details' crypto.symbol %}" class="crypto-name-symbol-wrapper">
                                         <div class="crypto-icon-container">
                                             <img src="{{ crypto.icon }}" alt="{{ crypto.name }} Icon" class="crypto-icon" />
                                         </div>
@@ -71,7 +71,7 @@
                                             <div class="crypto-name">{{ crypto.name }}</div>
                                             <div class="crypto-symbol">{{ crypto.symbol }}</div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </td>
                                 <td class="crypto-price">{{ crypto.price }}</td>
                                 <td class="crypto-change">{{ crypto.change }}%</td>

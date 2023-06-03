@@ -36,14 +36,14 @@
                 <div class="trending-crypto-card content-container gp-20 w-100 p-20">
                     {% for crypto in popular_crypto %}
                     <div class="trending-crypto-item content-container-rows w-100">
-                        <div class="trending-icon-name-symbol content-container-rows gp-10">
+                        <a href="{% url 'crypto_details' crypto.symbol %}" class="trending-icon-name-symbol content-container-rows gp-10">
                             <div class="crypto-icon-container trending-icon-container">
                                 <img src="{{ crypto.icon }}" alt="{{ crypto.name }} icon" class="crypto-icon">
                             </div>
                             <div class="trending-name-symbol content-container">
                                 <div class="crypto-symbol trending-crypto-symbol">{{ crypto.symbol }}</div>
                             </div>
-                        </div>
+                        </a>
                         <div class="trending-crypto-price-container">
                             <div class="crypto-price trending-crypto-price">{{ crypto.price }}</div>
                         </div>
@@ -57,14 +57,14 @@
                 <div class="trending-crypto-card content-container gp-20 w-100 p-20">
                     {% for crypto in top_gainers %}
                     <div class="trending-crypto-item content-container-rows w-100">
-                        <div class="trending-icon-name-symbol content-container-rows gp-10">
+                        <a href="{% url 'crypto_details' crypto.symbol %}" class="trending-icon-name-symbol content-container-rows gp-10">
                             <div class="crypto-icon-container trending-icon-container">
                                 <img src="{{ crypto.icon }}" alt="{{ crypto.name }} icon" class="crypto-icon">
                             </div>
                             <div class="trending-name-symbol content-container">
                                 <div class="crypto-symbol trending-crypto-symbol">{{ crypto.symbol }}</div>
                             </div>
-                        </div>
+                        </a>
                         <div class="trending-crypto-price-container">
                             <div class="crypto-price trending-crypto-price">{{ crypto.price }}</div>
                         </div>
@@ -78,14 +78,14 @@
                 <div class="trending-crypto-card content-container gp-20 w-100">
                     {% for crypto in top_losers %}
                     <div class="trending-crypto-item content-container-rows w-100">
-                        <div class="trending-icon-name-symbol content-container-rows gp-10">
+                        <a href="{% url 'crypto_details' crypto.symbol %}" class="trending-icon-name-symbol content-container-rows gp-10">
                             <div class="crypto-icon-container trending-icon-container">
                                 <img src="{{ crypto.icon }}" alt="{{ crypto.name }} icon" class="crypto-icon">
                             </div>
                             <div class="trending-name-symbol content-container">
                                 <div class="crypto-symbol trending-crypto-symbol">{{ crypto.symbol }}</div>
                             </div>
-                        </div>
+                        </a>
                         <div class="trending-crypto-price-container">
                             <div class="crypto-price trending-crypto-price">{{ crypto.price }}</div>
                         </div>
