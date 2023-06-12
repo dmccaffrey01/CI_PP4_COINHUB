@@ -1052,3 +1052,11 @@ canvas.price-sparkline {
 .markets-table-wrapper {
     display: none;
 }
+
+/* Crypto Details Section */
+
+.historicat-price-chart {
+    display: block;
+    max-width: 800px;
+    margin: 20px auto;
+  }

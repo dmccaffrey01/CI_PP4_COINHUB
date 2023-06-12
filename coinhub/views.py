@@ -121,17 +121,22 @@ def crypto_detail_price_data_from_api(request, time, symbol, lim, count_lim):
             if 'conversionSymbol' in d:
                 del d['conversionSymbol']
             d['datetime'] = datetime.fromtimestamp(d['time'])
+            d['last_price'] = (d['open'] + d['high'] + d['low'] + d['close'])/4
         all_data = data_list + all_data
 
         counter += 1
 
+    time_period = '1d'
     crypto_detail, _ = CryptoDetail.objects.get_or_create(symbol=symbol)
     if lim == 1217 and count_lim == 3:
         crypto_detail.chart_all = all_data
+        time_period = 'all_time'
     elif lim == 720 and count_lim == 1:
         crypto_detail.chart_1m = all_data
+        time_period = '1m'
     elif lim == 365 and count_lim == 1:
-        crypto_detail.chart_1y = all_data 
+        crypto_detail.chart_1y = all_data
+        time_period = '1y' 
     crypto_detail.save()
 
     return JsonResponse(all_data, safe=False)
