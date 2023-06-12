@@ -32,10 +32,12 @@ const volumes = document.querySelectorAll('.crypto-volume');
  */
 const priceConversion = async (usdAmount) => {
   try {
+    /*
     const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
     const data = await response.json();
     const exchangeRate = data.rates.EUR;
-
+    */
+    const exchangeRate = 1;
     const eurAmount = usdAmount * exchangeRate;
 
     return ['€', eurAmount.toFixed(2)];

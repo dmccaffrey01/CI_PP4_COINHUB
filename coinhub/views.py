@@ -5,6 +5,7 @@ from .models import CryptoCurrency, PopularCryptoCurrency, TopGainerCrypto, TopL
 import json
 from django.http import JsonResponse
 from django.core.paginator import Paginator
+from datetime import datetime
 
 
 def index(request):
@@ -46,162 +47,157 @@ def markets(request):
 
 def crypto_details(request, symbol):
     cryptocurrency = CryptoCurrency.objects.get(symbol=symbol)
-    reference_currency_uuid = "2h7cAWbz0k1c"
 
+    CryptoDetail.objects.all().delete()
+
+    get_crypto_detail_data(request, cryptocurrency)
+
+    crypto_detail = CryptoDetail.objects.first()
+
+    context = {
+        'cryptocurrency': cryptocurrency,
+        'selected_crypto': crypto_detail,
+    }
+
+    return render(request, 'crypto_details.html', context)
+
+
+def get_crypto_detail_data(request, cryptocurrency):
+    get_crypto_detail_main_data(request, cryptocurrency)
+    get_crypto_detail_price_data(request, cryptocurrency)
+
+    crypto_detail = CryptoDetail.objects.first()
+
+    return crypto_detail
+
+
+def get_crypto_detail_price_data(request, cryptocurrency):
+    symbol = cryptocurrency.symbol
+    crypto_detail_price_data_from_api(request, 'day', symbol, 1217, 3)
+    crypto_detail_price_data_from_api(request, 'hour', symbol, 720, 1)
+    crypto_detail_price_data_from_api(request, 'day', symbol, 365, 1)
+
+    crypto_detail = CryptoDetail.objects.first()
+
+    return crypto_detail
+    
+
+def crypto_detail_price_data_from_api(request, time, symbol, lim, count_lim):
+    url = f'https://min-api.cryptocompare.com/data/v2/histo{time}'
+    fsym = symbol
+    tsym = 'EUR'
+    limit = lim
+    counter_limit = count_lim
+    all_data = []
+
+    params = {
+        'fsym': fsym,
+        'tsym': tsym,
+        'limit': limit,
+    }
+
+    response = requests.get(url, params=params)
+    data = response.json()
+    data_list = data['Data']['Data']
+    for d in data_list:
+        del d['conversionType']
+        if 'conversionSymbol' in d:
+            del d['conversionSymbol']
+        d['datetime'] = datetime.fromtimestamp(d['time'])
+    all_data = data_list + all_data
+
+    counter = 1
+
+    while counter < counter_limit:
+        last_timestamp = data['Data']['TimeFrom']
+        params['limit'] = limit
+        params['toTs'] = last_timestamp
+
+        response = requests.get(url, params=params)
+        data = response.json()
+        data_list = data['Data']['Data']
+        for d in data_list:
+            del d['conversionType']
+            if 'conversionSymbol' in d:
+                del d['conversionSymbol']
+            d['datetime'] = datetime.fromtimestamp(d['time'])
+        all_data = data_list + all_data
+
+        counter += 1
+
+    crypto_detail, _ = CryptoDetail.objects.get_or_create(symbol=symbol)
+    if lim == 1217 and count_lim == 3:
+        crypto_detail.chart_all = all_data
+    elif lim == 720 and count_lim == 1:
+        crypto_detail.chart_1m = all_data
+    elif lim == 365 and count_lim == 1:
+        crypto_detail.chart_1y = all_data 
+    crypto_detail.save()
+
+    return JsonResponse(all_data, safe=False)
+
+
+def get_crypto_detail_main_data(request, cryptocurrency):
     headers = {
         # 'x-access-token': os.environ.get('COINRANKING_API')
     }
 
-    url_1 = f"https://api.coinranking.com/v2/coin/{cryptocurrency.uuid}"
-
-    response_1 = requests.request("GET", url_1, headers=headers)
-
-    if response_1.status_code == 200:
-        print('API request successful')
-    else:
-        print('API request failed')
-
-    data_1 = response_1.json()
+    time_periods = ['1h', '24h', '7d']
     
-    if 'data' in data_1:
-        crypto_data = data_1['data']['coin']
-        CryptoDetail.objects.create(
-            uuid=crypto_data['uuid'],
-            name=crypto_data['name'],
-            symbol=crypto_data['symbol'],
-            color=crypto_data['color'],
-            icon=crypto_data['iconUrl'],
-            website_url=crypto_data['websiteUrl'],
-            links=json.dumps(crypto_data['links']),
-            price=crypto_data['price'],
-            chart_1d=json.dumps(crypto_data['sparkline']),
-            market_cap=crypto_data['marketCap'],
-            fully_diluted_market_cap=crypto_data['fullyDilutedMarketCap'],
-            volume=crypto_data['24hVolume'],
-            max_supply=crypto_data['supply']['max'],
-            total_supply=crypto_data['supply']['total'],
-            circulating_supply=crypto_data['supply']['circulating'],
-            rank=crypto_data['rank'],
-            all_time_high=crypto_data['allTimeHigh']['price'],
-            ath_time_stamp=crypto_data['allTimeHight']['timestamp'],
-            change_24h=crypto_data['change'],
-            about=crypto_data['description'],
-        )
-    else:
-        print('Invalid data format')
+    url = f"https://api.coinranking.com/v2/coin/{cryptocurrency.uuid}"
 
-    url_2 = f"https://api.coinranking.com/v2/coin/{cryptocurrency.uuid}?timePeriod=1h"
-
-    response_2 = requests.request("GET", url_2, headers=headers)
-
-    if response_2.status_code == 200:
-        print('API request successful')
-    else:
-        print('API request failed')
-
-    data_2 = response_2.json()
-    
-    if 'data' in data_2:
-        crypto_data = data_2['data']['coin']
-        CryptoDetail.objects.create(
-            chart_1h=json.dumps(crypto_data['sparkline']),
-            change_1h=crypto_data['change'],
-
-        )
-    else:
-        print('Invalid data format')
+    for time_period in time_periods:
+        params = {
+            'referenceCurrencyUuid': '5k-_VTxqtCEI',
+            'timePeriod': time_period,
+        }
         
-    url_3 = f"https://api.coinranking.com/v2/coin/{cryptocurrency.uuid}?timePeriod=7d"
+        response = requests.request("GET", url, headers=headers, params=params)
 
-    response_3 = requests.request("GET", url_3, headers=headers)
+        if response.status_code == 200:
+            print('API request successful')
+        else:
+            print('API request failed')
 
-    if response_3.status_code == 200:
-        print('API request successful')
-    else:
-        print('API request failed')
+        data = response.json()
+        
+        if 'data' in data:
+            crypto_data = data['data']['coin']
+            crypto_detail, _ = CryptoDetail.objects.get_or_create(
+                uuid=crypto_data['uuid'],
+                defaults={
+                    'name': crypto_data['name'],
+                    'symbol': crypto_data['symbol'],
+                    'color': crypto_data['color'],
+                    'icon': crypto_data['iconUrl'],
+                    'website_url': crypto_data['websiteUrl'],
+                    'links': json.dumps(crypto_data['links']),
+                    'price': crypto_data['price'],
+                    'chart_1d': json.dumps(crypto_data['sparkline']),
+                    'market_cap': crypto_data['marketCap'],
+                    'fully_diluted_market_cap': crypto_data['fullyDilutedMarketCap'],
+                    'volume': crypto_data['24hVolume'],
+                    'max_supply': crypto_data['supply']['max'],
+                    'total_supply': crypto_data['supply']['total'],
+                    'circulating_supply': crypto_data['supply']['circulating'],
+                    'rank': crypto_data['rank'],
+                    'all_time_high': crypto_data['allTimeHigh']['price'],
+                    'ath_time_stamp': crypto_data['allTimeHigh']['timestamp'],
+                    'change_24h': crypto_data['change'],
+                    'about': crypto_data['description'],
+                }
+            )
+            crypto_detail.chart_1h = json.dumps(crypto_data['sparkline'])
+            crypto_detail.change_1h = crypto_data['change']
+            crypto_detail.chart_1w = json.dumps(crypto_data['sparkline'])
+            crypto_detail.change_7d = crypto_data['change']
+            crypto_detail.save()
+        else:
+            print('Invalid data format')
 
-    data_3 = response_3.json()
-    
-    if 'data' in data_3:
-        crypto_data = data_3['data']['coin']
-        CryptoDetail.objects.create(
-            chart_1w=json.dumps(crypto_data['sparkline']),
-            change_7d=crypto_data['change'],
-            
-        )
-    else:
-        print('Invalid data format')
+        crypto_detail = CryptoDetail.objects.first()
 
-    url_4 = f"https://api.coinranking.com/v2/coin/{cryptocurrency.uuid}?timePeriod=30d"
-
-    response_4 = requests.request("GET", url_4, headers=headers)
-
-    if response_4.status_code == 200:
-        print('API request successful')
-    else:
-        print('API request failed')
-
-    data_4 = response_4.json()
-    
-    if 'data' in data_4:
-        crypto_data = data_4['data']['coin']
-        CryptoDetail.objects.create(
-            chart_1m=json.dumps(crypto_data['sparkline']),
-        )
-    else:
-        print('Invalid data format')
-
-    url_5 = f"https://api.coinranking.com/v2/coin/{cryptocurrency.uuid}?timePeriod=1y"
-
-    response_5 = requests.request("GET", url_5, headers=headers)
-
-    if response_5.status_code == 200:
-        print('API request successful')
-    else:
-        print('API request failed')
-
-    data_5 = response_5.json()
-    
-    if 'data' in data_5:
-        crypto_data = data_5['data']['coin']
-        CryptoDetail.objects.create(
-            chart_1y=json.dumps(crypto_data['sparkline']),
-        )
-    else:
-        print('Invalid data format')
-
-    url_6 = f"https://api.coinranking.com/v2/coin/{cryptocurrency.uuid}?timePeriod=5y"
-
-    response_6 = requests.request("GET", url_6, headers=headers)
-
-    if response_6.status_code == 200:
-        print('API request successful')
-    else:
-        print('API request failed')
-
-    data_6 = response_6.json()
-    
-    if 'data' in data_6:
-        crypto_data = data_6['data']['coin']
-        CryptoDetail.objects.create(
-            chart_all=json.dumps(crypto_data['sparkline']),
-        )
-    else:
-        print('Invalid data format')
-
-    crypto_detail = CryptoDetail.objects.all()
-
-    if crypto_detail.exists():
-        selected_crypto = crypto_detail.first()
-    else:
-        selected_crypto = None
-
-    context = {
-        'cryptocurrency': cryptocurrency,
-        'selected_crypto': selected_crypto,
-    }
-
-    return render(request, 'crypto_details.html', context)
+        return crypto_detail
 
 
 def create_crypto_list(request):
@@ -210,7 +206,7 @@ def create_crypto_list(request):
     }
 
     params = {
-        'limit': 100,
+        'referenceCurrencyUuid': '5k-_VTxqtCEI'
     }
 
     response = requests.request("GET", "https://api.coinranking.com/v2/coins", headers=headers, params=params)
