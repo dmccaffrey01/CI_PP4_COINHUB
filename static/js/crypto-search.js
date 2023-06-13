@@ -50,7 +50,6 @@ const addScrollbar = () => {
     } else {
         searchResults.style.overflowY = "auto";
     }
-    console.log(searchResults.scrollHeight);
 }
 
 closeIcon.addEventListener("click", () => {

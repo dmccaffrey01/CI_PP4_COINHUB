@@ -70,7 +70,6 @@ const convertPrices = async (prices, type) => {
     const convertedPrice = await priceConversion(num);
     if (type === "normal" && parent === "normal") {
       convertedPrice[1] = addCommasToNumber(convertedPrice[1])
-      console.log(convertedPrice[1]);
     }
     price.innerText = `${convertedPrice[0]}${convertedPrice[1]}`;
   }

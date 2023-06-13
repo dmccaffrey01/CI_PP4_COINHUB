@@ -104,6 +104,7 @@ def crypto_detail_price_data_from_api(request, time, symbol, lim, count_lim):
         if 'conversionSymbol' in d:
             del d['conversionSymbol']
         d['datetime'] = datetime.fromtimestamp(d['time'])
+        d['last_price'] = (d['open'] + d['high'] + d['low'] + d['close'])/4
     all_data = data_list + all_data
 
     counter = 1
@@ -138,7 +139,7 @@ def crypto_detail_price_data_from_api(request, time, symbol, lim, count_lim):
         crypto_detail.chart_1y = all_data
         time_period = '1y' 
     crypto_detail.save()
-
+    
     return JsonResponse(all_data, safe=False)
 
 
@@ -190,6 +191,7 @@ def get_crypto_detail_main_data(request, cryptocurrency):
                     'ath_time_stamp': crypto_data['allTimeHigh']['timestamp'],
                     'change_24h': crypto_data['change'],
                     'about': crypto_data['description'],
+                    'ath_change': ((float(crypto_data['price']) - float(crypto_data['allTimeHigh']['price'])) / float(crypto_data['allTimeHigh']['price'])) * 100,
                 }
             )
             crypto_detail.chart_1h = json.dumps(crypto_data['sparkline'])

@@ -47,7 +47,7 @@ header {
     justify-content: center;
     align-items: center;
     font-family: "Montserrat", sans-serif;
-    z-index: 2;
+    z-index: 4;
     border-bottom: 1px solid var(--GRAY-LIGHT-2);
 }
 
@@ -1055,8 +1055,97 @@ canvas.price-sparkline {
 
 /* Crypto Details Section */
 
-.historicat-price-chart {
-    display: block;
-    max-width: 800px;
-    margin: 20px auto;
-  }
+.crypto-details-side-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.side-nav-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 80px;
+    width: 100%;
+    height: calc(100vh - 200px);
+    border-right: 1px solid var(--GRAY-LIGHT-2);
+}
+
+.crypto-details-side-nav .return-btn {
+    cursor: pointer;
+}
+
+/* Historical Price Chart Section */
+
+.crypto-details-section {
+    margin-left: 300px;
+    width: calc(100% - 300px);
+    border-bottom: 1px solid var(--GRAY-LIGHT-2);
+}
+
+.crypto-details-section-container {
+    justify-content: space-between;
+    padding: 50px;
+}
+
+.crypto-details-icon-container {
+    width: 75px;
+    height: 75px;
+}
+
+.historical-section-container-wrapper {
+    width: 1000px;
+    height: 800px;
+    border-right: 1px solid var(--GRAY-LIGHT-2);
+}
+
+.historical-price-chart-section-container {
+    display: flex;
+}
+
+.historical-price-heading-container {
+    justify-content: space-between;
+    padding: 30px 50px;
+    height: 240px;
+    width: 100%;
+}
+
+.historical-price-container {
+    align-items: flex-start;
+}
+
+.historical-price-chart-container {
+    width: 1000px;
+    height: 560px;
+    position: relative;
+}
+
+/* Market Stats Section */
+
+.crypto-details-market-stats-container {
+    padding: 80px 100px;
+    width: 100%;
+}
+
+.market-stats-container {
+    justify-content: space-between;
+    width: 100%;
+}
+
+.market-stats-heading {
+    align-self: flex-start;
+}
+
+.market-stats-col {
+    align-items: flex-start;
+}
+
+.market-stats-item {
+    align-items: flex-start;
+}
