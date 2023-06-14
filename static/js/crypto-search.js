@@ -71,22 +71,24 @@ searchInput.addEventListener("focus", () => {
 const marketChangeElement = document.querySelector(".market-change");
 
 const updateMarketChange = () => {
-    fetch(`/get_market_data/`)
-      .then((response) => response.json())
-      .then((results) => {
-        if (results.totalChange !== undefined) {
-            if (results.totalChange > 0) {
-                marketChangeElement.classList.add("positive");
-                marketChangeElement.innerHTML = `up ${results.totalChange}% <i class="fa-solid fa-up-long"></i>`
-            } else {
-                marketChangeElement.classList.add("negative");
-                marketChangeElement.innerHTML = `down ${results.totalChange}% <i class="fa-solid fa-down-long"></i>`
+    if (marketChangeElement) {
+        fetch(`/get_market_data/`)
+        .then((response) => response.json())
+        .then((results) => {
+            if (results.totalChange !== undefined) {
+                if (results.totalChange > 0) {
+                    marketChangeElement.classList.add("positive");
+                    marketChangeElement.innerHTML = `up ${results.totalChange}% <i class="fa-solid fa-up-long"></i>`
+                } else {
+                    marketChangeElement.classList.add("negative");
+                    marketChangeElement.innerHTML = `down ${results.totalChange}% <i class="fa-solid fa-down-long"></i>`
+                }
             }
-        }
-        else {
-            marketChangeElement.innerHTML = "..."
-        }
-      });
+            else {
+                marketChangeElement.innerHTML = "..."
+            }
+        });
+    }
 }
 
 updateMarketChange();

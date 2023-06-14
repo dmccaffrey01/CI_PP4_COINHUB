@@ -39,28 +39,42 @@
             </div>
         </div>
         <div class="crypto-details-search-container">
-            Search field
+            <div class="content-container search-container gp-20">
+                <form class="crypto-search-form" method="GET">
+                    <div class="input-container">
+                        <input type="text" autocomplete="off" class="crypto-search-input" name="query" placeholder="Search for an asset">
+                        <span class="search-icon"><i class="fas fa-search"></i></span>
+                        <span class="close-icon"><i class="fa-solid fa-xmark"></i></span>
+                    </div>
+                </form>
+    
+                <div class="crypto-search-results content-container"></div>
+            </div>
         </div>
     </div>
 </section>
 
 <section class="crypto-details-section historical-chart-buy-section">
     <div class="historical-section-container-wrapper content-container">
+        <div class="loading-icon-container"></div>
+        <div class="vertical-line-container">
+            <div class="vertical-line"></div>
+        </div>
         <div class="section-container historical-price-chart-section-container">
             <div class="content-container">
                 <div class="historical-price-heading-container content-container-rows">
                     <div class="content-container historical-price-container gp-10">
                         <div class="price-text dark-text">Price</div>
-                        <div class="historical-crypto-price heading-3 dark-text">{{ selected_crypto.price }}</div>
-                        <div class="historical-crypto-change">24000</div>
+                        <div class="historical-crypto-price heading-3 dark-text">€{{ selected_crypto.price }}</div>
+                        <div class="historical-crypto-change sub-heading-3">24000%</div>
                     </div>
                     <div class="content-container-rows historical-price-time-periods gp-20">
-                        <div class="historical-price-time-periods-btn">1H</div>
-                        <div class="historical-price-time-periods-btn">1D</div>
-                        <div class="historical-price-time-periods-btn">1W</div>
-                        <div class="historical-price-time-periods-btn">1M</div>
-                        <div class="historical-price-time-periods-btn">1Y</div>
-                        <div class="historical-price-time-periods-btn">ALL</div>
+                        <div class="historical-price-time-periods-btn dark-text" data-time-period="1h">1H</div>
+                        <div class="historical-price-time-periods-btn dark-text" data-time-period="1d">1D</div>
+                        <div class="historical-price-time-periods-btn dark-text" data-time-period="1w">1W</div>
+                        <div class="historical-price-time-periods-btn dark-text active" data-time-period="1m">1M</div>
+                        <div class="historical-price-time-periods-btn dark-text" data-time-period="1y">1Y</div>
+                        <div class="historical-price-time-periods-btn dark-text" data-time-period="all">ALL</div>
                     </div>
                 </div>
                 <div class="historical-price-chart-container">
@@ -139,6 +153,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'js/crypto-details.js' %}"></script>
-
+<script src="{% static 'js/crypto-search.js' %}"></script>
 
 {% endblock %}

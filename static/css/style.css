@@ -1101,19 +1101,30 @@ canvas.price-sparkline {
 
 .historical-section-container-wrapper {
     width: 1000px;
-    height: 800px;
+    height: 750px;
     border-right: 1px solid var(--GRAY-LIGHT-2);
+    position: relative;
 }
 
 .historical-price-chart-section-container {
-    display: flex;
+    display: none;
 }
 
 .historical-price-heading-container {
     justify-content: space-between;
     padding: 30px 50px;
-    height: 240px;
+    height: 190px;
     width: 100%;
+}
+
+.historical-price-time-periods-btn {
+    padding: 12px 18px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.historical-price-time-periods-btn.active {
+    background-color: var(--BLUE-LIGHT-1);
 }
 
 .historical-price-container {
@@ -1121,9 +1132,59 @@ canvas.price-sparkline {
 }
 
 .historical-price-chart-container {
-    width: 1000px;
+    width: 980px;
     height: 560px;
+}
+
+.loading-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 10px solid var(--GRAY-LIGHT-2);
+    border-top: 10px solid var(--BLUE-LIGHT-1);
+    animation: spin 1s infinite linear;
+}
+
+.loading-icon-container {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.vertical-line-container {
+    position: absolute;
+    height: 560px;
+    bottom: 0;
+    z-index: 10;
+}
+
+.vertical-line {
     position: relative;
+    width: 2px; 
+    height: 100%;  
+}
+  
+.vertical-line::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px; 
+    height: 10px; 
+    background: linear-gradient(to bottom, transparent 50%, #000 50%);
+    background-size: 100% 10px;
+    background-position: 0 0;
+    background-repeat: repeat-y;
 }
 
 /* Market Stats Section */

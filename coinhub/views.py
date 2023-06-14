@@ -73,21 +73,21 @@ def get_crypto_detail_data(request, cryptocurrency):
 
 def get_crypto_detail_price_data(request, cryptocurrency):
     symbol = cryptocurrency.symbol
-    crypto_detail_price_data_from_api(request, 'day', symbol, 1217, 3)
-    crypto_detail_price_data_from_api(request, 'hour', symbol, 720, 1)
-    crypto_detail_price_data_from_api(request, 'day', symbol, 365, 1)
+    crypto_detail_price_data_from_api(request, '1m', symbol)
 
     crypto_detail = CryptoDetail.objects.first()
 
     return crypto_detail
     
 
-def crypto_detail_price_data_from_api(request, time, symbol, lim, count_lim):
-    url = f'https://min-api.cryptocompare.com/data/v2/histo{time}'
+def crypto_detail_price_data_from_api(request, time_period, symbol):
+    time_period_data = get_time_period_data(request, time_period)
+
+    url = f'https://min-api.cryptocompare.com/data/v2/histo{time_period_data["time"]}'
     fsym = symbol
     tsym = 'EUR'
-    limit = lim
-    counter_limit = count_lim
+    limit = time_period_data['lim']
+    counter_limit = time_period_data['count_lim']
     all_data = []
 
     params = {
@@ -127,20 +127,51 @@ def crypto_detail_price_data_from_api(request, time, symbol, lim, count_lim):
 
         counter += 1
 
-    time_period = '1d'
     crypto_detail, _ = CryptoDetail.objects.get_or_create(symbol=symbol)
-    if lim == 1217 and count_lim == 3:
+    if limit == 1217 and counter_limit == 3:
         crypto_detail.chart_all = all_data
-        time_period = 'all_time'
-    elif lim == 720 and count_lim == 1:
+    elif limit == 720 and counter_limit == 1:
         crypto_detail.chart_1m = all_data
-        time_period = '1m'
-    elif lim == 365 and count_lim == 1:
+    elif limit == 365 and counter_limit == 1:
         crypto_detail.chart_1y = all_data
-        time_period = '1y' 
     crypto_detail.save()
     
     return JsonResponse(all_data, safe=False)
+
+
+def get_time_period_data(request, time_period):
+    data = {
+        'time': 'hour',
+        'lim': 720,
+        'count_lim': 1,
+    }
+
+    if time_period == '1h':
+        data['time'] = 'minute'
+        data['lim'] = 60
+        data['count_lim'] = 1
+    elif time_period == '1d':
+        data['time'] = 'minute'
+        data['lim'] = 1440
+        data['count_lim'] = 1
+    elif time_period == '1w':
+        data['time'] = 'hour'
+        data['lim'] = 168
+        data['count_lim'] = 1
+    elif time_period == '1m':
+        data['time'] = 'hour'
+        data['lim'] = 720
+        data['count_lim'] = 1
+    elif time_period == '1y':
+        data['time'] = 'day'
+        data['lim'] = 365
+        data['count_lim'] = 1
+    elif time_period == 'all':
+        data['time'] = 'day'
+        data['lim'] = 1217
+        data['count_lim'] = 3
+
+    return data
 
 
 def get_crypto_detail_main_data(request, cryptocurrency):
