@@ -1,22 +1,39 @@
 const historicalSectionContainer = document.querySelector('.historical-price-chart-section-container');
 const historicalSectionWrapper = document.querySelector('.historical-section-container-wrapper');
+const historicalPriceChartWrapper = document.querySelector('.historical-price-chart-wrapper');
 const verticalLine = document.querySelector('.vertical-line');
 const verticalLineContainer = document.querySelector('.vertical-line-container');
+const canvasContainer = document.querySelector('.historical-price-chart-container');
+const chartOverlay = document.querySelector('.historical-price-chart-overlay');
 
 const createVerticalLine = (num) => {
-     
-    let verticalLineHeight = verticalLine.height - 40;
+    let verticalLineHeight = verticalLine.offsetHeight;
+    let totalRatio = num + 3;
+    let totalSectionHeight = (verticalLineHeight * num) / totalRatio;
+    let totalGapHeight = (verticalLineHeight * 3) / totalRatio;
+    let sectionHeight = totalSectionHeight / num;
+    let gapHeight = totalGapHeight / (num - 1);
 
-    let num = num - 0.33;
+    for (let i = 0; i < num - 1; i++) {
+        let section = document.createElement('div');
+        section.classList.add('vertical-line-section');
+        section.style.height = sectionHeight + 'px';
+        section.style.top = (sectionHeight * i) + (gapHeight * i) + 'px';
 
-    
-
-    let spaceBetweenLines = Math.floor(verticalLineHeight / num);
-
-    for (let i =0; i < num; i++) {
-
+        verticalLine.appendChild(section);
     }
+
+    let lastSection = document.createElement('div');
+    lastSection.classList.add('vertical-line-section');
+    lastSection.style.height = sectionHeight + 'px';
+    lastSection.style.top = (sectionHeight * (num - 1)) + (gapHeight * (num - 1)) + 'px';
+
+    verticalLine.appendChild(lastSection);
+
+    return [sectionHeight, gapHeight]
 }
+
+
 
 const getChartData = async (timePeriod, symbol) => {
     try {
@@ -136,7 +153,6 @@ const createHistoricalPriceChart = async (data) => {
         oldCanvas.remove();
     }
 
-    const canvasContainer = document.querySelector('.historical-price-chart-container');
     canvasContainer.innerHTML = '';
 
     const newCanvas = document.createElement('canvas');
@@ -212,8 +228,6 @@ const createHistoricalPriceChart = async (data) => {
     historicalSectionContainer.style.display = 'flex';
     updateHistoricalPriceChange();
 
-    console.log(prices);
-    
     newCanvas.addEventListener('mousemove', function (event) {
         let rect = newCanvas.getBoundingClientRect();
         let x = event.clientX - rect.left;
@@ -230,7 +244,19 @@ const createHistoricalPriceChart = async (data) => {
         updateHistoricalPriceChange();
 
         verticalLineContainer.style.left = x + 'px';
+        chartOverlay.style.width = (canvasWidth - x) + 'px';
       });
+
+    historicalPriceChartWrapper.addEventListener('mouseenter', function () {
+        verticalLineContainer.style.display = 'flex';
+        createVerticalLine(20);
+        chartOverlay.style.display = 'flex';
+    });
+
+    historicalPriceChartWrapper.addEventListener('mouseleave', function () {
+        verticalLineContainer.style.display = 'none';
+        chartOverlay.style.display = 'none';
+    });
 };
 
 const loadDataAndCreateChart = async (timePeriod) => {

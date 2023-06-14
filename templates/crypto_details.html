@@ -57,9 +57,6 @@
 <section class="crypto-details-section historical-chart-buy-section">
     <div class="historical-section-container-wrapper content-container">
         <div class="loading-icon-container"></div>
-        <div class="vertical-line-container">
-            <div class="vertical-line"></div>
-        </div>
         <div class="section-container historical-price-chart-section-container">
             <div class="content-container">
                 <div class="historical-price-heading-container content-container-rows">
@@ -77,8 +74,14 @@
                         <div class="historical-price-time-periods-btn dark-text" data-time-period="all">ALL</div>
                     </div>
                 </div>
-                <div class="historical-price-chart-container">
-                    <canvas class="historical-price-chart"></canvas>
+                <div class="historical-price-chart-wrapper">
+                    <div class="historical-price-chart-container">
+                        <canvas class="historical-price-chart"></canvas>
+                    </div>
+                    <div class="vertical-line-container">
+                        <div class="vertical-line"></div>
+                    </div>
+                    <div class="historical-price-chart-overlay"></div>
                 </div>
             </div>
         </div>
