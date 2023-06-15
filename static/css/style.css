@@ -1083,7 +1083,7 @@ canvas.price-sparkline {
     cursor: pointer;
 }
 
-.crypto-details-side-nav .return-btn:hover, .side-nav-link:hover {
+.crypto-details-side-nav .return-btn:hover, .side-nav-link:hover, .side-nav-link.active {
     color: var(--BLUE-LIGHT-1);
 }
 

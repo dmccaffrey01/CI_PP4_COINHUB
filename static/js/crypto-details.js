@@ -367,7 +367,6 @@ const getCryptoDetailLinksData = async () => {
 const updateResourceLinks = (links) => {
     const extraContainer = document.querySelector('.extra-resource-link-container');
     const officialContainer = document.querySelector('.official-resource-link-container');
-    console.log(links);
     for (let i = 0; i < links.length; i++) {
         let link = links[i];
         
@@ -420,8 +419,31 @@ const updateResourceLinks = (links) => {
       console.error(error);
     }
 })();
-  
 
+const navLinks = document.querySelectorAll('.side-nav-link');
+
+window.addEventListener("scroll", () => {
+    const scrollPosition = window.scrollY;
+    const viewportHeight = window.innerHeight;
+    const scrollPositionHalfWay = (viewportHeight / 2) + scrollPosition;
+    document.querySelectorAll("section").forEach((section) => {
+        const sectionTop = section.offsetTop;
+        const targetScrollPosition = sectionTop;
+        const sectionId = section.getAttribute("id");
+        const arr = [sectionId, targetScrollPosition, scrollPositionHalfWay];
+        
+        if (targetScrollPosition < scrollPositionHalfWay) {
+            navLinks.forEach((link) => {
+                if (link.getAttribute("href") === `#${sectionId}`) {
+                    link.classList.add("active");
+                } else {
+                    link.classList.remove("active");
+                }
+            });
+        }
+    });
+});
+  
 loadDataAndCreateChart('1m');
 
 
