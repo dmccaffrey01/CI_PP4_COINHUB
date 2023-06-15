@@ -348,6 +348,80 @@ timePeriodBtns.forEach(btn => {
     btn.addEventListener('click', switchTimePeriod)
 })
 
+const getCryptoDetailData = async () => {
+    try {
+      const response = await fetch(`/get_crypto_detail_json/`);
+      const results = await response.json();
+      return results;
+    } catch (error) {
+      throw error;
+    }
+};
+
+const getCryptoDetailLinksData = async () => {
+    let data = await getCryptoDetailData();
+    let links = data['links'];
+    return links;
+};
+
+const updateResourceLinks = (links) => {
+    const extraContainer = document.querySelector('.extra-resource-link-container');
+    const officialContainer = document.querySelector('.official-resource-link-container');
+    console.log(links);
+    for (let i = 0; i < links.length; i++) {
+        let link = links[i];
+        
+        let name;
+        let icon;
+        if (link.type == 'whitepaper') {
+            name = `White Paper - ${link.url}`;
+            icon = `<i class="fa-solid fa-file"></i>`;
+        } else if (link.type == 'website' && i != 0) {
+            name = link.name;
+            icon = `<i class="fa-solid fa-globe"></i>`;
+        } else if (i == 0 && link.type == 'website') {
+            name = `Official Website - ${link.url}`;
+            icon = `<i class="fa-solid fa-globe"></i>`;
+        } else if (link.type == 'reddit') {
+            name = `Reddit - ${link.url}`;
+            icon = `<i class="fa-brands fa-reddit"></i>`;
+        } else if (link.type == 'github') {
+            name = `Github - ${link.url}`;
+            icon = `<i class="fa-brands fa-github"></i>`
+        } else if (link.type == 'explorer') {
+            name = `Blockchain Explorer - ${link.url}`;
+            icon = `<i class="fa-brands fa-hive"></i>`;
+        } else if (link.type == 'telegram') {
+            name = `Telegram - ${link.url}`;
+            icon = `<i class="fa-brands fa-telegram"></i>`;
+        } else {
+            name = link.url;
+            icon = `<i class="fa-solid fa-globe"></i>`;
+        }
+
+        const linkContainer = document.createElement('div');
+
+        linkContainer.innerHTML = `<a href="${link.url}" class="dark-text" target="_blank">${icon} ${name}</a>`;
+
+        if (name == `Official Website - ${link.url}` || name == `White Paper - ${link.url}`) {
+            officialContainer.appendChild(linkContainer);
+        } else {
+            extraContainer.appendChild(linkContainer);
+        }
+    }
+};
+
+(async () => {
+    try {
+      let links = await getCryptoDetailLinksData();
+      parsedLinks = JSON.parse(links)
+      updateResourceLinks(parsedLinks);
+    } catch (error) {
+      console.error(error);
+    }
+})();
+  
+
 loadDataAndCreateChart('1m');
 
 

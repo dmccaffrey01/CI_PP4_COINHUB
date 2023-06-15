@@ -6,6 +6,7 @@ import json
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from datetime import datetime
+from django.core import serializers
 
 
 def index(request):
@@ -251,6 +252,11 @@ def get_crypto_detail_main_data(request, cryptocurrency):
     crypto_detail = CryptoDetail.objects.first()
 
     return crypto_detail
+
+
+def get_crypto_detail_json(request):
+    crypto = CryptoDetail.objects.values('name', 'symbol', 'links').first()
+    return JsonResponse(crypto, safe=False)
 
 
 def create_crypto_list(request):

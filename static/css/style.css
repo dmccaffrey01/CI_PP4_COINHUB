@@ -1097,7 +1097,7 @@ canvas.price-sparkline {
 
 .crypto-details-section-container {
     justify-content: space-between;
-    padding: 50px;
+    padding: 75px;
 }
 
 .crypto-details-icon-container {
@@ -1251,7 +1251,7 @@ canvas.price-sparkline {
 /* Market Stats Section */
 
 .crypto-details-market-stats-container {
-    padding: 80px 75px;
+    padding: 75px;
     width: 100%;
 }
 
@@ -1280,4 +1280,8 @@ canvas.price-sparkline {
 .crypto-details-sub-heading {
     font-weight: bold;
     align-self: flex-start;
+}
+
+.weekly-summary, .resource-link-container, .official-resource-link-container, .about-text-container, .extra-resource-link-container {
+    align-items: flex-start;
 }

@@ -172,7 +172,7 @@
 
 <section class="crypto-details-about-section crypto-details-section" id="crypto-details-about-section">
     <div class="content-container crypto-details-section-container">
-        <div class="gp-50 content-container crypto-details-about-container">
+        <div class="gp-20 content-container crypto-details-about-container">
             <div class="heading-3 crypto-details-heading">About</div>
             <div class="content-container dark-text about-text-container gp-20">
                 <div class="description">{{ selected_crypto.about }}</div>
@@ -200,13 +200,20 @@
                         {% else %}
                         In just the past hour, the price has shrunk by {{ selected_crypto.change_1h }}
                         {% endif %}
-                        The current price is €{{ selected_crypto.price }} per {{ selected_crypto.symbol }}.
-                        {{ selected_crypto.name }} is {{ selected_crypto.ath_change }} below the all time high of {{ selected_crypto.all_time_high }}.
+                        The current price is €<span class="comma-format">{{ selected_crypto.price }}</span>  per {{ selected_crypto.symbol }}.
+                        {{ selected_crypto.name }} is {{ selected_crypto.ath_change }} below the all time high of €<span class="comma-format">{{ selected_crypto.all_time_high }}</span>.
                     </div>
                     <div class="stats">
-                        The current circulating supply is {{ selected_crypto.circulating_supply }} {{ selected_crypto.symbol }}.
-                        The volume traded in the last 24 hours is €{{ selected_crypto.volume }}.
+                        The current circulating supply is <span class="letter-format">{{ selected_crypto.circulating_supply }}</span> {{ selected_crypto.symbol }}.
+                        The volume traded in the last 24 hours is €<span class="letter-format">{{ selected_crypto.volume }}</span>.
                     </div>
+                </div>
+                <div class="sub-heading-3 crypto-details-sub-heading">
+                    Resources
+                </div>
+                <div class="content-container gp-50 resource-link-container">
+                    <div class="content-container gp-20 official-resource-link-container"></div>
+                    <div class="content-container gp-20 extra-resource-link-container"></div>
                 </div>
             </div>
         </div>
