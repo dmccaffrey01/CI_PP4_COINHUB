@@ -17,6 +17,7 @@
     --TRANSPARENT-DARK: #00000070;
     --TRANSPARENT-LIGHT: #f5f5f59d;
     --BLUE-LIGHT-1: #00e8fc;
+    --BLUE-LIGHT-2: #F5F8FF;
     --BLUE-DARK-1: #044a72;
     --BLUE-DARK-2: #053554;
     --GREEN-1: #4ec437;
@@ -1225,7 +1226,8 @@ canvas.price-sparkline {
 .crypto-details-buy-section {
     width: 450px;
     max-width: 450px;
-    height: 800px
+    height: 800px;
+    background-color: var(--BLUE-LIGHT-2);
 }
 
 .buy-section-img-container {
@@ -1258,14 +1260,24 @@ canvas.price-sparkline {
     width: 100%;
 }
 
-.market-stats-heading {
+.crypto-details-heading {
     align-self: flex-start;
 }
 
-.market-stats-col {
+.market-stats-col, .market-stats-item {
     align-items: flex-start;
 }
 
-.market-stats-item {
+/* Crypto Details About Section */
+
+.crypto-details-about-container {
+    max-width: calc(100vw - 750px);
     align-items: flex-start;
+    align-self: flex-start;
+    text-align: left;
+}
+
+.crypto-details-sub-heading {
+    font-weight: bold;
+    align-self: flex-start;
 }

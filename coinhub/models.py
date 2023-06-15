@@ -92,3 +92,6 @@ class CryptoDetail(models.Model):
     change_7d = models.DecimalField(max_digits=20, decimal_places=2, default=0)
     ath_change = models.DecimalField(max_digits=20, decimal_places=2, default=0)
     about = models.TextField(default="To find out more about this project visit the resources.")
+    weekly_incline = models.BooleanField(default=True)
+    dayly_incline = models.BooleanField(default=True)
+    hourly_incline = models.BooleanField(default=True)

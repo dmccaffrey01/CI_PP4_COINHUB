@@ -176,7 +176,7 @@ def get_time_period_data(request, time_period):
 
 def get_crypto_detail_main_data(request, cryptocurrency):
     headers = {
-        # 'x-access-token': os.environ.get('COINRANKING_API')
+        'x-access-token': os.environ.get('COINRANKING_API')
     }
 
     time_periods = ['1h', '24h', '7d']
@@ -188,7 +188,7 @@ def get_crypto_detail_main_data(request, cryptocurrency):
             'referenceCurrencyUuid': '5k-_VTxqtCEI',
             'timePeriod': time_period,
         }
-        
+
         response = requests.request("GET", url, headers=headers, params=params)
 
         if response.status_code == 200:
@@ -220,18 +220,30 @@ def get_crypto_detail_main_data(request, cryptocurrency):
                     'all_time_high': crypto_data['allTimeHigh']['price'],
                     'ath_time_stamp': crypto_data['allTimeHigh']['timestamp'],
                     'about': crypto_data['description'],
-                    'ath_change': ((float(crypto_data['price']) - float(crypto_data['allTimeHigh']['price'])) / float(crypto_data['allTimeHigh']['price'])) * 100,
+                    'ath_change': ((float(crypto_data['price']) - float(crypto_data['allTimeHigh']['price'])) / float(crypto_data['allTimeHigh']['price'])) * 100, 
                 }
             )
             if time_period == '1h':
                 crypto_detail.chart_1h = json.dumps(crypto_data['sparkline'])
                 crypto_detail.change_1h = crypto_data['change']
+                if float(crypto_data['change']) >= 0:
+                    crypto_detail.hourly_incline = True
+                else:
+                    crypto_detail.hourly_incline = False
             elif time_period == '24h':
                 crypto_detail.chart_1d = json.dumps(crypto_data['sparkline'])
                 crypto_detail.change_24h = crypto_data['change']
+                if float(crypto_data['change']) >= 0:
+                    crypto_detail.dayly_incline = True
+                else:
+                    crypto_detail.dayly_incline = False
             elif time_period == '7d':
                 crypto_detail.chart_1w = json.dumps(crypto_data['sparkline'])
                 crypto_detail.change_7d = crypto_data['change']
+                if float(crypto_data['change']) >= 0:
+                    crypto_detail.weekly_incline = True
+                else:
+                    crypto_detail.weekly_incline = False
             crypto_detail.save()
         else:
             print('Invalid data format')
@@ -243,7 +255,7 @@ def get_crypto_detail_main_data(request, cryptocurrency):
 
 def create_crypto_list(request):
     headers = {
-        # 'x-access-token': os.environ.get('COINRANKING_API')
+        'x-access-token': os.environ.get('COINRANKING_API')
     }
 
     params = {

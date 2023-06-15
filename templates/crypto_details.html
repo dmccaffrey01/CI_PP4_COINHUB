@@ -104,7 +104,7 @@
 
 <section class="crypto-details-market-stats-section crypto-details-section" id="market-stats-section">
     <div class="content-container crypto-details-market-stats-container crypto-details-section-container gp-50">
-        <div class="heading-3 market-stats-heading">Market Stats</div>
+        <div class="heading-3 crypto-details-heading">Market Stats</div>
         <div class="content-container-rows market-stats-container">
             <div class="content-container market-stats-col gp-50 w-33">
                 <div class="market-stats-item content-container gp-20">
@@ -164,6 +164,49 @@
                 <div class="market-stats-item content-container gp-20">
                     <div class="text-gd-2 dark-text">PRICE CHANGE (7D)</div>
                     <div class="dark-text pos-neg-change">{{ selected_crypto.change_7d }}%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="crypto-details-about-section crypto-details-section" id="crypto-details-about-section">
+    <div class="content-container crypto-details-section-container">
+        <div class="gp-50 content-container crypto-details-about-container">
+            <div class="heading-3 crypto-details-heading">About</div>
+            <div class="content-container dark-text about-text-container gp-20">
+                <div class="description">{{ selected_crypto.about }}</div>
+                <div class="weekly-summary content-container gp-20">
+                    <div class="sub-heading-3 crypto-details-sub-heading">
+                        {% if selected_crypto.weekly_incline %}
+                        {{ selected_crypto.name }} is on the rise this week.
+                        {% else %}
+                        {{ selected_crypto.name }} is on the decline this week.
+                        {% endif %}
+                    </div>
+                    <div class="summary">
+                        {% if selected_crypto.weekly_incline %}
+                        The price of {{ selected_crypto.name }} has risen by {{ selected_crypto.change_7d }}% in the past 7 days.
+                        {% else %}
+                        The price of {{ selected_crypto.name }} has fallen by {{ selected_crypto.change_7d }}% in the past 7 days.
+                        {% endif %}
+                        {% if selected_crypto.dayly_incline %}
+                        The price increased by {{ selected_crypto.change_24h }} in the last 24 hours.
+                        {% else %}
+                        The price declined by {{ selected_crypto.change_24h }} in the last 24 hours.
+                        {% endif %}
+                        {% if selected_crypto.hourly_incline %}
+                        In just the past hour, the price has grew by {{ selected_crypto.change_1h }}
+                        {% else %}
+                        In just the past hour, the price has shrunk by {{ selected_crypto.change_1h }}
+                        {% endif %}
+                        The current price is €{{ selected_crypto.price }} per {{ selected_crypto.symbol }}.
+                        {{ selected_crypto.name }} is {{ selected_crypto.ath_change }} below the all time high of {{ selected_crypto.all_time_high }}.
+                    </div>
+                    <div class="stats">
+                        The current circulating supply is {{ selected_crypto.circulating_supply }} {{ selected_crypto.symbol }}.
+                        The volume traded in the last 24 hours is €{{ selected_crypto.volume }}.
+                    </div>
                 </div>
             </div>
         </div>
