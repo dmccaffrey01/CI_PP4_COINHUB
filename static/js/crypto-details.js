@@ -3,14 +3,20 @@ const historicalSectionWrapper = document.querySelector('.historical-section-con
 const historicalPriceChartWrapper = document.querySelector('.historical-price-chart-wrapper');
 const verticalLine = document.querySelector('.vertical-line');
 const verticalLineContainer = document.querySelector('.vertical-line-container');
+const timestampDate = document.querySelector('.timestamp-date');
 const canvasContainer = document.querySelector('.historical-price-chart-container');
 const chartOverlay = document.querySelector('.historical-price-chart-overlay');
 
+function addCommasToNumber(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 const createVerticalLine = (num) => {
     let verticalLineHeight = verticalLine.offsetHeight;
-    let totalRatio = num + 3;
+    let ratioNum = Math.round(num * 0.33);
+    let totalRatio = num + ratioNum;
     let totalSectionHeight = (verticalLineHeight * num) / totalRatio;
-    let totalGapHeight = (verticalLineHeight * 3) / totalRatio;
+    let totalGapHeight = (verticalLineHeight * ratioNum) / totalRatio;
     let sectionHeight = totalSectionHeight / num;
     let gapHeight = totalGapHeight / (num - 1);
 
@@ -68,29 +74,38 @@ const formatChartData = (data) => {
 
 const timePeriodBtns = document.querySelectorAll('.historical-price-time-periods-btn');
 
-const getFilterNum = () => {
-    let num;
+const getTimePeriod = () => {
+    let timePeriod;
     
     timePeriodBtns.forEach(btn => {
         if (btn.classList.contains('active')) {
-            let timePeriod = btn.getAttribute('data-time-period');
-
-            if (timePeriod == '1h') {
-                num = 1;
-            } else if (timePeriod == '1d') {
-                num = 5;
-            } else if (timePeriod == '1w') {
-                num = 1;
-            } else if (timePeriod == '1m') {
-                num = 3;
-                return num;
-            } else if (timePeriod =='1y') {
-                num = 2;
-            } else if (timePeriod == 'all') {
-                num = 14;
-            }
+            timePeriod = btn.getAttribute('data-time-period');
         }
     });
+
+    return timePeriod;
+
+}
+
+const getFilterNum = () => {
+    let num;
+    
+    let timePeriod = getTimePeriod();
+
+    if (timePeriod == '1h') {
+        num = 1;
+    } else if (timePeriod == '1d') {
+        num = 5;
+    } else if (timePeriod == '1w') {
+        num = 1;
+    } else if (timePeriod == '1m') {
+        num = 3;
+        return num;
+    } else if (timePeriod =='1y') {
+        num = 2;
+    } else if (timePeriod == 'all') {
+        num = 14;
+    }
 
     return num;
 }
@@ -114,18 +129,18 @@ const historicalPrice = document.querySelector('.historical-crypto-price');
 const updateHistoricalPriceChange = () => {
     const originPrice = formattedHistoricalPriceData[0][0];
 
-    const currentPrice = historicalPrice.innerText.slice(1);
+    const currentPrice = historicalPrice.innerText.slice(1).replace(/,/g, '');
     const difference = (currentPrice - originPrice).toFixed(2);
     const change = ((difference / originPrice) * 100).toFixed(2);
 
     if (change >= 0) {
-        historicalPriceChange.innerHTML = `<i class="fa-solid fa-up-long"></i> €${difference}   ${change}%`;
+        historicalPriceChange.innerHTML = `<i class="fa-solid fa-up-long"></i> €${addCommasToNumber(difference)}   ${change}%`;
         if (historicalPriceChange.classList.contains('negative')) {
             historicalPriceChange.classList.remove('negative');
         }
         historicalPriceChange.classList.add('positive');
     } else {
-        historicalPriceChange.innerHTML = `<i class="fa-solid fa-down-long"></i> €${difference}   ${change}%`;
+        historicalPriceChange.innerHTML = `<i class="fa-solid fa-down-long"></i> €${addCommasToNumber(difference)}   ${change}%`;
         if (historicalPriceChange.classList.contains('positive')) {
             historicalPriceChange.classList.remove('positive');
         }
@@ -133,8 +148,27 @@ const updateHistoricalPriceChange = () => {
     }
 }
 
-const updateHistoricalPrice = (price) => {
-    historicalPrice.innerHTML = `€${price.toFixed(2)}`;
+const updateTimestampDate = (date) => {
+    let year = date.getFullYear();
+    let month = date.toLocaleString('en-UK', { month: 'short' });
+    let day = date.getDate();
+    let time = date.toLocaleTimeString('en-UK');
+
+    let timePeriod = getTimePeriod();
+
+    let formattedDate;
+    if (timePeriod == '1h' || timePeriod == '1d' || timePeriod == '1w' || timePeriod == '1m' || timePeriod == '1y') {
+        formattedDate = `${day} ${month} ${time}`;
+    } else {
+        formattedDate = `${day} ${month} ${year}`;
+    }
+
+    timestampDate.innerText = formattedDate;
+}
+
+const updateHistoricalPrice = (num) => {
+    let price = addCommasToNumber(num.toFixed(2));
+    historicalPrice.innerHTML = `€${price}`;
 }
 
 const createHistoricalPriceChart = async (data) => {
@@ -239,9 +273,12 @@ const createHistoricalPriceChart = async (data) => {
         let numOfPixelsPerDataPoint = canvasWidth / (numOfDataPoints - 2);
         let priceIndex = Math.round(x / numOfPixelsPerDataPoint)
         let price = prices[priceIndex];
+        let timestamp = timestamps[priceIndex];
+        let date = new Date(timestamp * 1000);
 
         updateHistoricalPrice(price);
         updateHistoricalPriceChange();
+        updateTimestampDate(date);
 
         verticalLineContainer.style.left = x + 'px';
         chartOverlay.style.width = (canvasWidth - x) + 'px';
@@ -249,13 +286,15 @@ const createHistoricalPriceChart = async (data) => {
 
     historicalPriceChartWrapper.addEventListener('mouseenter', function () {
         verticalLineContainer.style.display = 'flex';
-        createVerticalLine(20);
+        createVerticalLine(40);
         chartOverlay.style.display = 'flex';
+        timestampDate.style.display = 'flex';
     });
 
     historicalPriceChartWrapper.addEventListener('mouseleave', function () {
         verticalLineContainer.style.display = 'none';
         chartOverlay.style.display = 'none';
+        timestampDate.style.display = 'none';
     });
 };
 

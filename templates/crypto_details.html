@@ -10,16 +10,16 @@
         </a>
         <ul class="side-nav-menu content-container gp-50">
             <li class="side-nav-item nav-item">
-                <a href="#" class="side-nav-link nav-link">Price</a>
+                <a href="#historical-price-section" class="side-nav-link nav-link">Price</a>
             </li>
             <li class="side-nav-item nav-item">
-                <a href="#" class="side-nav-link nav-link">Market</a>
+                <a href="#market-stats-section" class="side-nav-link nav-link">Market</a>
             </li>
             <li class="side-nav-item nav-item">
-                <a href="#" class="side-nav-link nav-link">About</a>
+                <a href="#crypto-details-about-section" class="side-nav-link nav-link">About</a>
             </li>
             <li class="side-nav-item nav-item">
-                <a href="#" class="side-nav-link nav-link">News</a>
+                <a href="#crypto-details-news-section" class="side-nav-link nav-link">News</a>
             </li>
         </ul>
     </div>
@@ -54,99 +54,116 @@
     </div>
 </section>
 
-<section class="crypto-details-section historical-chart-buy-section">
-    <div class="historical-section-container-wrapper content-container">
-        <div class="loading-icon-container"></div>
-        <div class="section-container historical-price-chart-section-container">
-            <div class="content-container">
-                <div class="historical-price-heading-container content-container-rows">
-                    <div class="content-container historical-price-container gp-10">
-                        <div class="price-text dark-text">Price</div>
-                        <div class="historical-crypto-price heading-3 dark-text">€{{ selected_crypto.price }}</div>
-                        <div class="historical-crypto-change sub-heading-3">24000%</div>
+<section class="crypto-details-section historical-chart-buy-section" id="historical-price-section">
+    <div class="content-container-rows crypto-details-container-rows">
+        <div class="historical-section-container-wrapper content-container">
+            <div class="loading-icon-container"></div>
+            <div class="historical-price-chart-section-container">
+                <div class="content-container">
+                    <div class="historical-price-heading-container content-container-rows">
+                        <div class="content-container historical-price-container gp-10">
+                            <div class="price-text dark-text">Price</div>
+                            <div class="historical-crypto-price heading-3 dark-text">€{{ selected_crypto.price }}</div>
+                            <div class="historical-crypto-change sub-heading-3">24000%</div>
+                        </div>
+                        <div class="content-container-rows historical-price-time-periods gp-20">
+                            <div class="historical-price-time-periods-btn dark-text" data-time-period="1h">1H</div>
+                            <div class="historical-price-time-periods-btn dark-text" data-time-period="1d">1D</div>
+                            <div class="historical-price-time-periods-btn dark-text" data-time-period="1w">1W</div>
+                            <div class="historical-price-time-periods-btn dark-text active" data-time-period="1m">1M</div>
+                            <div class="historical-price-time-periods-btn dark-text" data-time-period="1y">1Y</div>
+                            <div class="historical-price-time-periods-btn dark-text" data-time-period="all">ALL</div>
+                        </div>
                     </div>
-                    <div class="content-container-rows historical-price-time-periods gp-20">
-                        <div class="historical-price-time-periods-btn dark-text" data-time-period="1h">1H</div>
-                        <div class="historical-price-time-periods-btn dark-text" data-time-period="1d">1D</div>
-                        <div class="historical-price-time-periods-btn dark-text" data-time-period="1w">1W</div>
-                        <div class="historical-price-time-periods-btn dark-text active" data-time-period="1m">1M</div>
-                        <div class="historical-price-time-periods-btn dark-text" data-time-period="1y">1Y</div>
-                        <div class="historical-price-time-periods-btn dark-text" data-time-period="all">ALL</div>
+                    <div class="historical-price-chart-wrapper">
+                        <div class="historical-price-chart-container">
+                            <canvas class="historical-price-chart"></canvas>
+                        </div>
+                        <div class="vertical-line-container">
+                            <div class="vertical-line">
+                                <div class="timestamp-date dark-text"></div>
+                            </div>
+                        </div>
+                        <div class="historical-price-chart-overlay"></div>
                     </div>
-                </div>
-                <div class="historical-price-chart-wrapper">
-                    <div class="historical-price-chart-container">
-                        <canvas class="historical-price-chart"></canvas>
-                    </div>
-                    <div class="vertical-line-container">
-                        <div class="vertical-line"></div>
-                    </div>
-                    <div class="historical-price-chart-overlay"></div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="crypto-details-buy-section content-container">
-        
+        <div class="crypto-details-buy-section content-container">
+            <div class="buy-section-img-container">
+                <img src="https://res.cloudinary.com/dzwyiggcp/image/upload/v1686827411/CI_PP4_COINHUB/welcome-home/sckuca3pd1y7lwwiuas6.png" alt="Buy section image" class="buy-section-img img-100a">
+            </div>
+            <div class="content-container buy-section-text-container gp-20">
+                <div class="dark-text heading-3">Trade {{ selected_crypto.name }}</div>
+                <div class="dark-text text-gd-2">Buy and sell {{ selected_crypto.name }} on the most secure crypto exchange</div>
+                <div class="btn">Buy {{ selected_crypto.symbol }} <i class="fa-solid fa-cart-shopping"></i></div>
+            </div>
+        </div>
     </div>
 </section>
 
-<section class="crypto-details-market-stats-section crypto-details-section">
-    <div class="content-container crypto-details-market-stats-container gp-50">
+<section class="crypto-details-market-stats-section crypto-details-section" id="market-stats-section">
+    <div class="content-container crypto-details-market-stats-container crypto-details-section-container gp-50">
         <div class="heading-3 market-stats-heading">Market Stats</div>
         <div class="content-container-rows market-stats-container">
             <div class="content-container market-stats-col gp-50 w-33">
                 <div class="market-stats-item content-container gp-20">
                     <div class="text-gd-2 dark-text">PRICE</div>
-                    <div class="dark-text">{{ selected_crypto.price }}</div>
+                    <div class="dark-text comma-format">€{{ selected_crypto.price }}</div>
                 </div>
                 <div class="market-stats-item content-container gp-20">
                     <div class="text-gd-2 dark-text">CIRCULATING SUPPLY</div>
-                    <div class="dark-text">{{ selected_crypto.circulating_supply }}</div>
+                    <div class="dark-text">
+                        <span class="letter-format">{{ selected_crypto.circulating_supply }}</span> <span>{{ selected_crypto.symbol }}</span>
+                    </div>
                 </div>
                 <div class="market-stats-item content-container gp-20">
                     <div class="text-gd-2 dark-text">VOLUME (24H)</div>
-                    <div class="dark-text">{{ selected_crypto.volume }}</div>
+                    <div class="dark-text letter-format">€{{ selected_crypto.volume }}</div>
                 </div>
                 <div class="market-stats-item content-container gp-20">
                     <div class="text-gd-2 dark-text">PRICE CHANGE (1H)</div>
-                    <div class="dark-text">{{ selected_crypto.change_1h }}</div>
+                    <div class="dark-text pos-neg-change">{{ selected_crypto.change_1h }}%</div>
                 </div>
             </div>
             <div class="content-container market-stats-col gp-50 w-33">
                 <div class="market-stats-item content-container gp-20">
                     <div class="text-gd-2 dark-text">MARKET CAP</div>
-                    <div class="dark-text">{{ selected_crypto.market_cap }}</div>
+                    <div class="dark-text letter-format">€{{ selected_crypto.market_cap }}</div>
                 </div>
                 <div class="market-stats-item content-container gp-20">
                     <div class="text-gd-2 dark-text">TOTAL SUPPLY</div>
-                    <div class="dark-text">{{ selected_crypto.total_supply }}</div>
+                    <div class="dark-text">
+                        <span class="letter-format">{{ selected_crypto.total_supply }}</span> <span>{{ selected_crypto.symbol }}</span>
+                    </div>
                 </div>
                 <div class="market-stats-item content-container gp-20">
                     <div class="text-gd-2 dark-text">ALL TIME HIGH</div>
-                    <div class="dark-text">{{ selected_crypto.all_time_high }}</div>
+                    <div class="dark-text comma-format">€{{ selected_crypto.all_time_high }}</div>
                 </div>
                 <div class="market-stats-item content-container gp-20">
                     <div class="text-gd-2 dark-text">PRICE CHANGE (24H)</div>
-                    <div class="dark-text">{{ selected_crypto.change_24h }}</div>
+                    <div class="dark-text pos-neg-change">{{ selected_crypto.change_24h }}%</div>
                 </div>
             </div>
             <div class="content-container market-stats-col gp-50 w-33">
                 <div class="market-stats-item content-container gp-20">
                     <div class="text-gd-2 dark-text">FULLY DILUTED MARKET CAP</div>
-                    <div class="dark-text">{{ selected_crypto.fully_diluted_market_cap }}</div>
+                    <div class="dark-text letter-format">€{{ selected_crypto.fully_diluted_market_cap }}</div>
                 </div>
                 <div class="market-stats-item content-container gp-20">
                     <div class="text-gd-2 dark-text">MAX SUPPLY</div>
-                    <div class="dark-text">{{ selected_crypto.max_supply }}</div>
+                    <div class="dark-text">
+                        <span class="letter-format">{{ selected_crypto.max_supply }}</span> <span>{{ selected_crypto.symbol }}</span>
+                    </div>
                 </div>
                 <div class="market-stats-item content-container gp-20">
                     <div class="text-gd-2 dark-text">ALL TIME HIGH CHANGE</div>
-                    <div class="dark-text">{{ selected_crypto.ath_change }}</div>
+                    <div class="dark-text pos-neg-change">{{ selected_crypto.ath_change }}%</div>
                 </div>
                 <div class="market-stats-item content-container gp-20">
                     <div class="text-gd-2 dark-text">PRICE CHANGE (7D)</div>
-                    <div class="dark-text">{{ selected_crypto.change_7d }}</div>
+                    <div class="dark-text pos-neg-change">{{ selected_crypto.change_7d }}%</div>
                 </div>
             </div>
         </div>
@@ -157,5 +174,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'js/crypto-details.js' %}"></script>
 <script src="{% static 'js/crypto-search.js' %}"></script>
+<script src="{% static 'js/format-numbers.js' %}"></script>
+
 
 {% endblock %}

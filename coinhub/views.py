@@ -210,7 +210,6 @@ def get_crypto_detail_main_data(request, cryptocurrency):
                     'website_url': crypto_data['websiteUrl'],
                     'links': json.dumps(crypto_data['links']),
                     'price': crypto_data['price'],
-                    'chart_1d': json.dumps(crypto_data['sparkline']),
                     'market_cap': crypto_data['marketCap'],
                     'fully_diluted_market_cap': crypto_data['fullyDilutedMarketCap'],
                     'volume': crypto_data['24hVolume'],
@@ -220,22 +219,26 @@ def get_crypto_detail_main_data(request, cryptocurrency):
                     'rank': crypto_data['rank'],
                     'all_time_high': crypto_data['allTimeHigh']['price'],
                     'ath_time_stamp': crypto_data['allTimeHigh']['timestamp'],
-                    'change_24h': crypto_data['change'],
                     'about': crypto_data['description'],
                     'ath_change': ((float(crypto_data['price']) - float(crypto_data['allTimeHigh']['price'])) / float(crypto_data['allTimeHigh']['price'])) * 100,
                 }
             )
-            crypto_detail.chart_1h = json.dumps(crypto_data['sparkline'])
-            crypto_detail.change_1h = crypto_data['change']
-            crypto_detail.chart_1w = json.dumps(crypto_data['sparkline'])
-            crypto_detail.change_7d = crypto_data['change']
+            if time_period == '1h':
+                crypto_detail.chart_1h = json.dumps(crypto_data['sparkline'])
+                crypto_detail.change_1h = crypto_data['change']
+            elif time_period == '24h':
+                crypto_detail.chart_1d = json.dumps(crypto_data['sparkline'])
+                crypto_detail.change_24h = crypto_data['change']
+            elif time_period == '7d':
+                crypto_detail.chart_1w = json.dumps(crypto_data['sparkline'])
+                crypto_detail.change_7d = crypto_data['change']
             crypto_detail.save()
         else:
             print('Invalid data format')
 
-        crypto_detail = CryptoDetail.objects.first()
+    crypto_detail = CryptoDetail.objects.first()
 
-        return crypto_detail
+    return crypto_detail
 
 
 def create_crypto_list(request):
