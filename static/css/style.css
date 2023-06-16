@@ -15,7 +15,9 @@
     --GRAY-LIGHT-2: #d8d8d8;
     --GRAY-LIGHT-3: #eeeeee;
     --TRANSPARENT-DARK: #00000070;
+    --TRANSPARENT-DARK-2: #0000004e;
     --TRANSPARENT-LIGHT: #f5f5f59d;
+    --TRANSPARENT-LIGHT-2: #f5f5f541;
     --BLUE-LIGHT-1: #00e8fc;
     --BLUE-LIGHT-2: #F5F8FF;
     --BLUE-DARK-1: #044a72;
@@ -444,6 +446,11 @@ footer {
     color: var(--GRAY-DARK-1);
 }
 
+.dark-blue-text {
+    font-size: 1.5rem;
+    color: var(--BLUE-DARK-1);
+}
+
 .heading {
     font-size: 4rem;
 }
@@ -790,7 +797,7 @@ canvas.price-sparkline {
     padding: 20px;
     border-radius: 50%;
     background-color: var(--WHITE);
-    box-shadow: 0px 5px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 
 .icon {
@@ -828,7 +835,7 @@ canvas.price-sparkline {
 }
 
 .box-shadow {
-    box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }
 
 /* Media queries */
@@ -1284,4 +1291,191 @@ canvas.price-sparkline {
 
 .weekly-summary, .resource-link-container, .official-resource-link-container, .about-text-container, .extra-resource-link-container {
     align-items: flex-start;
+}
+
+/* Account Login Section */
+
+.account-section {
+    min-height: 100vh;
+    padding: 50px;
+    width: 100%;
+    background: var(--GRAY-LIGHT-1);
+    position: relative;
+}
+
+.account-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.login-account-section-upper {
+    text-align: center;
+    height: 350px;
+    width: 650px;
+    position: relative;
+}
+
+.unregistered-account-link {
+    color: var(--BLUE-LIGHT-1);
+}
+
+.unregistered-account-link:visited {
+    color: var(--BLUE-LIGHT-1);
+}
+
+.unregistered-account-link:hover {
+    color: var(--BLUE-LIGHT-1);
+}
+
+.account-card-section {
+    padding: 50px 80px;
+    min-width: 650px;
+}
+
+.login-accouint-section-lower {
+    background-color: var(--BLUE-LIGHT-2);
+}
+
+.login-form {
+    gap: 30px;
+}
+
+.account-form label {
+    display: none;
+}
+
+.account-input-container {
+    position: relative;
+}
+
+.account-form .form-input {
+    font-size: 1.5rem;
+    color: white;
+    background-color: var(--BLUE-DARK-1);
+    border-radius: 30px;
+    padding: 15px 40px 15px 70px;
+    border: none;
+    position: relative;
+}
+
+.account-form .form-input::placeholder {
+    color: var(--WHITE);
+}
+
+.account-form .form-input:focus{
+    outline: none;
+}
+
+.account-input-icon-container {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    z-index: 5;
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-input-icon {
+    font-size: 1.5rem;
+    color: var(--WHITE);
+}
+
+.remember-checkbox-container {
+    gap: 50px;
+}
+
+.remember-label {
+    font-size: 1.5rem;
+    color: var(--BLUE-DARK-1);
+}
+
+.remember-container {
+    gap: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.remember-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 2px solid var(--BLUE-DARK-1);
+    border-radius: 3px;
+    outline: none;
+    position: relative;
+}
+  
+.remember-checkbox::before {
+    content: "";
+    position: absolute;
+    top: 45%;
+    left: 25%;
+    width: 30%;
+    height: 70%;
+    border: solid var(--BLUE-LIGHT-1);
+    border-width: 0 3px 3px 0;
+    transform: translateY(-50%) rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+  
+.remember-checkbox:checked::before {
+    opacity: 1;
+}
+
+.dark-btn {
+    background-color: var(--BLUE-DARK-1);
+    border: none;
+}
+
+.account-card-bg-img-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 6;
+}
+
+.dark-overlay {
+    width: 100%;
+    height: 100%;
+    background-color: var(--TRANSPARENT-DARK-2);
+    position: absolute;
+}
+
+.account-card-wrapper {
+    z-index: 8;
+}
+
+.account-card-img-overlay {
+    z-index: 7;
+}
+
+.account-section-bg-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.account-card {
+    z-index: 5;
+}
+
+.light-overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: var(--TRANSPARENT-LIGHT-2);
+    z-index: 2;
 }

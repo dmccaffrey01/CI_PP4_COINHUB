@@ -56,12 +56,18 @@
             <!-- Account Buttons -->
             <div class="account-login-container">
                 <div class="account-login-btns-container">
-                    <div class="login-btn">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'account_logout' %}" class="btn logout-btn">
+                        Log Out
+                    </a>
+                    {% else %}
+                    <a href="{% url 'account_login' %}" class="login-btn">
                         Login
-                    </div>
-                    <div class="btn register-btn">
+                    </a>
+                    <a href="{% url 'account_signup' %}" class="btn register-btn">
                         Register
-                    </div>
+                    </a>
+                    {% endif %}
                 </div>
                 <div class="account-login-icon-container">
                     <i class="fa-solid fa-right-to-bracket account-login-icon"></i>

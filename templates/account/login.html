@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+{% load static %}
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+<section class="account-section login-account-section section">
+    <div class="account-section-bg-container">
+        <img src="https://res.cloudinary.com/dzwyiggcp/image/upload/v1686924862/CI_PP4_COINHUB/account/zaaiiqoohfyhxye92ihl.png" alt="Starry background" class="img-100a account-section-bg">
+    </div>
+    <div class="light-overlay"></div>
+    <div class="content-container account-card">
+        <div class="account-card-section login-account-section-upper content-container gp-10">
+          <div class="account-card-wrapper content-container gp-10">
+              <div class="heading-3 white-text">Welcome back</div>
+              <div class="white-text">
+                  {% blocktrans %}If you have not created an account yet, then please
+                  <a class="unregistered-account-link" href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}
+              </div>
+          </div>
+          <div class="account-card-img-overlay dark-overlay"></div>
+          <div class="account-card-bg-img-container">
+              <img src="https://res.cloudinary.com/dzwyiggcp/image/upload/v1686922108/CI_PP4_COINHUB/account/tmwn0fxqyjwfrfgdkjg9.png" alt="Starry background image" class="img-100a account-card-bg-img">
+          </div>
+        </div>
+        <div class="account-card-section content-container login-accouint-section-lower gp-50">
+            <div class="sub-heading-3 dark-blue-text">User {% trans "Sign In" %}</div>
+            <form class="account-form login-form gp-50 content-container" method="POST" action="{% url 'account_login' %}">
+              {% csrf_token %}
+              {{ form.as_p }}
+              {% if redirect_field_value %}
+              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+              {% endif %}
+              <a class="forgot-password dark-blue-text" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+              <button class="dark-btn btn white-text" type="submit">{% trans "Sign In" %}</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script src="{% static 'js/login.js' %}"></script>
+
+{% endblock %}

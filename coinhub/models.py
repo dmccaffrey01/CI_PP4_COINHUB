@@ -95,3 +95,7 @@ class CryptoDetail(models.Model):
     weekly_incline = models.BooleanField(default=True)
     dayly_incline = models.BooleanField(default=True)
     hourly_incline = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+

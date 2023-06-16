@@ -376,7 +376,7 @@ const updateResourceLinks = (links) => {
             name = `White Paper - ${link.url}`;
             icon = `<i class="fa-solid fa-file"></i>`;
         } else if (link.type == 'website' && i != 0) {
-            name = link.name;
+            name = `${link.name} - ${link.url}`;
             icon = `<i class="fa-solid fa-globe"></i>`;
         } else if (i == 0 && link.type == 'website') {
             name = `Official Website - ${link.url}`;
@@ -393,6 +393,27 @@ const updateResourceLinks = (links) => {
         } else if (link.type == 'telegram') {
             name = `Telegram - ${link.url}`;
             icon = `<i class="fa-brands fa-telegram"></i>`;
+        } else if (link.type == 'facebook') {
+            name = `Facebook - ${link.url}`;
+            icon = `<i class="fa-brands fa-facebook"></i>`;
+        } else if (link.type == 'instagram') {
+            name = `Instagram - ${link.url}`;
+            icon = `<i class="fa-brands fa-instagram"></i>`;
+        } else if (link.type == 'youtube') {
+            name = `Youtube - ${link.url}`;
+            icon = `<i class="fa-brands fa-youtube"></i>`;
+        } else if (link.type == 'twitter') {
+            name = `Twitter - ${link.url}`;
+            icon = `<i class="fa-brands fa-twitter"></i>`;
+        } else if (link.type == 'bitcointalk') {
+            name = `Bitcointalk - ${link.url}`;
+            icon = `<i class="fa-brands fa-bitcoin"></i>`;
+        } else if (link.type == 'linkedin') {
+            name = `LinkedIn - ${link.url}`;
+            icon = `<i class="fa-brands fa-linkedin"></i>`;
+        } else if (link.type == 'medium') {
+            name = `Medium - ${link.url}`;
+            icon = `<i class="fa-brands fa-medium"></i>`;
         } else {
             name = link.url;
             icon = `<i class="fa-solid fa-globe"></i>`;
@@ -425,7 +446,9 @@ const navLinks = document.querySelectorAll('.side-nav-link');
 window.addEventListener("scroll", () => {
     const scrollPosition = window.scrollY;
     const viewportHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
     const scrollPositionHalfWay = (viewportHeight / 2) + scrollPosition;
+    
     document.querySelectorAll("section").forEach((section) => {
         const sectionTop = section.offsetTop;
         const targetScrollPosition = sectionTop;
@@ -442,6 +465,15 @@ window.addEventListener("scroll", () => {
             });
         }
     });
+
+    const sideNavWrapper = document.querySelector(".side-nav-wrapper");
+    if (scrollPosition <= 1 || scrollPosition + viewportHeight >= documentHeight - 1) {
+        sideNavWrapper.style.height = "calc(100vh - 200px)";
+        console.log("no");
+    } else {
+        sideNavWrapper.style.height = "100vh";
+        console.log("yes");
+    }
 });
   
 loadDataAndCreateChart('1m');

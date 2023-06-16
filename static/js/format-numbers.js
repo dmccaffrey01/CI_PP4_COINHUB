@@ -13,11 +13,15 @@ function formatNumber(number) {
 function formatPrices(prices) {
     prices.forEach(price => {
         let oldPrice = price.innerText;
-        let currencySybmol = oldPrice.charAt(0);
+        let currencySymbol = oldPrice.charAt(0);
         let number = parseFloat(oldPrice.slice(1));
         if (number > 999) {
             let newPrice = formatNumber(number);
-            price.innerText = currencySybmol + newPrice;
+            price.innerText = currencySymbol + newPrice;
+        }
+
+        if (number == 0) {
+            price.innerHTML = `<i class="fa-solid fa-infinity"></i>`;
         }
     })
 }
@@ -33,13 +37,6 @@ function commaFormatNumbers(elements) {
             element.innerText = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
     })
-}
-
-function removeDecimals(elements) {
-    elements.forEach(element => {
-        num = element.innerText;
-        element.innerText = Math.round(num);
-    });
 }
 
 function addPositiveOrNegative(elements) {
@@ -81,7 +78,6 @@ window.addEventListener('load', function() {
         } else if (cryptoDetails) {
             formatPrices(letterFormats);
             commaFormatNumbers(commaFormats);
-            removeDecimals(decimals);
             addPositiveOrNegative(changes);
         }
     }, 800);

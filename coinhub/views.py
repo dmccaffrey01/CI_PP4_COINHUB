@@ -201,6 +201,10 @@ def get_crypto_detail_main_data(request, cryptocurrency):
         
         if 'data' in data:
             crypto_data = data['data']['coin']
+
+            max_supply = crypto_data['supply']['max'] if crypto_data['supply']['max'] is not None else 0
+        
+
             crypto_detail, _ = CryptoDetail.objects.get_or_create(
                 uuid=crypto_data['uuid'],
                 defaults={
@@ -214,7 +218,7 @@ def get_crypto_detail_main_data(request, cryptocurrency):
                     'market_cap': crypto_data['marketCap'],
                     'fully_diluted_market_cap': crypto_data['fullyDilutedMarketCap'],
                     'volume': crypto_data['24hVolume'],
-                    'max_supply': crypto_data['supply']['max'],
+                    'max_supply': max_supply,
                     'total_supply': crypto_data['supply']['total'],
                     'circulating_supply': crypto_data['supply']['circulating'],
                     'rank': crypto_data['rank'],
