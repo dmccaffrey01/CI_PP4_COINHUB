@@ -15,10 +15,10 @@
     --GRAY-LIGHT-2: #d8d8d8;
     --GRAY-LIGHT-3: #eeeeee;
     --TRANSPARENT-DARK: #00000070;
-    --TRANSPARENT-DARK-2: #0000006b;
+    --TRANSPARENT-DARK-2: #0000004e;
     --TRANSPARENT-LIGHT: #f5f5f59d;
     --TRANSPARENT-LIGHT-2: #f5f5f541;
-    --BLUE-LIGHT-1: #00b9fc;
+    --BLUE-LIGHT-1: #00e8fc;
     --BLUE-LIGHT-2: #F5F8FF;
     --BLUE-DARK-1: #044a72;
     --BLUE-DARK-2: #053554;
@@ -1469,19 +1469,6 @@ canvas.price-sparkline {
     z-index: 1;
 }
 
-.account-section-bg {
-    height: 100%;
-    width: fit;
-}
-
 .account-card {
     z-index: 5;
-}
-
-.light-overlay {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    background-color: var(--TRANSPARENT-LIGHT-2);
-    z-index: 2;
 }
