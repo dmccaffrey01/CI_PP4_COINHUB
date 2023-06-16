@@ -1,21 +1,38 @@
-{% extends "account/base.html" %}
+{% extends "base.html" %}
 
 {% load i18n %}
-
+{% load static %}
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Sign Up" %}</h1>
+<section class="account-section login-account-section section">
+    <div class="content-container account-card">
+        <div class="account-card-section login-account-section-upper content-container gp-10">
+          <div class="account-card-wrapper content-container gp-10">
+              <div class="heading-3 white-text">Begin your Journey</div>
+              <div class="white-text">
+                  {% blocktrans %}Already have an account? Then please <a class="unregistered-account-link" href="{{ login_url }}">sign in</a>.{% endblocktrans %}
+              </div>
+          </div>
+          <div class="account-card-img-overlay dark-overlay"></div>
+          <div class="account-card-bg-img-container">
+              <img src="https://res.cloudinary.com/dzwyiggcp/image/upload/v1686924862/CI_PP4_COINHUB/account/zaaiiqoohfyhxye92ihl.png" alt="Starry background image" class="img-100a account-card-bg-img">
+          </div>
+        </div>
+        <div class="account-card-section content-container login-accouint-section-lower gp-50">
+            <div class="sub-heading-3 dark-blue-text">User {% trans "Sign Up" %}</div>
+            <form class="account-form login-form gp-50 content-container" id="signup_form" method="post" action="{% url 'account_signup' %}">
+              {% csrf_token %}
+              {{ form.as_p }}
+              {% if redirect_field_value %}
+              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+              {% endif %}
+              <button class="dark-btn btn white-text" type="submit">{% trans "Sign Up" %}</button>
+            </form>
+        </div>
+    </div>
+</section>
 
-<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
-
-<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
-</form>
+<script src="{% static 'js/register.js' %}"></script>
 
 {% endblock %}

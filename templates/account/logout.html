@@ -1,21 +1,35 @@
-{% extends "account/base.html" %}
+{% extends "base.html" %}
 
 {% load i18n %}
-
+{% load static %}
 {% block head_title %}{% trans "Sign Out" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Sign Out" %}</h1>
-
-<p>{% trans 'Are you sure you want to sign out?' %}</p>
-
-<form method="post" action="{% url 'account_logout' %}">
-  {% csrf_token %}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-  {% endif %}
-  <button type="submit">{% trans 'Sign Out' %}</button>
-</form>
-
+<section class="account-section login-account-section section">
+    <div class="content-container account-card">
+        <div class="account-card-section login-account-section-upper content-container gp-10">
+          <div class="account-card-wrapper content-container gp-10">
+              <div class="heading-3 white-text">Goodbye</div>
+              <div class="white-text">
+                {% trans 'Are you sure you want to sign out?' %}
+              </div>
+          </div>
+          <div class="account-card-img-overlay dark-overlay"></div>
+          <div class="account-card-bg-img-container">
+              <img src="https://res.cloudinary.com/dzwyiggcp/image/upload/v1686931709/CI_PP4_COINHUB/account/uy02uamsucudqbzromlh.png" alt="Starry background image" class="img-100a account-card-bg-img">
+          </div>
+        </div>
+        <div class="account-card-section content-container login-accouint-section-lower gp-50">
+            <form class="account-form login-form gp-50 content-container" id="signup_form" method="post" action="{% url 'account_logout' %}">
+              {% csrf_token %}
+              {{ form.as_p }}
+              {% if redirect_field_value %}
+              <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+              {% endif %}
+              <button class="dark-btn btn white-text" type="submit">{% trans 'Sign Out' %}</button>
+            </form>
+        </div>
+    </div>
+</section>
 
 {% endblock %}
