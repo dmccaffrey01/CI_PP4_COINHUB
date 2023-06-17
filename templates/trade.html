@@ -27,7 +27,7 @@
                             <th class="crypto-volume-heading">Volume (24h)</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="crypto-list-trading-pairs-table-body">
                         {% for crypto in cryptocurrencies %}
                             <tr data-name="{{ crypto.name }}" data-symbol="{{ crypto.symbol }}" data-euro-trading-pair="{{ crypto.euro_trading_pair }}" class="tr-link" onclick="window.location='{% url 'trade' %}';">
                                 <td class="crypto-name-symbol">
@@ -53,5 +53,6 @@
 </section>
 
 <script src="{% static 'js/format-numbers.js' %}"></script>
+<script src="{% static 'js/trade-search.js' %}"></script>
 
 {% endblock %}
