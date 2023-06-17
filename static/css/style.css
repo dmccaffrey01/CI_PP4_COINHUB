@@ -630,7 +630,8 @@ footer {
     color: var(--GRAY-DARK-2);
 }
 
-.crypto-list-home-table td.crypto-name-symbol, .crypto-list-home-table .crypto-name-symbol-heading {
+.crypto-list-home-table .crypto-name-symbol, 
+.crypto-list-home-table .crypto-name-symbol-heading {
     width: 50%;
 }
 
@@ -1472,3 +1473,39 @@ canvas.price-sparkline {
 .account-card {
     z-index: 5;
 }
+
+/* Trading Pairs Section */
+
+.trading-pairs-table-wrapper {
+    padding-top: 50px;
+}
+
+.crypto-list-trading-pairs-table {
+    border-top : 1px solid var(--GRAY-LIGHT-2)
+}
+
+.crypto-list-trading-pairs-table .tr-link:hover {
+    background-color: var(--GRAY-LIGHT-3);
+    cursor: pointer;
+}
+
+.crypto-list-trading-pairs-table .crypto-change,
+.crypto-list-trading-pairs-table .crypto-volume,
+.crypto-list-trading-pairs-table .crypto-volume-heading,
+.crypto-list-trading-pairs-table .crypto-price,
+.crypto-list-trading-pairs-table .crypto-price-heading {
+    width: 23.33%;
+    text-align: left;
+    font-size: 1.8rem;
+    padding: 30px;
+}
+
+.crypto-list-trading-pairs-table .crypto-name-symbol,
+.crypto-list-trading-pairs-table .crypto-name-symbol-heading {
+    width: 30%;
+    text-align: left;
+    font-size: 1.8rem;
+    padding: 40px;
+}
+
+

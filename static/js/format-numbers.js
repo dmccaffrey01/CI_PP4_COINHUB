@@ -58,7 +58,8 @@ function addPositiveOrNegative(elements) {
 }
 
 window.addEventListener('load', function() {
-    const table = document.querySelector('.markets-table-wrapper');
+    const marketsTable = document.querySelector('.markets-table-wrapper');
+    const tradeTable = document.querySelector('.trading-pairs-table-wrapper');
     const cryptoDetails = document.querySelector('.crypto-details-heading-section');
     const letterFormats = document.querySelectorAll('.letter-format');
     const commaFormats = document.querySelectorAll('.comma-format');
@@ -66,7 +67,7 @@ window.addEventListener('load', function() {
     const changes = document.querySelectorAll('.pos-neg-change');
 
     this.window.setTimeout(function() {
-        if (table) {
+        if (marketsTable) {
             const trendingPrices = document.querySelectorAll('.trending-crypto-price');
             const marketCaps = document.querySelectorAll('.crypto-market-cap');
             const volume = document.querySelectorAll('.crypto-volume');
@@ -76,6 +77,10 @@ window.addEventListener('load', function() {
             formatPrices(volume);
             table.style.display = 'flex';
         } else if (cryptoDetails) {
+            formatPrices(letterFormats);
+            commaFormatNumbers(commaFormats);
+            addPositiveOrNegative(changes);
+        } else if (tradeTable) {
             formatPrices(letterFormats);
             commaFormatNumbers(commaFormats);
             addPositiveOrNegative(changes);

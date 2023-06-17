@@ -13,4 +13,5 @@ urlpatterns = [
     path('crypto_detail_price_data_from_api/<str:time_period>/<str:symbol>/', 
          views.crypto_detail_price_data_from_api, name='crypto_detail_price_data_from_api'),
     path('get_crypto_detail_json/', views.get_crypto_detail_json, name='get_crypto_detail_json'),
+    path('trade/', views.trade_page, name='trade'),
 ]

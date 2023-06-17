@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator
 from datetime import datetime
 from django.core import serializers
+from django.db.models import Q
 
 
 def index(request):
@@ -61,6 +62,17 @@ def crypto_details(request, symbol):
     }
 
     return render(request, 'crypto_details.html', context)
+
+
+def trade_page(request):
+    create_crypto_list(request)
+    cryptocurrencies = CryptoCurrency.objects.all()
+
+    context = {
+        'cryptocurrencies': cryptocurrencies,
+    }
+
+    return render(request, 'trade.html', context)
 
 
 def get_crypto_detail_data(request, cryptocurrency):
@@ -285,6 +297,10 @@ def create_crypto_list(request):
     if 'data' in data:
         crypto_data = data['data']['coins']
         for crypto in crypto_data:
+            symbol = crypto['symbol']
+            euro_sybmol = 'EUR'
+            euro_trading_pair = f'{symbol}-{euro_sybmol}'
+
             CryptoCurrency.objects.create(
                 rank=crypto['rank'],
                 name=crypto['name'],
@@ -296,6 +312,7 @@ def create_crypto_list(request):
                 market_cap=crypto['marketCap'],
                 volume=crypto['24hVolume'],
                 uuid=crypto['uuid'],
+                euro_trading_pair=euro_trading_pair,
             )
     else:
         print('Invalid data format')
@@ -369,11 +386,11 @@ def get_top_losers(request):
 
 def crypto_search_results(request):
     query = request.GET.get('query')
-    results = CryptoCurrency.objects.filter(name__icontains=query)
+    results = CryptoCurrency.objects.filter(Q(name__icontains=query) | Q(symbol__icontains=query))
     results_data = [{
-        'name': result.name, 
-        'icon': result.icon, 
-        'symbol': result.symbol
+            'name': result.name, 
+            'icon': result.icon, 
+            'symbol': result.symbol,
         } for result in results]
     return JsonResponse(results_data, safe=False)
 
