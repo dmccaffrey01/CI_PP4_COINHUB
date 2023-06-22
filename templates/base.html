@@ -35,7 +35,11 @@
             <nav class="nav-bar">
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Buy Crypto</a>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'deposit_page' %}" class="nav-link">Deposit</a>
+                        {% else %}
+                        <a href="{% url 'account_login' %}" class="nav-link">Buy Crypto</a>
+                        {% endif %}
                     </li>
                     <li class="nav-item">
                         <a href="{% url 'markets' %}" class="nav-link">Markets</a>
@@ -57,11 +61,14 @@
             <div class="account-login-container">
                 <div class="account-login-btns-container">
                     {% if user.is_authenticated %}
+                    <a href="{% url 'account_login' %}" class="dark-text nav-link">
+                        Assets
+                    </a>
                     <a href="{% url 'account_logout' %}" class="btn logout-btn">
                         Log Out
                     </a>
                     {% else %}
-                    <a href="{% url 'account_login' %}" class="login-btn">
+                    <a href="{% url 'account_login' %}" class="dark-text">
                         Login
                     </a>
                     <a href="{% url 'account_signup' %}" class="btn register-btn">

@@ -75,7 +75,7 @@ window.addEventListener('load', function() {
             formatPrices(trendingPrices);
             formatPrices(marketCaps);
             formatPrices(volume);
-            table.style.display = 'flex';
+            marketsTable.style.display = 'flex';
         } else if (cryptoDetails) {
             formatPrices(letterFormats);
             commaFormatNumbers(commaFormats);

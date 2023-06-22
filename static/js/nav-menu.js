@@ -4,6 +4,7 @@
 const hamburger = document.querySelector(".hamburger");
 const navMenu = document.querySelector(".nav-menu");
 const header = document.getElementsByTagName("header")[0];
+const navLinks = document.querySelectorAll(".nav-link")
 
 hamburger.addEventListener("click", () => {
     hamburger.classList.toggle("active");
@@ -11,8 +12,22 @@ hamburger.addEventListener("click", () => {
     header.classList.toggle("active");
 });
 
-document.querySelectorAll(".nav-link").forEach(n => n.addEventListener("click", () => {
+navLinks.forEach((n, i) => n.addEventListener("click", () => {
     hamburger.classList.remove("active");
     navMenu.classList.remove("active");
     header.classList.remove("active");
 }));
+
+navLinks.forEach((navLink) => {
+    navLink.addEventListener("click", () => {
+        navLinks.forEach((link) => {
+            link.classList.remove("active");
+        });
+    
+        navLink.classList.add("active");
+    });
+  
+    if (navLink.href === window.location.href) {
+        navLink.classList.add("active");
+    }
+});

@@ -1,13 +1,15 @@
 import os
 import requests
 from django.shortcuts import render
-from .models import CryptoCurrency, PopularCryptoCurrency, TopGainerCrypto, TopLoserCrypto, CryptoDetail
+from .models import CryptoCurrency, PopularCryptoCurrency, TopGainerCrypto, TopLoserCrypto, CryptoDetail, CustomUser
+from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from datetime import datetime
 from django.core import serializers
 from django.db.models import Q
+from decimal import Decimal
 
 
 def index(request):
@@ -73,6 +75,23 @@ def trade_page(request):
     }
 
     return render(request, 'trade.html', context)
+
+
+def deposit_page(request):
+    
+    return render(request, 'deposit.html')
+
+
+@login_required
+def deposit(request, amount):
+    user = request.user
+
+    deposit_amount = Decimal(amount)
+
+    user.balance += deposit_amount
+    user.save()
+
+    return JsonResponse({'balance': user.balance})
 
 
 def get_crypto_detail_data(request, cryptocurrency):

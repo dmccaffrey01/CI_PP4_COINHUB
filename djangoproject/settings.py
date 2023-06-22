@@ -58,6 +58,11 @@ LOGOUT_REDIRECT_URL = '/'
 
 ACCOUNT_EMAIL_VERIFICATION = "none"
 
+AUTH_USER_MODEL = 'coinhub.CustomUser'
+
+ACCOUNT_AUTHENTICATION_METHOD = 'username' 
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

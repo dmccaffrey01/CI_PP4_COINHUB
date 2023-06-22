@@ -14,4 +14,6 @@ urlpatterns = [
          views.crypto_detail_price_data_from_api, name='crypto_detail_price_data_from_api'),
     path('get_crypto_detail_json/', views.get_crypto_detail_json, name='get_crypto_detail_json'),
     path('trade/', views.trade_page, name='trade'),
+    path('deposit_euro/', views.deposit_page, name='deposit_page'),
+    path('deposit/<str:amount>/', views.deposit, name='deposit'),
 ]

@@ -1,5 +1,5 @@
 from django.db import models
-from cloudinary.models import CloudinaryField
+from django.contrib.auth.models import AbstractUser, Group, Permission
 
 
 class CryptoCurrency(models.Model):
@@ -100,3 +100,15 @@ class CryptoDetail(models.Model):
     def __str__(self):
         return self.name
 
+
+class CustomUser(AbstractUser):
+    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    
+    groups = models.ManyToManyField(Group, related_name='custom_users')
+    user_permissions = models.ManyToManyField(
+        Permission, related_name='custom_users', blank=True
+    )
+
+    
+    def __str__(self):
+        return self.username

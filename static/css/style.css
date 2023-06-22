@@ -142,6 +142,23 @@ header {
     color: var(--GRAY-DARK-1);
     display: flex;
     align-items: center;
+    position: relative;
+}
+
+.nav-link::after {
+    position: absolute;
+    content: '';
+    bottom: -2px;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background-color: var(--GRAY-DARK-1);
+    transition: width 0.5s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
 }
 
 .hamburger {
@@ -180,10 +197,6 @@ header {
 
 .account-login-icon-container {
     display: none;
-}
-
-.login-btn {
-    font-size: 1.5rem;
 }
 
 .btn {
@@ -1507,5 +1520,110 @@ canvas.price-sparkline {
     font-size: 1.8rem;
     padding: 40px;
 }
+
+/* Deposit Page */
+
+.deposit-section {
+    height: calc(100vh - 100px);
+    min-height: 800px;
+    background: rgb(245,245,245);
+    background: radial-gradient(circle, rgba(245,245,245,1) 0%, rgba(238,238,238,1) 50%, rgba(216,216,216,1) 100%);
+}
+
+.deposit-card {
+    padding: 50px 80px;
+    margin-bottom: 100px;
+    border-radius: 15px;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.42) 0px 19px 38px, rgba(0, 0, 0, 0.32) 0px 15px 12px;
+}
+
+.deposit-card-wrapper {
+    position: relative;
+}
+
+.deposit-form-input {
+    font-size: 1.5rem;
+    color: var(--GRAY-DARK-1);
+    padding: 10px 20px;
+    border-radius: 15px;
+    border: 3px solid var(--BLUE-DARK-1);
+    width: 350px;
+}
+
+.deposit-form-input.validation-error {
+    border: 3px solid var(--RED-1);
+}
+
+.deposit-form-input:focus {
+    border: 3px solid var(--BLUE-LIGHT-1);
+    outline: none;
+}
+
+.deposit-input-wrapper {
+    position: relative;
+}
+
+.deposit-form-input-container {
+    gap: 5px;
+}
+
+.deposit-form-input-container {
+    text-align: left;
+    align-items: flex-start;
+}
+
+.deposit-form-amount-input-container {
+    padding: 20px 0;
+}
+
+.expire-cvv-container .deposit-form-input {
+    width: 125px;
+}
+
+.expire-cvv-container {
+    width: 350px;
+    justify-content: space-between;
+}
+
+.deposit-btn {
+    border: none;
+}
+
+.balance-container {
+    display: none;
+    height: 100%;
+}
+
+.validation-error-icon-container {
+    position: absolute;
+    left: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.validation-error-icon {
+    color: var(--RED-1);
+    font-size: 1.5rem;
+}
+
+.validation-error-text {
+    position: absolute;
+    right: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px;
+    width: 150px;
+    height: 100px;
+    text-align: center;
+    border-radius: 5px;
+    background-color: var(--RED-1);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
 
 
