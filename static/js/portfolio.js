@@ -1,13 +1,11 @@
-const historicalSectionContainer = document.querySelector('.historical-price-chart-section-container');
-const historicalSectionWrapper = document.querySelector('.historical-section-container-wrapper');
-const historicalPriceChartWrapper = document.querySelector('.historical-price-chart-wrapper');
 const verticalLine = document.querySelector('.vertical-line');
 const verticalLineContainer = document.querySelector('.vertical-line-container');
 const timestampDate = document.querySelector('.timestamp-date');
 const canvasContainer = document.querySelector('.historical-price-chart-container');
 const chartOverlay = document.querySelector('.historical-price-chart-overlay');
+const historicalPriceChartWrapper = document.querySelector('.historical-price-chart-wrapper');
 
-/*
+
 const createVerticalLine = (num) => {
     let verticalLineHeight = verticalLine.offsetHeight;
     let ratioNum = Math.round(num * 0.33);
@@ -36,7 +34,7 @@ const createVerticalLine = (num) => {
     return [sectionHeight, gapHeight]
 }
 
-*/
+
 
 const getUserData = async () => {
     try {
@@ -48,7 +46,13 @@ const getUserData = async () => {
     }
 };
 
-var formattedHistoricalData;
+const convertToEpoch = (timestamp) => {
+    const date = new Date(timestamp);
+    const epochTime = date.getTime();
+    return epochTime;
+};
+
+var historicalData;
 
 const formatChartData = (data) => {
     let formattedData = [];
@@ -56,17 +60,17 @@ const formatChartData = (data) => {
     let timeArr = [];
 
     let parsedData = JSON.parse(data);
-    let balanceHistory = parsedData["balance_history"]
-
+    let balanceHistory = JSON.parse(parsedData["balance_history"])
     for (let i = 0; i < balanceHistory.length; i++) {
         let lastBalance = balanceHistory[i]['new_balance'];
-        let time = parsedData[i]['timestamp'];
+        let time = balanceHistory[i]['timestamp'];
+        time = convertToEpoch(time);
         lastBalanceArr.push(lastBalance);
         timeArr.push(time);
     }
     formattedData.push(lastBalanceArr);
     formattedData.push(timeArr);
-    formattedHistoricalData = formattedData;
+    historicalData = formattedData;
     return formattedData;
 };
 
@@ -85,90 +89,186 @@ const getTimePeriod = () => {
 
 }
 
-const convertToEpoch = (timestamp) => {
-    const date = new Date(timestamp);
-    const epochTime = date.getTime();
-    return epochTime;
-};
-
-const roundTime = (currentTime, timePeriod) => {
+const roundTime = (currentTime, timeInterval) => {
     let roundedTime;
   
-    switch (timePeriod) {
-      case 'minute':
-        roundedTime = Math.floor(currentTime / (1000 * 60)) * (1000 * 60);
-        break;
-      case 'hour':
-        roundedTime = Math.floor(currentTime / (1000 * 60 * 60)) * (1000 * 60 * 60);
-        break;
-      case 'day':
-        roundedTime = Math.floor(currentTime / (1000 * 60 * 60 * 24)) * (1000 * 60 * 60 * 24);
-        break;
-      case '5minute':
-        roundedTime = Math.floor(currentTime / (1000 * 60 * 5)) * (1000 * 60 * 5);
-        break;
-      case '3hour':
-        roundedTime = Math.floor(currentTime / (1000 * 60 * 60 * 3)) * (1000 * 60 * 60 * 3);
-        break;
-      default:
-        roundedTime = currentTime;
-        break;
+    switch (timeInterval) {
+        case 'minute':
+            roundedTime = Math.floor(currentTime / (1000 * 60)) * (1000 * 60);
+            break;
+        case '5minute':
+            roundedTime = Math.floor(currentTime / (1000 * 60 * 5)) * (1000 * 60 * 5);
+            break;
+        case 'hour':
+            roundedTime = Math.floor(currentTime / (1000 * 60 * 60)) * (1000 * 60 * 60);
+            break;
+        default:
+            roundedTime = currentTime;
+            break;
     }
   
     return roundedTime;
-  };
+};
+
+const roundTimestamps = (arr, timeInterval) => {
+    let newArr = [];
+    for (let i = 0; i < arr.length; i++) {
+        let newTime = roundTime(arr[i], timeInterval);
+        newArr.push(newTime);
+    }
+
+    return newArr;
+}
+
 const getChartPointsData = () => {
     let points;
     let currentTime = new Date().getTime();
     let originTime;
     let roundedTime;
+    let timeFrame;
+    let timeInterval;
     let timePeriod = getTimePeriod();
 
     if (timePeriod == '1h') {
         points = 60;
-        roundedTime = roundTime(currentTime, "minute");
+        timeInterval = "minute"
+        roundedTime = roundTime(currentTime, timeInterval);
+        timeFrame = 60000;
+        originTime = roundedTime - (points * timeFrame);
     } else if (timePeriod == '1d') {
         points = 288;
-        roundedTime = roundTime(currentTime, "5minute");
+        timeInterval = "5minute"
+        roundedTime = roundTime(currentTime, timeInterval);
+        timeFrame = 60000 * 5;
+        originTime = roundedTime - (points * timeFrame);
     } else if (timePeriod == '1w') {
         points = 168;
-        roundedTime = roundTime(currentTime, "hour");
+        timeInterval = "hour"
+        roundedTime = roundTime(currentTime, timeInterval);
+        timeFrame = 60000 * 60;
+        originTime = roundedTime - (points * timeFrame);
     } else if (timePeriod == '1m') {
         points = 224;
-        roundedTime = roundTime(currentTime, "3hour");
+        timeInterval = "hour"
+        roundedTime = roundTime(currentTime, timeInterval);
+        timeFrame = 60000 * 60 * 3;
+        originTime = roundedTime - (points * timeFrame);
     } else if (timePeriod =='1y') {
         points = 365;
-        roundedTime = roundTime(currentTime, "day");
+        timeInterval = "hour"
+        roundedTime = roundTime(currentTime, timeInterval);
+        timeFrame = 60000 * 60 * 24;
+        originTime = roundedTime - (points * timeFrame);
     } else if (timePeriod == 'all') {
         points = 365;
-        roundedTime = roundTime(currentTime, "day");
+        timeInterval = "hour"
+        roundedTime = roundTime(currentTime, timeInterval);
+        timeFrame = 60000 * 60 * 24;
+        originTime = roundedTime - (points * timeFrame);
     }
 
     data = {
         "points": points,
-        
+        "timeInterval": timeInterval,
+        "roundedTime": roundedTime,
+        "timeFrame": timeFrame,
+        "originTime": originTime
     }
+
     return data;
 }
 
-const filterArray = (arr, type) => {
-    let pointsData = getChartPointsData();
-
-    let timestamps = [];
-    for (let i = 0; i < pointsData["num"]; i++) {
-
+const getArrayAverage = (arr) => {
+    if (arr.length === 0) {
+      return 0;
     }
+  
+    const sum = arr.reduce((acc, num) => acc + num, 0);
+    const average = sum / arr.length;
+  
+    return average;
+  };
+
+let formattedHistoricalData = [];
+
+const formatHistoricalData = () => {
+    let pointsData = getChartPointsData();
+    let roundedTime = pointsData["roundedTime"];
+    let timeFrame = pointsData["timeFrame"];
+    let originTime = pointsData["originTime"]; 
+    let timeInterval = pointsData["timeInterval"];
+    let timePeriod = getTimePeriod();
+
+    let timestamps = roundTimestamps(historicalData[1], timeInterval);
+    let balances = historicalData[0];
+    
+    let formattedTimestamps = [];
+    let formattedBalances = [];
+
+    let formattedData = [];
+
+    let previousBalance;
+
+    for (let i = originTime; i < roundedTime; i += timeFrame) {
+        
+        let balanceUpdates = [];
+
+        formattedTimestamps.push(i);
+
+        let stopTime;
+        if (i == originTime && timePeriod == "1h") {
+            stopTime = (i - (timeFrame * 60 * 24)) ;
+        } else {
+            stopTime = i - timeFrame;
+        }
+        
+        let balance;
+        for (let k = stopTime; k < i; k += timeFrame) {
+            for (let j = 0; j < timestamps.length; j++) {
+                if (timestamps[j] == k) {
+                    balance = balances[j];
+                    balanceUpdates.push(balance);
+                }
+            }
+        }
+        let mostRecentBalance;;
+        if (balanceUpdates.length > 0) {
+            mostRecentBalance = balanceUpdates[balanceUpdates.length - 1];
+            previousBalance = mostRecentBalance;
+        } else if (i == originTime) {
+            mostRecentBalance = 0;
+            previousBalance = mostRecentBalance;
+        } else {
+            mostRecentBalance = previousBalance;
+        }
+
+        previousBalance = mostRecentBalance;
+        formattedBalances.push(mostRecentBalance);
+    }
+
+    formattedData.push(formattedBalances);
+    formattedData.push(formattedTimestamps);
+
+    formattedHistoricalData = formattedData;
+    return formattedData;
 }
 
 const historicalPriceChange = document.querySelector('.historical-crypto-change');
 const historicalPrice = document.querySelector('.historical-crypto-price');
 
 const updateHistoricalPriceChange = () => {
+    formatHistoricalData();
     const originPrice = formattedHistoricalData[0][0];
 
     const currentPrice = historicalPrice.innerText.slice(1).replace(/,/g, '');
     const difference = (currentPrice - originPrice).toFixed(2);
-    const change = ((difference / originPrice) * 100).toFixed(2);
+    let change;
+    if (originPrice == 0) {
+        change = (((difference / 1) * 100)).toFixed(2);
+    } else {
+        change = ((difference / originPrice) * 100).toFixed(2);
+    }
+    
 
     if (change >= 0) {
         historicalPriceChange.innerHTML = `<i class="fa-solid fa-up-long"></i> €${addCommasToNumber(difference)}   ${change}%`;
@@ -212,12 +312,13 @@ const updateHistoricalPrice = (num) => {
     historicalPrice.innerHTML = `€${price}`;
 }
 
-const createHistoricalPriceChart = async (data) => {
+const createHistoricalPriceChart = async () => {
 
-    const timestamps = filterArray(data[1]);
-    const prices = filterArray(data[0]);
+    const timestamps = formattedHistoricalData[1];
+    console.log(timestamps);
+    const prices = formattedHistoricalData[0];
     const labels = timestamps.map((timestamp) => {
-        const date = new Date(timestamp * 1000);
+        const date = new Date(timestamp);
         const year = date.getFullYear();
         const month = date.toLocaleString('en-US', { month: 'short' });
         return `${month} ${year}`;
@@ -298,11 +399,8 @@ const createHistoricalPriceChart = async (data) => {
 
     await new Promise((resolve) => setTimeout(resolve, 100));
 
-    let loadingIcon = document.querySelector('.loading-icon');
-    loadingIcon.remove();
-    historicalSectionContainer.style.display = 'flex';
     updateHistoricalPriceChange();
-
+    
     newCanvas.addEventListener('mousemove', function (event) {
         let rect = newCanvas.getBoundingClientRect();
         let x = event.clientX - rect.left;
@@ -315,7 +413,7 @@ const createHistoricalPriceChart = async (data) => {
         let priceIndex = Math.round(x / numOfPixelsPerDataPoint)
         let price = prices[priceIndex];
         let timestamp = timestamps[priceIndex];
-        let date = new Date(timestamp * 1000);
+        let date = new Date(timestamp);
 
         updateHistoricalPrice(price);
         updateHistoricalPriceChange();
@@ -323,8 +421,9 @@ const createHistoricalPriceChart = async (data) => {
 
         verticalLineContainer.style.left = x + 'px';
         chartOverlay.style.width = (canvasWidth - x) + 'px';
-      });
-
+    });
+      
+    
     historicalPriceChartWrapper.addEventListener('mouseenter', function () {
         verticalLineContainer.style.display = 'flex';
         createVerticalLine(40);
@@ -337,17 +436,18 @@ const createHistoricalPriceChart = async (data) => {
         chartOverlay.style.display = 'none';
         timestampDate.style.display = 'none';
     });
+    
 };
 
-const loadDataAndCreateChart = async (timePeriod) => {
-    const data = formatChartData(await getChartData(timePeriod, symbol));
-    await createHistoricalPriceChart(data);
+const loadDataAndCreateChart = async () => {
+    const userData = await getUserData();
+    formatChartData(userData);
+    formatHistoricalData();
+    await createHistoricalPriceChart();
 };
 
 const switchTimePeriod = (event) => {
     const clickedBtn = event.target;
-
-    const timePeriod = clickedBtn.getAttribute('data-time-period');
 
     if (clickedBtn.classList.contains('active')) {
         return;
@@ -360,7 +460,7 @@ const switchTimePeriod = (event) => {
         
         clickedBtn.classList.add('active');
 
-        loadDataAndCreateChart(timePeriod);
+        loadDataAndCreateChart();
     }
 
 }
@@ -369,7 +469,7 @@ timePeriodBtns.forEach(btn => {
     btn.addEventListener('click', switchTimePeriod)
 })
   
-loadDataAndCreateChart('1m');
+loadDataAndCreateChart();
 
 
 
