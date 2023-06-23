@@ -5,6 +5,7 @@
 
 <section class="deposit-section section">
     <div class="deposit-card content-container">
+        <div class="deposit-card-balance text-gd-2">Current Balance: €<span class="euro-balance">{{ user.balance }}</span></div>
         <div class="deposit-card-wrapper">
             <div class="deposit-form-wrapper">
                 <form method="post" class="deposit-form content-container gp-10" novalidate autocomplete="off">
@@ -39,6 +40,7 @@
                         <label class="dark-text" for="amount">Amount: (limit: 1000000)</label>
                         <div class="deposit-input-wrapper">
                             <input class="deposit-form-input amount-input" type="text" id="amount" name="amount" required>
+                            <div class="dark-text euro-symbol">€</div>
                         </div>
                     </div>
                     <div class="deposit-form-input-container"></div>
@@ -46,9 +48,9 @@
                 </form>
             </div>
             <div class="balance-container content-container gp-20">
-                <div class="balance-message dark-text">You have successfully deposited €<span class="deposit-amount"></span>!</div>
+                <div class="balance-message dark-text">You have successfully deposited €<span class="deposit-amount"></span> into your account!</div>
                 <div class="blance-message dark-text">Your Balance is: €<span class="euro-balance"></span></div>
-                <div class="btn add-more-btn">Add More</div>
+                <a href="{% url 'deposit_page' %}" class="btn add-more-btn">Add More</a>
             </div>
             <div class="loading-icon-container"></div>
         </div>

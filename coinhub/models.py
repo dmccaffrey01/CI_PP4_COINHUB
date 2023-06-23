@@ -103,6 +103,7 @@ class CryptoDetail(models.Model):
 
 class CustomUser(AbstractUser):
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    balance_history = models.TextField(default="")
     
     groups = models.ManyToManyField(Group, related_name='custom_users')
     user_permissions = models.ManyToManyField(

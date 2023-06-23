@@ -16,4 +16,6 @@ urlpatterns = [
     path('trade/', views.trade_page, name='trade'),
     path('deposit_euro/', views.deposit_page, name='deposit_page'),
     path('deposit/<str:amount>/', views.deposit, name='deposit'),
+    path('portfolio/', views.portfolio, name='portfolio'),
+    path('get_user_data/', views.get_user_data, name='get_user_data'),
 ]

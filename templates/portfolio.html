@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="section portfolio-chart-section">
+    <div class="content-container">
+        <div class="historical-price-heading-container content-container-rows">
+            <div class="content-container historical-price-container gp-10">
+                <div class="price-text dark-text">My Balance</div>
+                <div class="historical-crypto-price heading-3 dark-text">€{{ user.balance }}</div>
+                <div class="historical-crypto-change sub-heading-3">---%</div>
+            </div>
+            <div class="content-container-rows historical-price-time-periods gp-20">
+                <div class="historical-price-time-periods-btn dark-text" data-time-period="1h">1H</div>
+                <div class="historical-price-time-periods-btn dark-text" data-time-period="1d">1D</div>
+                <div class="historical-price-time-periods-btn dark-text" data-time-period="1w">1W</div>
+                <div class="historical-price-time-periods-btn dark-text active" data-time-period="1m">1M</div>
+                <div class="historical-price-time-periods-btn dark-text" data-time-period="1y">1Y</div>
+                <div class="historical-price-time-periods-btn dark-text" data-time-period="all">ALL</div>
+            </div>
+        </div>
+        <div class="historical-price-chart-wrapper">
+            <div class="historical-price-chart-container">
+                <canvas class="historical-price-chart"></canvas>
+            </div>
+            <div class="vertical-line-container">
+                <div class="vertical-line">
+                    <div class="timestamp-date dark-text"></div>
+                </div>
+            </div>
+            <div class="historical-price-chart-overlay"></div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/portfolio.js' %}"></script>
+<script src="{% static 'js/crypto-search.js' %}"></script>
+<script src="{% static 'js/format-numbers.js' %}"></script>
+
+{% endblock %}

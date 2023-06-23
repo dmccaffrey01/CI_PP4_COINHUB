@@ -1624,6 +1624,16 @@ canvas.price-sparkline {
     align-items: center;
 }
 
+.deposit-card-balance {
+    position: absolute;
+    top: -30px;
+    left: 20px;
+}
 
-
+.euro-symbol {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 8px;
+}
 

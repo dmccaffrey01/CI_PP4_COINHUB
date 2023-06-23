@@ -44,7 +44,7 @@ const createValidationError = (input) => {
 }
 
 const validateInputValue = (val) => {
-    if (val["value"] === "") {
+    if (val["value"] === "" || val["value"] === undefined || (Number(val["value"]) > 1000000 && val["input"].classList.contains("amount-input"))) {
         createValidationError(val["input"]);
         return false;
     } else {
@@ -140,10 +140,13 @@ const depositAmount = async (amount) => {
 
 const showBalance = (balance, amount) => {
     let amountSpan = document.querySelector(".deposit-amount");
-    let balanceSpan = document.querySelector(".euro-balance");
+    let balanceSpans = document.querySelectorAll(".euro-balance");
 
     amountSpan.textContent = amount;
-    balanceSpan.textContent = balance;
+    balanceSpans.forEach(balanceSpan => {
+        balanceSpan.textContent = balance;
+    })
+    
 
     removeLoadingIcon();
 

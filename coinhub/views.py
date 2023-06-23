@@ -10,6 +10,7 @@ from datetime import datetime
 from django.core import serializers
 from django.db.models import Q
 from decimal import Decimal
+from django.utils import timezone
 
 
 def index(request):
@@ -79,19 +80,63 @@ def trade_page(request):
 
 def deposit_page(request):
     
-    return render(request, 'deposit.html')
+    user = request.user
+
+    return render(request, 'deposit.html', {'user': user})
+
+
+def portfolio(request):
+    
+    user = request.user
+
+    context = {
+        'user': user
+    }
+
+    return render(request, 'portfolio.html', context)
+
+
+@login_required
+def get_user_data(request):
+    user = request.user
+
+    data = {
+        'username': user.username,
+        'balance': user.balance,
+        'balance_history': user.balance_history,
+    }
+
+    return JsonResponse(data, safe=False)
 
 
 @login_required
 def deposit(request, amount):
     user = request.user
-
     deposit_amount = Decimal(amount)
-
-    user.balance += deposit_amount
+    
+    old_balance_history = user.balance_history
+    if old_balance_history == "":
+        balance_history = []
+    else: 
+        balance_history = json.loads(user.balance_history)
+    
+    old_balance = user.balance
+    new_balance = old_balance + deposit_amount
+    
+    entry = {
+        'amount': float(deposit_amount),
+        'timestamp': str(timezone.now()),
+        'old_balance': float(old_balance),
+        'new_balance': float(new_balance)
+    }
+    
+    balance_history.append(entry)
+    
+    user.balance = new_balance
+    user.balance_history = json.dumps(balance_history)
     user.save()
-
-    return JsonResponse({'balance': user.balance})
+    
+    return JsonResponse({'balance': new_balance})
 
 
 def get_crypto_detail_data(request, cryptocurrency):
