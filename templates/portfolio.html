@@ -20,16 +20,75 @@
                 <div class="historical-price-time-periods-btn dark-text" data-time-period="all">ALL</div>
             </div>
         </div>
-        <div class="historical-price-chart-wrapper portfolio-price-chart-wrapper">
-            <div class="historical-price-chart-container portfolio-price-chart-container">
-                <canvas class="historical-price-chart"></canvas>
-            </div>
-            <div class="vertical-line-container portfolio-vertical-line-container">
-                <div class="vertical-line">
-                    <div class="timestamp-date dark-text timestamp-date-portfolio"></div>
+        <div class="portfolio-chart-wrapper-container content-container">
+            <div class="historical-price-chart-wrapper portfolio-price-chart-wrapper">
+                <div class="historical-price-chart-container portfolio-price-chart-container">
+                    <canvas class="historical-price-chart"></canvas>
                 </div>
+                <div class="vertical-line-container portfolio-vertical-line-container">
+                    <div class="vertical-line">
+                        <div class="timestamp-date dark-text timestamp-date-portfolio"></div>
+                    </div>
+                </div>
+                <div class="historical-price-chart-overlay"></div>
             </div>
-            <div class="historical-price-chart-overlay"></div>
+        </div>
+    </div>
+</section>
+
+<section class="section portfolio-assets-section">
+    <div class="section-container crypto-list-trading-pairs-container content-container gp-50">
+        <div class="content-container w-100 gp-10">
+            <div class="trading-pairs-table-wrapper table-wrapper content-container gp-50 w-100">
+                <div class="content-container search-container gp-20">
+                    <div class="heading-3 dark-text">My Assets</div>
+                    <form class="trading-pairs-search-form crypto-search-form" method="GET">
+                        <div class="input-container">
+                            <input type="text" autocomplete="off" class="trading-pairs-search-input crypto-search-input" name="query" placeholder="Search for an asset">
+                            <span class="search-icon"><i class="fas fa-search"></i></span>
+                            <span class="close-icon"><i class="fa-solid fa-xmark"></i></span>
+                        </div>
+                    </form>
+                </div>
+                <table class="crypto-list-home-table crypto-list-trading-pairs-table w-100">
+                    <thead>
+                        <tr>
+                            <th class="crypto-name-symbol-heading asset-name-heading">Name</th>
+                            <th class="crypto-price-heading asset-balance-heading">Total Balance</th>
+                            <th class="crypto-change asset-amount-heading">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody class="crypto-list-trading-pairs-table-body">
+                        {% for asset in assets %}
+                            <tr data-name="{{ asset.name }}" data-symbol="{{ asset.symbol }}" class="tr-link">
+                                <td class="crypto-name-symbol asset-name">
+                                    <div class="crypto-name-symbol-wrapper content-container-rows asset-name-icon-container gp-10">
+                                        <div class="crypto-icon-container asset-icon-container">
+                                            <img src="{{ asset.iconUrl }}" alt="{{ asset.name }} Icon" class="crypto-icon asset-icon" />
+                                        </div>
+                                        <div class="crypto-details content-container gp-10 asset-details">
+                                            <div class="crypto-name dark-text asset-balance">{{ asset.name }}</div>
+                                            <div class="crypto-symbol text-gd-2 dark-text asset-amount">{{ asset.symbol }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="crypto-price asset-balance">
+                                    <div class="asset-balance-amount-container content-container gp-10">
+                                        <div class="asset-balance comma-format dark-text">€{{ asset.total_balance }}</div>
+                                        <div class="asset-amount comma-format text-gd-2 dark-text">{{ asset.total_amount }} {{asset.symbol }}</div>
+                                    </div>
+                                </td>
+                                <td class="crypto-change asset-price">
+                                    <div class="asset-balance-amount-container content-container gp-10">
+                                        <div class="asset-balance comma-format dark-text">€{{ asset.price }}</div>
+                                        <div class="asset-amount text-gd-2 dark-text pos-neg-change">{{ asset.price_change }}%</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </section>
@@ -38,5 +97,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'js/portfolio.js' %}"></script>
 <script src="{% static 'js/format-numbers.js' %}"></script>
+<script src="{% static 'js/trade-search.js' %}"></script>
 
 {% endblock %}

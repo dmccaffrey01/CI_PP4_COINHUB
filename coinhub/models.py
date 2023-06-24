@@ -102,14 +102,27 @@ class CryptoDetail(models.Model):
 
 
 class CustomUser(AbstractUser):
-    balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    balance_history = models.TextField(default="")
+    balance = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    balance_history = models.TextField(default="[]")
     
     groups = models.ManyToManyField(Group, related_name='custom_users')
     user_permissions = models.ManyToManyField(
         Permission, related_name='custom_users', blank=True
     )
-
     
     def __str__(self):
         return self.username
+
+class Asset(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='assets')
+    name = models.CharField(max_length=100)
+    symbol = models.CharField(max_length=10)
+    iconUrl = models.URLField()
+    total_amount = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    price = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    price_change = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    total_balance = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    asset_balance_history = models.TextField(default="[]")
+
+    def __str__(self):
+        return self.name

@@ -483,7 +483,7 @@ const createHistoricalPriceChart = async () => {
     
     historicalPriceChartWrapper.addEventListener('mouseenter', function () {
         verticalLineContainer.style.display = 'flex';
-        createVerticalLine(40);
+        createVerticalLine(20);
         chartOverlay.style.display = 'flex';
         timestampDate.style.display = 'flex';
     });

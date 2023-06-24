@@ -1,7 +1,7 @@
 import os
 import requests
 from django.shortcuts import render
-from .models import CryptoCurrency, PopularCryptoCurrency, TopGainerCrypto, TopLoserCrypto, CryptoDetail, CustomUser
+from .models import CryptoCurrency, PopularCryptoCurrency, TopGainerCrypto, TopLoserCrypto, CryptoDetail, CustomUser, Asset
 from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
@@ -86,11 +86,12 @@ def deposit_page(request):
 
 
 def portfolio(request):
-    
     user = request.user
+    assets = user.assets.all()
 
     context = {
-        'user': user
+        'user': user,
+        'assets': assets
     }
 
     return render(request, 'portfolio.html', context)
@@ -113,29 +114,38 @@ def get_user_data(request):
 def deposit(request, amount):
     user = request.user
     deposit_amount = Decimal(amount)
-    
-    old_balance_history = user.balance_history
-    if old_balance_history == "":
-        balance_history = []
-    else: 
-        balance_history = json.loads(user.balance_history)
-    
-    old_balance = user.balance
-    new_balance = old_balance + deposit_amount
-    
-    entry = {
+
+    asset, created = Asset.objects.get_or_create(user=user, name='Euro')
+
+    if not created:
+        asset.symbol = 'EUR'
+        asset.iconUrl = 'https://res.cloudinary.com/dzwyiggcp/image/upload/v1687604163/CI_PP4_COINHUB/icons/vskcbpae6osco4zr3btg.png'
+        asset.price = 1
+
+    asset.total_amount += deposit_amount
+    old_balance = asset.total_balance
+    asset.total_balance += deposit_amount * asset.price
+    new_balance = asset.total_balance
+
+    balance_entry = {
         'amount': float(deposit_amount),
         'timestamp': str(timezone.now()),
         'old_balance': float(old_balance),
-        'new_balance': float(new_balance)
+        'new_balance': float(new_balance),
     }
-    
-    balance_history.append(entry)
-    
+
+    asset_balance_history = json.loads(asset.asset_balance_history)
+    asset_balance_history.append(balance_entry)
+
+    asset.save()
+
+    balance_history = json.loads(user.balance_history)
+    balance_history.append(balance_entry)
+
     user.balance = new_balance
     user.balance_history = json.dumps(balance_history)
     user.save()
-    
+
     return JsonResponse({'balance': new_balance})
 
 

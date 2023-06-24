@@ -616,7 +616,7 @@ footer {
 
 .table-wrapper {
     border: 1px solid var(--GRAY-LIGHT-2);
-    border-radius: 5px;
+    border-radius: 15px;
 }
 
 .crypto-list-home-table {
@@ -1652,20 +1652,62 @@ canvas.price-sparkline {
 }
 
 .portfolio-price-chart-wrapper {
+    width: 1140px;
+    height: 285px;
+}
+
+.portfolio-chart-wrapper-container {
     width: 1200px;
     height: fit-content;
-    padding: 60px 40px;
+    padding: 60px 40px 20px 40px;
 }
 
 .portfolio-price-chart-container {
-    width: 1120px;
-    height: 630px;
+    width: 1140px;
+    height: 285px;
 }
 
 .portfolio-vertical-line-container {
-    height: 690px;
+    height: 315px;
+    bottom: -20px;
 }
 
 .timestamp-date-portfolio {
-    top: -40px;
+    top: -35px;
+}
+
+
+.asset-icon-container {
+    width: 60px;
+    height: 60px;
+}
+
+.asset-balance-amount-container {
+    align-items: flex-start;
+}
+
+.asset-balance {
+    font-size: 1.6rem;
+}
+
+.asset-amount {
+    font-size: 1.4rem;
+}
+
+.asset-price,
+.asset-price-heading,
+.asset-name,
+.asset-name-heading,
+.asset-balance,
+.asset-balance-heading {
+    width: 33%;
+    align-items: flex-start;
+}
+
+.asset-name-icon-container, .asset-details {
+    align-items: flex-start;
+}
+
+.portfolio-assets-section {
+    padding: 0 0 100px 0;
 }
