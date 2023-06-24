@@ -120,50 +120,57 @@ const roundTimestamps = (arr, timeInterval) => {
     return newArr;
 }
 
-const getChartPointsData = () => {
+const getChartPointsData = (timePeriod, type) => {
     let points;
     let currentTime = new Date().getTime();
     let originTime;
     let roundedTime;
     let timeFrame;
     let timeInterval;
-    let timePeriod = getTimePeriod();
 
-    if (timePeriod == '1h') {
-        points = 60;
-        timeInterval = "minute"
-        roundedTime = roundTime(currentTime, timeInterval);
-        timeFrame = 60000;
-        originTime = roundedTime - (points * timeFrame);
-    } else if (timePeriod == '1d') {
-        points = 288;
-        timeInterval = "5minute"
-        roundedTime = roundTime(currentTime, timeInterval);
-        timeFrame = 60000 * 5;
-        originTime = roundedTime - (points * timeFrame);
-    } else if (timePeriod == '1w') {
-        points = 168;
+    if (type === "normal") {
+        if (timePeriod == '1h') {
+            points = 60;
+            timeInterval = "minute"
+            roundedTime = roundTime(currentTime, timeInterval);
+            timeFrame = 60000;
+            originTime = roundedTime - (points * timeFrame);
+        } else if (timePeriod == '1d') {
+            points = 288;
+            timeInterval = "5minute"
+            roundedTime = roundTime(currentTime, timeInterval);
+            timeFrame = 60000 * 5;
+            originTime = roundedTime - (points * timeFrame);
+        } else if (timePeriod == '1w') {
+            points = 168;
+            timeInterval = "hour"
+            roundedTime = roundTime(currentTime, timeInterval);
+            timeFrame = 60000 * 60;
+            originTime = roundedTime - (points * timeFrame);
+        } else if (timePeriod == '1m') {
+            points = 224;
+            timeInterval = "hour"
+            roundedTime = roundTime(currentTime, timeInterval);
+            timeFrame = 60000 * 60 * 3;
+            originTime = roundedTime - (points * timeFrame);
+        } else if (timePeriod =='1y') {
+            points = 366;
+            timeInterval = "hour"
+            roundedTime = roundTime(currentTime, timeInterval);
+            timeFrame = 60000 * 60 * 24;
+            originTime = roundedTime - (points * timeFrame);
+        } else if (timePeriod == 'all') {
+            points = 366;
+            timeInterval = "hour"
+            roundedTime = roundTime(currentTime, timeInterval);
+            timeFrame = 60000 * 60 * 24;
+            originTime = roundedTime - (points * timeFrame);
+        }
+    } else {
+        points = 24;
         timeInterval = "hour"
         roundedTime = roundTime(currentTime, timeInterval);
         timeFrame = 60000 * 60;
-        originTime = roundedTime - (points * timeFrame);
-    } else if (timePeriod == '1m') {
-        points = 224;
-        timeInterval = "hour"
-        roundedTime = roundTime(currentTime, timeInterval);
-        timeFrame = 60000 * 60 * 3;
-        originTime = roundedTime - (points * timeFrame);
-    } else if (timePeriod =='1y') {
-        points = 365;
-        timeInterval = "hour"
-        roundedTime = roundTime(currentTime, timeInterval);
-        timeFrame = 60000 * 60 * 24;
-        originTime = roundedTime - (points * timeFrame);
-    } else if (timePeriod == 'all') {
-        points = 365;
-        timeInterval = "hour"
-        roundedTime = roundTime(currentTime, timeInterval);
-        timeFrame = 60000 * 60 * 24;
         originTime = roundedTime - (points * timeFrame);
     }
 
@@ -192,16 +199,16 @@ const getArrayAverage = (arr) => {
 let formattedHistoricalData = [];
 
 const formatHistoricalData = () => {
-    let pointsData = getChartPointsData();
+    let timePeriod = getTimePeriod();
+    let pointsData = getChartPointsData(timePeriod, "normal");
     let roundedTime = pointsData["roundedTime"];
     let timeFrame = pointsData["timeFrame"];
     let originTime = pointsData["originTime"]; 
     let timeInterval = pointsData["timeInterval"];
-    let timePeriod = getTimePeriod();
 
     let timestamps = roundTimestamps(historicalData[1], timeInterval);
     let balances = historicalData[0];
-    
+
     let formattedTimestamps = [];
     let formattedBalances = [];
 
@@ -217,7 +224,7 @@ const formatHistoricalData = () => {
 
         let stopTime;
         if (i == originTime && timePeriod == "1h") {
-            stopTime = (i - (timeFrame * 60 * 24)) ;
+            stopTime = (i - (timeFrame * 60 * 24 * 366)) ;
         } else {
             stopTime = i - timeFrame;
         }
@@ -225,7 +232,7 @@ const formatHistoricalData = () => {
         let balance;
         for (let k = stopTime; k < i; k += timeFrame) {
             for (let j = 0; j < timestamps.length; j++) {
-                if (timestamps[j] == k) {
+                if (timestamps[j] >= k && timestamps[j] <= k + timeFrame) {
                     balance = balances[j];
                     balanceUpdates.push(balance);
                 }
@@ -244,6 +251,55 @@ const formatHistoricalData = () => {
 
         previousBalance = mostRecentBalance;
         formattedBalances.push(mostRecentBalance);
+    }
+
+    if (timePeriod == "1y" || timePeriod == "all") {
+        formattedBalances.pop();
+        formattedTimestamps.pop();
+        
+        timePeriod = "1d";
+        pointsData = getChartPointsData(timePeriod, "special");
+        roundedTime = pointsData["roundedTime"];
+        timeFrame = pointsData["timeFrame"];
+        originTime = pointsData["originTime"]; 
+        timeInterval = pointsData["timeInterval"];
+        
+        for (let i = originTime; i < roundedTime; i += timeFrame) {
+        
+            let balanceUpdates = [];
+    
+            formattedTimestamps.push(i);
+    
+            let stopTime;
+            if (i == originTime && timePeriod == "1h") {
+                stopTime = (i - (timeFrame * 60 * 24 * 366)) ;
+            } else {
+                stopTime = i - timeFrame;
+            }
+            
+            let balance;
+            for (let k = stopTime; k < i; k += timeFrame) {
+                for (let j = 0; j < timestamps.length; j++) {
+                    if (timestamps[j] >= k && timestamps[j] <= k + timeFrame) {
+                        balance = balances[j];
+                        balanceUpdates.push(balance);
+                    }
+                }
+            }
+            let mostRecentBalance;;
+            if (balanceUpdates.length > 0) {
+                mostRecentBalance = balanceUpdates[balanceUpdates.length - 1];
+                previousBalance = mostRecentBalance;
+            } else if (i == originTime) {
+                mostRecentBalance = 0;
+                previousBalance = mostRecentBalance;
+            } else {
+                mostRecentBalance = previousBalance;
+            }
+    
+            previousBalance = mostRecentBalance;
+            formattedBalances.push(mostRecentBalance);
+        }
     }
 
     formattedData.push(formattedBalances);
@@ -317,6 +373,7 @@ const createHistoricalPriceChart = async () => {
     const timestamps = formattedHistoricalData[1];
     console.log(timestamps);
     const prices = formattedHistoricalData[0];
+    console.log([prices]);
     const labels = timestamps.map((timestamp) => {
         const date = new Date(timestamp);
         const year = date.getFullYear();

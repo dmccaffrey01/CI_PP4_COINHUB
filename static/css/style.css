@@ -1637,3 +1637,35 @@ canvas.price-sparkline {
     left: 8px;
 }
 
+/* Portfolio Section */
+
+.portfolio-chart-container {
+    border: 1px solid var(--GRAY-LIGHT-2);
+    border-radius: 15px;
+}
+
+.portfolio-price-heading-container {
+    padding: 40px;
+    border-bottom: 1px solid var(--GRAY-LIGHT-2);
+    width: 1200px;
+    height: fit-content;
+}
+
+.portfolio-price-chart-wrapper {
+    width: 1200px;
+    height: fit-content;
+    padding: 60px 40px;
+}
+
+.portfolio-price-chart-container {
+    width: 1120px;
+    height: 630px;
+}
+
+.portfolio-vertical-line-container {
+    height: 690px;
+}
+
+.timestamp-date-portfolio {
+    top: -40px;
+}

@@ -5,7 +5,7 @@
 
 <section class="section portfolio-chart-section">
     <div class="content-container portfolio-chart-container">
-        <div class="historical-price-heading-container content-container-rows">
+        <div class="historical-price-heading-container portfolio-price-heading-container content-container-rows">
             <div class="content-container historical-price-container gp-10">
                 <div class="price-text dark-text">My Balance</div>
                 <div class="historical-crypto-price heading-3 dark-text">€{{ user.balance }}</div>
@@ -20,13 +20,13 @@
                 <div class="historical-price-time-periods-btn dark-text" data-time-period="all">ALL</div>
             </div>
         </div>
-        <div class="historical-price-chart-wrapper">
-            <div class="historical-price-chart-container">
+        <div class="historical-price-chart-wrapper portfolio-price-chart-wrapper">
+            <div class="historical-price-chart-container portfolio-price-chart-container">
                 <canvas class="historical-price-chart"></canvas>
             </div>
-            <div class="vertical-line-container">
+            <div class="vertical-line-container portfolio-vertical-line-container">
                 <div class="vertical-line">
-                    <div class="timestamp-date dark-text"></div>
+                    <div class="timestamp-date dark-text timestamp-date-portfolio"></div>
                 </div>
             </div>
             <div class="historical-price-chart-overlay"></div>
