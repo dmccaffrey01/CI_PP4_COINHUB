@@ -10,7 +10,7 @@
             <div class="trading-pairs-table-wrapper table-wrapper content-container gp-50 w-100">
                 <div class="content-container search-container gp-20">
                     <div class="heading-3 dark-text">Search Trading Pairs</div>
-                    <form class="trading-pairs-search-form crypto-search-form" method="GET">
+                    <form class="trading-pairs-search-fo rm crypto-search-form" method="GET">
                         <div class="input-container">
                             <input type="text" autocomplete="off" class="trading-pairs-search-input crypto-search-input" name="query" placeholder="Search for an asset">
                             <span class="search-icon"><i class="fas fa-search"></i></span>
@@ -30,7 +30,7 @@
                     </thead>
                     <tbody class="crypto-list-trading-pairs-table-body">
                         {% for crypto in cryptocurrencies %}
-                            <tr data-name="{{ crypto.name }}" data-symbol="{{ crypto.symbol }}" data-euro-trading-pair="{{ crypto.euro_trading_pair }}" class="tr-link" onclick="window.location='{% url 'trade' %}';">
+                            <tr data-name="{{ crypto.name }}" data-symbol="{{ crypto.symbol }}" data-euro-trading-pair="{{ crypto.euro_trading_pair }}" class="tr-link" onclick="window.location='{% url 'trading_pair' symbol=crypto.symbol %}';">
                                 <td class="crypto-name-symbol">
                                     <div class="crypto-name-symbol-wrapper">
                                         <div class="crypto-icon-container">

@@ -1711,3 +1711,50 @@ canvas.price-sparkline {
 .portfolio-assets-section {
     padding: 0 0 100px 0;
 }
+
+/* Trading Pair Seciton */
+
+.trading-pair-heading-container {
+    padding: 50px;
+    border: 1px solid var(--GRAY-LIGHT-2);
+    border-radius: 15px;
+    position: relative;
+}
+
+.change-trading-pair-btn {
+    gap: 10px;
+    font-size: 1.8rem;
+    padding: 15px 30px;
+    border-radius: 50px;
+    background-color: var(--GRAY-LIGHT-2);
+    border: 2px solid var(--GRAY-DARK-1);
+    cursor: pointer;
+}
+
+.change-trading-pair-btn-icon {
+    font-size: 1.5rem;
+    color: var(--GRAY-DARK-1);
+    transition: all 0.3s ease;
+}
+
+.change-trading-pair-btn-icon.active {
+    transform: rotate(-180deg);
+}
+
+.trading-pair-heading-item-container {
+    align-items: flex-start;
+}
+
+.crypto-trade-table-trading-pair {
+    display: none;
+    position: absolute;
+    top: calc(100% + 50px);
+    width: 1600px;
+    left: calc(-(1600px - 100%)px);
+}
+
+.crypto-trade-table-trading-pair.active {
+    display: flex;
+    background-color: var(--GRAY-LIGHT-1);
+    z-index: 5;
+}

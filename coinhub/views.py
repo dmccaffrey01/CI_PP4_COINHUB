@@ -87,7 +87,7 @@ def deposit_page(request):
 
 def portfolio(request):
     user = request.user
-    assets = user.assets.all()
+    assets = Asset.objects.filter(user=user)
 
     context = {
         'user': user,
@@ -95,6 +95,31 @@ def portfolio(request):
     }
 
     return render(request, 'portfolio.html', context)
+
+def trading_pair(request, symbol):
+    user = request.user
+    assets = Asset.objects.filter(user=user)
+
+    create_crypto_list(request)
+    crypto = CryptoCurrency.objects.filter(symbol=symbol).first()
+    cryptocurrencies = CryptoCurrency.objects.all()
+
+    sparkline_data = json.loads(crypto.sparkline)
+    sparkline_numbers = [float(num) for num in sparkline_data] if sparkline_data else []
+    lowest_number = format(min(sparkline_numbers), '.2f') if sparkline_numbers else None
+    highest_number = format(max(sparkline_numbers), '.2f') if sparkline_numbers else None
+
+
+    context = {
+        'user': user,
+        'assets': assets,
+        'crypto': crypto,
+        'cryptocurrencies': cryptocurrencies,
+        'low_24h': lowest_number,
+        'high_24h': highest_number,
+    }
+
+    return render(request, 'trading-pair.html', context)
 
 
 @login_required

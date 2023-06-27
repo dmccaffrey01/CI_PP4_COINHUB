@@ -63,7 +63,6 @@ window.addEventListener('load', function() {
     const cryptoDetails = document.querySelector('.crypto-details-heading-section');
     const letterFormats = document.querySelectorAll('.letter-format');
     const commaFormats = document.querySelectorAll('.comma-format');
-    const decimals = document.querySelectorAll('.remove-decimals');
     const changes = document.querySelectorAll('.pos-neg-change');
 
     this.window.setTimeout(function() {

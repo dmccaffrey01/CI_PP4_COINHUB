@@ -223,7 +223,7 @@ const formatHistoricalData = () => {
         formattedTimestamps.push(i);
 
         let stopTime;
-        if (i == originTime && timePeriod == "1h") {
+        if (i == originTime) {
             stopTime = (i - (timeFrame * 60 * 24 * 366)) ;
         } else {
             stopTime = i - timeFrame;
@@ -271,7 +271,7 @@ const formatHistoricalData = () => {
             formattedTimestamps.push(i);
     
             let stopTime;
-            if (i == originTime && timePeriod == "1h") {
+            if (i == originTime) {
                 stopTime = (i - (timeFrame * 60 * 24 * 366)) ;
             } else {
                 stopTime = i - timeFrame;
