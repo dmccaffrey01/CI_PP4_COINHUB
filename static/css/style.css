@@ -1714,14 +1714,39 @@ canvas.price-sparkline {
 
 /* Trading Pair Seciton */
 
+.trading-pair-page-container {
+    display: flex;
+}
+
+.trading-pair-left-side {
+    width: calc(100% - 600px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: column;
+}
+
+.trading-pair-right-side {
+    background-color: pink;
+    width: 600px;
+    height: 100vh;
+}
+
+.trading-pair-left-side-section {
+    justify-content: flex-end;
+    padding: 30px 20px 30px 0;
+}
+
 .trading-pair-heading-container {
     padding: 50px;
     border: 1px solid var(--GRAY-LIGHT-2);
     border-radius: 15px;
+    width: 1200px;
+    justify-content: space-between;
     position: relative;
 }
 
-.change-trading-pair-btn {
+.dropdown-btn {
     gap: 10px;
     font-size: 1.8rem;
     padding: 15px 30px;
@@ -1731,13 +1756,13 @@ canvas.price-sparkline {
     cursor: pointer;
 }
 
-.change-trading-pair-btn-icon {
+.dropdown-btn-icon {
     font-size: 1.5rem;
     color: var(--GRAY-DARK-1);
     transition: all 0.3s ease;
 }
 
-.change-trading-pair-btn-icon.active {
+.dropdown-btn-icon.active {
     transform: rotate(-180deg);
 }
 
@@ -1749,12 +1774,28 @@ canvas.price-sparkline {
     display: none;
     position: absolute;
     top: calc(100% + 50px);
-    width: 1600px;
-    left: calc(-(1600px - 100%)px);
+    width: 100%;
+    left: 0;
 }
 
 .crypto-trade-table-trading-pair.active {
     display: flex;
     background-color: var(--GRAY-LIGHT-1);
     z-index: 5;
+}
+
+.trading-pair-chart-heading-container {
+    justify-content: space-between;
+}
+
+.trading-pair-price-chart-wrapper {
+    height: 500px;
+}
+
+.trading-pair-price-chart-container {
+    height: 450px;
+}
+
+.trading-pair-chart-wrapper-container {
+    padding: 0px;
 }

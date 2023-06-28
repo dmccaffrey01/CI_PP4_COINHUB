@@ -2,101 +2,129 @@
 {% load static %}
 
 {% block content %}
-
-<section class="section trading-pair-heading-section">
-    <div class="content-container-rows trading-pair-heading-container gp-50">
-        <div class="change-trading-pair-btn content-container-rows">
-            <div class="trending-icon-container">
-                <img src="{{ crypto.icon }}" alt="{{ crypto.name }} icon" class="icon">
-            </div>
-            <div class="dark-text">
-                {{ crypto.euro_trading_pair }}
-            </div>
-            <i class="fa-solid fa-chevron-down change-trading-pair-btn-icon"></i>
-        </div>
-        <div class="content-container gp-10 trading-pair-heading-item-container">
-            <div class="dark-text text-gd-2">
-                Last Price
-            </div>
-            <div class="dark-text comma-format">
-                €{{ crypto.price }}
-            </div>
-        </div>
-        <div class="content-container gp-10 trading-pair-heading-item-container">
-            <div class="dark-text text-gd-2">
-                24H Volume
-            </div>
-            <div class="dark-text letter-format">
-                €{{ crypto.volume }}
-            </div>
-        </div>
-        <div class="content-container gp-10 trading-pair-heading-item-container">
-            <div class="dark-text text-gd-2">
-                24H High
-            </div>
-            <div class="dark-text comma-format">
-                €{{ high_24h }}
-            </div>
-        </div>
-        <div class="content-container gp-10 trading-pair-heading-item-container">
-            <div class="dark-text text-gd-2">
-                24H Low
-            </div>
-            <div class="dark-text comma-format">
-                €{{ low_24h }}
-            </div>
-        </div>
-        <div class="crypto-trade-table-trading-pair content-container">
-            <div class="section-container crypto-list-trading-pairs-container content-container gp-50">
-                <div class="content-container w-100 gp-10">
-                    <div class="trading-pairs-table-wrapper table-wrapper content-container gp-50 w-100">
-                        <div class="content-container search-container gp-20">
-                            <div class="heading-3 dark-text">Search Trading Pairs</div>
-                            <form class="trading-pairs-search-fo rm crypto-search-form" method="GET">
-                                <div class="input-container">
-                                    <input type="text" autocomplete="off" class="trading-pairs-search-input crypto-search-input" name="query" placeholder="Search for an asset">
-                                    <span class="search-icon"><i class="fas fa-search"></i></span>
-                                    <span class="close-icon"><i class="fa-solid fa-xmark"></i></span>
+<div class="trading-pair-page-container">
+    <div class="trading-pair-left-side">
+        <section class="section trading-pair-heading-section trading-pair-left-side-section">
+            <div class="content-container-rows trading-pair-heading-container">
+                <div class="change-trading-pair-btn dropdown-btn content-container-rows">
+                    <div class="trending-icon-container">
+                        <img src="{{ crypto.icon }}" alt="{{ crypto.name }} icon" class="icon">
+                    </div>
+                    <div class="dark-text">
+                        {{ crypto.euro_trading_pair }}
+                    </div>
+                    <i class="fa-solid fa-chevron-down dropdown-btn-icon"></i>
+                </div>
+                <div class="content-container gp-10 trading-pair-heading-item-container">
+                    <div class="dark-text text-gd-2">
+                        Last Price
+                    </div>
+                    <div class="dark-text comma-format">
+                        €{{ crypto.price }}
+                    </div>
+                </div>
+                <div class="content-container gp-10 trading-pair-heading-item-container">
+                    <div class="dark-text text-gd-2">
+                        24H Volume
+                    </div>
+                    <div class="dark-text letter-format">
+                        €{{ crypto.volume }}
+                    </div>
+                </div>
+                <div class="content-container gp-10 trading-pair-heading-item-container">
+                    <div class="dark-text text-gd-2">
+                        24H High
+                    </div>
+                    <div class="dark-text comma-format">
+                        €{{ high_24h }}
+                    </div>
+                </div>
+                <div class="content-container gp-10 trading-pair-heading-item-container">
+                    <div class="dark-text text-gd-2">
+                        24H Low
+                    </div>
+                    <div class="dark-text comma-format">
+                        €{{ low_24h }}
+                    </div>
+                </div>
+                <div class="crypto-trade-table-trading-pair content-container">
+                    <div class="section-container crypto-list-trading-pairs-container content-container gp-50">
+                        <div class="content-container w-100 gp-10">
+                            <div class="trading-pairs-table-wrapper table-wrapper content-container gp-50 w-100">
+                                <div class="content-container search-container gp-20">
+                                    <div class="heading-3 dark-text">Search Trading Pairs</div>
+                                    <form class="trading-pairs-search-fo rm crypto-search-form" method="GET">
+                                        <div class="input-container">
+                                            <input type="text" autocomplete="off" class="trading-pairs-search-input crypto-search-input" name="query" placeholder="Search for an asset">
+                                            <span class="search-icon"><i class="fas fa-search"></i></span>
+                                            <span class="close-icon"><i class="fa-solid fa-xmark"></i></span>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
+                                <!-- Trading Pairs Table -->
+                                <table class="crypto-list-home-table crypto-list-trading-pairs-table w-100">
+                                    <thead>
+                                        <tr>
+                                            <th class="crypto-name-symbol-heading">Name</th>
+                                            <th class="crypto-price-heading">Price</th>
+                                            <th class="crypto-change">Change</th>
+                                            <th class="crypto-volume-heading">Volume (24h)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="crypto-list-trading-pairs-table-body">
+                                        {% for crypto in cryptocurrencies %}
+                                            <tr data-name="{{ crypto.name }}" data-symbol="{{ crypto.symbol }}" data-euro-trading-pair="{{ crypto.euro_trading_pair }}" class="tr-link" onclick="window.location='{% url 'trading_pair' symbol=crypto.symbol %}';">
+                                                <td class="crypto-name-symbol">
+                                                    <div class="crypto-name-symbol-wrapper">
+                                                        <div class="crypto-icon-container">
+                                                            <img src="{{ crypto.icon }}" alt="{{ crypto.name }} Icon" class="crypto-icon" />
+                                                        </div>
+                                                        <div class="crypto-details">
+                                                            <div class="crypto-name">{{ crypto.euro_trading_pair }}</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="crypto-price comma-format">€{{ crypto.price }}</td>
+                                                <td class="crypto-change pos-neg-change">{{ crypto.change }}%</td>
+                                                <td class="crypto-volume letter-format">€{{ crypto.volume }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <!-- Trading Pairs Table -->
-                        <table class="crypto-list-home-table crypto-list-trading-pairs-table w-100">
-                            <thead>
-                                <tr>
-                                    <th class="crypto-name-symbol-heading">Name</th>
-                                    <th class="crypto-price-heading">Price</th>
-                                    <th class="crypto-change">Change</th>
-                                    <th class="crypto-volume-heading">Volume (24h)</th>
-                                </tr>
-                            </thead>
-                            <tbody class="crypto-list-trading-pairs-table-body">
-                                {% for crypto in cryptocurrencies %}
-                                    <tr data-name="{{ crypto.name }}" data-symbol="{{ crypto.symbol }}" data-euro-trading-pair="{{ crypto.euro_trading_pair }}" class="tr-link" onclick="window.location='{% url 'trading_pair' symbol=crypto.symbol %}';">
-                                        <td class="crypto-name-symbol">
-                                            <div class="crypto-name-symbol-wrapper">
-                                                <div class="crypto-icon-container">
-                                                    <img src="{{ crypto.icon }}" alt="{{ crypto.name }} Icon" class="crypto-icon" />
-                                                </div>
-                                                <div class="crypto-details">
-                                                    <div class="crypto-name">{{ crypto.euro_trading_pair }}</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="crypto-price comma-format">€{{ crypto.price }}</td>
-                                        <td class="crypto-change pos-neg-change">{{ crypto.change }}%</td>
-                                        <td class="crypto-volume letter-format">€{{ crypto.volume }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
+        </section>
 
+        <section class="section trading-pair-chart-section portfolio-assets-section trading-pair-left-side-section">
+            <div class="content-container trading-pair-chart-container portfolio-chart-container">
+                <div class="historical-price-heading-container portfolio-price-heading-container trading-pair-chart-heading-container content-container-rows">
+                    <div class="heading-3 dark-text">Price Chart</div>
+                    <div class="dropdown-btn content-container-rows historical-price-time-periods">
+                        <div class="historical-price-time-periods-btn dark-text" data-time-period="1m">1M</div>
+                        <i class="fa-solid fa-chevron-down dropdown-btn-icon"></i>
+                    </div>
+                </div>
+                <div class="portfolio-chart-wrapper-container trading-pair-chart-wrapper-container content-container">
+                    <div class="historical-price-chart-wrapper portfolio-price-chart-wrapper trading-pair-price-chart-wrapper">
+                        <div class="historical-price-chart-container portfolio-price-chart-container trading-pair-price-chart-container">
+                            <canvas class="trading-pair-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="trading-pair-right-side">
+
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 <script src="{% static 'js/format-numbers.js' %}"></script>
 <script src="{% static 'js/trade-search.js' %}"></script>
 <script src="{% static 'js/trading-pair.js' %}"></script>

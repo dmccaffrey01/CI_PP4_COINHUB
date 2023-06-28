@@ -122,6 +122,35 @@ def trading_pair(request, symbol):
     return render(request, 'trading-pair.html', context)
 
 
+def get_trading_pair_data(request, symbol):
+    url = f'https://min-api.cryptocompare.com/data/v2/histominute'
+    fsym = symbol
+    tsym = 'EUR'
+    limit = 60
+    api_key = os.environ.get('CRYPTOCOMPARE_API')
+    all_data = []
+
+    params = {
+        'fsym': fsym,
+        'tsym': tsym,
+        'limit': limit,
+        'api_key': api_key,
+    }
+
+    response = requests.get(url, params=params)
+    data = response.json()
+    data_list = data['Data']['Data']
+    for d in data_list:
+        del d['conversionType']
+        if 'conversionSymbol' in d:
+            del d['conversionSymbol']
+        d['datetime'] = datetime.fromtimestamp(d['time'])
+        d['last_price'] = (d['open'] + d['high'] + d['low'] + d['close'])/4
+    all_data = data_list + all_data
+
+    return JsonResponse(all_data, safe=False)
+
+
 @login_required
 def get_user_data(request):
     user = request.user
@@ -200,12 +229,14 @@ def crypto_detail_price_data_from_api(request, time_period, symbol):
     tsym = 'EUR'
     limit = time_period_data['lim']
     counter_limit = time_period_data['count_lim']
+    api_key = os.environ.get('CRYPTOCOMPARE_API')
     all_data = []
 
     params = {
         'fsym': fsym,
         'tsym': tsym,
         'limit': limit,
+        'api_key': api_key,
     }
 
     response = requests.get(url, params=params)
