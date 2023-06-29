@@ -2,8 +2,131 @@ const changeTradingPairBtn = document.querySelector(".change-trading-pair-btn");
 const tradeTable = document.querySelector(".crypto-trade-table-trading-pair");
 const changeTradingPairBtnIcon = document.querySelector(".change-trading-pair-btn-icon");
 
+const verticalLineContainer = document.querySelector(".crosshair-vertical-line-container");
+const verticalLines = document.querySelectorAll(".vertical-line");
+
+const createVerticalLine = (num, x, y) => {
+
+    verticalLines.forEach((verticalLine, index) => {
+        let verticalLineHeight = verticalLineContainer.offsetHeight;
+
+        let yHeightRatio = Math.abs(index - (y / verticalLineHeight));
+
+        verticalLine.style.height = yHeightRatio * verticalLineHeight + 'px';
+
+        let newNum = Math.round(num * yHeightRatio);
+
+        let ratioNum = Math.round(newNum * 0.33);
+        
+        let totalRatio = newNum + ratioNum;
+
+        let totalSectionHeight = ((verticalLineHeight * yHeightRatio) * newNum) / totalRatio;
+
+        let totalGapHeight = ((verticalLineHeight * yHeightRatio) * ratioNum) / totalRatio;
+
+        let sectionHeight = totalSectionHeight / newNum;
+
+        let gapHeight = totalGapHeight / (newNum - 1);
+        for (let i = 0; i < newNum - 1; i++) {
+            let section = document.createElement('div');
+            section.classList.add('vertical-line-section');
+            section.style.height = sectionHeight + 'px';
+            section.style.top = (sectionHeight * i) + (gapHeight * i) + 'px';
+
+            verticalLine.appendChild(section);
+        }
+
+        let lastSection = document.createElement('div');
+        lastSection.classList.add('vertical-line-section');
+        lastSection.style.height = sectionHeight + 'px';
+        lastSection.style.top = (sectionHeight * (newNum - 1)) + (gapHeight * (newNum - 1)) + 'px';
+
+        verticalLine.appendChild(lastSection);
+
+        verticalLineContainer.style.left = (x - 1) + 'px';
+    })
+
+    return [x, y]
+}
+
+const clearVerticalLine = () => {
+    const verticalLineSections = document.querySelectorAll('.vertical-line-section');
+    verticalLineSections.forEach(section => {
+        section.remove();
+    })
+}
+
+const horizontalLineContainer = document.querySelector(".crosshair-horizontal-line-container");
+const horizontalLines = document.querySelectorAll(".horizontal-line");
+
+const createHorizontalLine = (num, x, y) => {
+    horizontalLines.forEach((horizontalLine, index) => {
+        let horizontalLineWidth = horizontalLineContainer.offsetWidth;
+
+        let xWidthRatio = Math.abs(index - (x / horizontalLineWidth));
+
+        horizontalLine.style.width = xWidthRatio * horizontalLineWidth + 'px';
+
+        let newNum = Math.round(num * xWidthRatio);
+
+        let ratioNum = Math.round(newNum * 0.33);
+        
+        let totalRatio = newNum + ratioNum;
+
+        let totalSectionWidth = ((horizontalLineWidth * xWidthRatio) * newNum) / totalRatio;
+
+        let totalGapWidth = ((horizontalLineWidth * xWidthRatio) * ratioNum) / totalRatio;
+
+        let sectionWidth = totalSectionWidth / newNum;
+
+        let gapWidth = totalGapWidth / (newNum - 1);
+        
+        for (let i = 0; i < newNum - 1; i++) {
+            let section = document.createElement('div');
+            section.classList.add('horizontal-line-section');
+            section.style.width = sectionWidth + 'px';
+            section.style.left = (sectionWidth * i) + (gapWidth * i) + 'px';
+
+            horizontalLine.appendChild(section);
+        }
+        
+        let lastSection = document.createElement('div');
+        lastSection.classList.add('horizontal-line-section');
+        lastSection.style.width = sectionWidth + 'px';
+        lastSection.style.left = (sectionWidth * (newNum - 1)) + (gapWidth * (newNum - 1)) + 'px';
+
+        horizontalLine.appendChild(lastSection);
+
+        horizontalLineContainer.style.top = (y - 1) + 'px';
+    })
+
+    return [x, y]
+}
+
+const clearHorizontalLine = () => {
+    const horizontalLineSections = document.querySelectorAll('.horizontal-line-section');
+    horizontalLineSections.forEach(section => {
+        section.remove();
+    })
+}
+
+const createCrosshair = (num, x, y) => {
+    clearVerticalLine();
+    createVerticalLine(num, x, y);
+    clearHorizontalLine();
+    createHorizontalLine((2.66 * num), x, y);
+}
+
+const canvas = document.querySelector('.trading-pair-price-chart-wrapper');
+
+canvas.addEventListener('mousemove', (e) => {
+    let rect = canvas.getBoundingClientRect();
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
+    createCrosshair(30, x, y);
+});
+
 changeTradingPairBtn.addEventListener("click", () => {
-    console.log("clicked");
 
     if (tradeTable.classList.contains("active")) {
         tradeTable.classList.remove("active");
@@ -86,7 +209,6 @@ const createChart = async () => {
 
     const suggestedMin = Math.floor(minValue / 20) * 20;
     const suggestedMax = Math.ceil(maxValue / 20) * 20;
-    console.log(suggestedMin, suggestedMax);
 
     const lastDate = formattedData[formattedData.length - 1]["t"];
     const maxDate = new Date(lastDate);
@@ -199,6 +321,22 @@ const createChart = async () => {
                 legend: {
                     display: false,
                 },
+                tooltip: {
+                    callbacks: {
+                        beforeBody: (ctx) => {
+                            const bodyArr = [
+                                `O: ${ctx[0].raw.o.toFixed(2)}`,
+                                `H: ${ctx[0].raw.h.toFixed(2)}`,
+                                `L: ${ctx[0].raw.l.toFixed(2)}`,
+                                `C: ${ctx[0].raw.c.toFixed(2)}`,
+                            ]; 
+                            return bodyArr;
+                        },
+                        label: (ctx) => {
+                            return "";
+                        }
+                    }
+                }
             },
             parsing: {
                 xAxisKey: 't',
@@ -209,6 +347,7 @@ const createChart = async () => {
                     type: 'timeseries',
                     time: {
                         unit: 'minute',
+                        tooltipFormat: 'hh:mm',
                     },
                     grid: {
                         display: false,

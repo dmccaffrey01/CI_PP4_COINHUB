@@ -1799,3 +1799,50 @@ canvas.price-sparkline {
 .trading-pair-chart-wrapper-container {
     padding: 0px;
 }
+
+.crosshair-vertical-line-container {
+    position: absolute;
+    height: 500px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 2px;
+}
+
+.trading-pair-price-chart-wrapper {
+    position: relative;
+    cursor: none;
+}
+
+.trading-pair-chart-crosshair-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.crosshair-vertical-line {
+    height: 0;
+}
+
+.crosshair-horizontal-line-container {
+    position: absolute;
+    width: 1200px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+}
+
+.horizontal-line {
+    height: 2px; 
+    width: 0;
+    position: relative; 
+}
+
+.horizontal-line-section {
+    height: 2px;
+    background-color: var(--BLUE-LIGHT-1);
+    position: absolute;
+    border-radius: 10px;
+    bottom: 0;
+}
