@@ -2,8 +2,90 @@ const changeTradingPairBtn = document.querySelector(".change-trading-pair-btn");
 const tradeTable = document.querySelector(".crypto-trade-table-trading-pair");
 const changeTradingPairBtnIcon = document.querySelector(".change-trading-pair-btn-icon");
 
+const canvas = document.querySelector('.trading-pair-price-chart-wrapper');
+
+const crosshair = document.querySelector('.trading-pair-chart-crosshair-container');
+const timestampCrosshairLabel = document.querySelector('.timestamp-crosshair-label');
+const priceCrosshairLabel = document.querySelector('.price-crosshair-label');
+
 const verticalLineContainer = document.querySelector(".crosshair-vertical-line-container");
 const verticalLines = document.querySelectorAll(".vertical-line");
+const horizontalLineContainer = document.querySelector(".crosshair-horizontal-line-container");
+const horizontalLines = document.querySelectorAll(".horizontal-line");
+
+let globalFormattedData = [];
+let globalPriceRange = [];
+let globalTimeRange = [];
+let globalXValues = [];
+let globalYValues = [];
+
+const updateTimestampLabel = (x, timestamps) => {
+    let min = globalXValues[0];
+    let max = globalXValues[1];
+    let numOfPoints = timestamps.length - 1;
+
+    let chartWidth = max - min;
+
+    let pointWidth = chartWidth / numOfPoints;
+
+    let timeIndex;
+    if (x >= max) {
+        timeIndex = numOfPoints;
+    } else if (x <= min) {
+        timeIndex = 0
+    } else {
+        timeIndex = Math.round((x - min) / pointWidth);
+    }
+    let timestamp = timestamps[timeIndex];
+
+    timestampCrosshairLabel.innerHTML = timestamp;
+}
+
+const updatePriceLabel = (y, prices) => {
+    let min = globalYValues[0];
+    let max = globalYValues[1];
+    let numOfPoints = prices.length;
+    let chartHeight = min - max;
+    let pointHeight = chartHeight / numOfPoints;
+    let priceIndex;
+    if (y <= max) {
+        priceIndex = 0;
+    } else if (y >= min) {
+        priceIndex = numOfPoints - 1
+    } else {
+        priceIndex = Math.floor((y - max) / pointHeight);
+        console.log(y, max, pointHeight);
+    }
+    let price = prices[priceIndex];
+
+    priceCrosshairLabel.innerHTML = price;
+}
+
+const dataOptions = {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+}
+
+const updateTimestampAndPriceLabel = (x, y) => {
+    let timestamps = [];
+    for (let i = 0; i < globalFormattedData.length; i++) {
+        let timestamp = globalFormattedData[i]["t"].toLocaleString("en", dataOptions);
+        timestamps.push(timestamp);
+    }
+    updateTimestampLabel(x, timestamps);
+
+    let prices = [];
+    let maxPrice = globalPriceRange[1];
+    let minPrice = globalPriceRange[0];
+    let length = maxPrice - minPrice;
+
+    for (let i = maxPrice; i >= minPrice; i -= 1) {
+        prices.push(i);
+    }
+
+    updatePriceLabel(y, prices);
+}
 
 const createVerticalLine = (num, x, y) => {
 
@@ -55,9 +137,6 @@ const clearVerticalLine = () => {
         section.remove();
     })
 }
-
-const horizontalLineContainer = document.querySelector(".crosshair-horizontal-line-container");
-const horizontalLines = document.querySelectorAll(".horizontal-line");
 
 const createHorizontalLine = (num, x, y) => {
     horizontalLines.forEach((horizontalLine, index) => {
@@ -117,13 +196,24 @@ const createCrosshair = (num, x, y) => {
     createHorizontalLine((2.66 * num), x, y);
 }
 
-const canvas = document.querySelector('.trading-pair-price-chart-wrapper');
-
 canvas.addEventListener('mousemove', (e) => {
     let rect = canvas.getBoundingClientRect();
     let x = e.clientX - rect.left;
     let y = e.clientY - rect.top;
     createCrosshair(30, x, y);
+    updateTimestampAndPriceLabel(x, y);
+});
+
+canvas.addEventListener('mouseenter', function () {
+    crosshair.style.display = 'flex';
+    timestampCrosshairLabel.style.display = 'flex';
+    priceCrosshairLabel.style.display = 'flex';
+});
+
+canvas.addEventListener('mouseleave', function () {
+    crosshair.style.display = 'none';
+    timestampCrosshairLabel.style.display = 'none';
+    priceCrosshairLabel.style.display = 'none';
 });
 
 changeTradingPairBtn.addEventListener("click", () => {
@@ -134,7 +224,6 @@ changeTradingPairBtn.addEventListener("click", () => {
     } else {
         tradeTable.classList.add("active");
         changeTradingPairBtnIcon.classList.add("active");
-
     }
     
 })
@@ -185,6 +274,8 @@ const getFormattedChartData = async () => {
         formattedData.push(fD);
     }
 
+    globalFormattedData = formattedData;
+
     return formattedData
 }
 
@@ -210,10 +301,13 @@ const createChart = async () => {
     const suggestedMin = Math.floor(minValue / 20) * 20;
     const suggestedMax = Math.ceil(maxValue / 20) * 20;
 
+    globalPriceRange = [suggestedMin, suggestedMax];
+
     const lastDate = formattedData[formattedData.length - 1]["t"];
     const maxDate = new Date(lastDate);
     maxDate.setMinutes(maxDate.getMinutes() + 5);
 
+    globalTimeRange = [formattedData[0]["t"], maxDate];
 
     const data = {
         datasets: [{
@@ -263,11 +357,27 @@ const createChart = async () => {
 
             ctx.save();
 
+            let maxTick = y.max;
+            let minTick = y.min;
+            let maxTickPixel = y.getPixelForValue(maxTick);
+            let minTickPixel = y.getPixelForValue(minTick);
+            console.log(top);
+            console.log('Max Tick Pixel:', maxTickPixel);
+            console.log('Min Tick Pixel:', minTickPixel);
+            globalYValues = [438, 38];
+
             let lastDate;
 
             const datapointXDiff = x.getPixelForValue(data.datasets[0].data[1].t) - x.getPixelForValue(data.datasets[0].data[0].t);
 
+            let xValues = [];
+
             data.datasets[0].data.forEach((datapoint, index) => {
+                if (index == 0 || index == data.datasets[0].data.length - 1) {
+                    let xValue = x.getPixelForValue(datapoint.t);
+                    xValues.push(xValue);
+                }
+                
                 let date = (datapoint.t).toLocaleString('en', dataOptions);
                 
                 let minute = parseInt(date.slice(-2));
@@ -301,7 +411,7 @@ const createChart = async () => {
                 }
             });
 
-
+            globalXValues = xValues;
         }
     }
   
