@@ -1870,3 +1870,17 @@ canvas.price-sparkline {
     left: 0;
     bottom: -16px;
 }
+
+.chart-tooltip {
+    padding: 20px;
+    background-color: var(--BLUE-DARK-1);
+    color: var(--WHITE);
+    font-size: 16px;
+    position: absolute;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 5px;
+    gap: 5px
+}

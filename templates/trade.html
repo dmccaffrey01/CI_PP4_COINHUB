@@ -30,7 +30,11 @@
                     </thead>
                     <tbody class="crypto-list-trading-pairs-table-body">
                         {% for crypto in cryptocurrencies %}
+                        {% if user.is_authenticated %}
                             <tr data-name="{{ crypto.name }}" data-symbol="{{ crypto.symbol }}" data-euro-trading-pair="{{ crypto.euro_trading_pair }}" class="tr-link" onclick="window.location='{% url 'trading_pair' symbol=crypto.symbol %}';">
+                        {% else %}
+                            <tr data-name="{{ crypto.name }}" data-symbol="{{ crypto.symbol }}" data-euro-trading-pair="{{ crypto.euro_trading_pair }}" class="tr-link" onclick="window.location='{% url 'account_login' %}';">
+                        {% endif %}
                                 <td class="crypto-name-symbol">
                                     <div class="crypto-name-symbol-wrapper">
                                         <div class="crypto-icon-container">

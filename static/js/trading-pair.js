@@ -13,13 +13,30 @@ const verticalLines = document.querySelectorAll(".vertical-line");
 const horizontalLineContainer = document.querySelector(".crosshair-horizontal-line-container");
 const horizontalLines = document.querySelectorAll(".horizontal-line");
 
+const chartTooltip = document.querySelector('.chart-tooltip');
+
 let globalFormattedData = [];
 let globalPriceRange = [];
 let globalTimeRange = [];
 let globalXValues = [];
 let globalYValues = [];
+let globalCandlestickData = [];
+let nextFiveData = [];
 
-const updateTimestampLabel = (x, timestamps) => {
+const displayToolTip = (x, y, price, timestamp) => {
+    
+    chartTooltip.innerHTML = `<div>${timestamp}</div>
+                                <div>O: ${price["o"]}</div>
+                                <div>H: ${price["h"]}</div>
+                                <div>L: ${price["l"]}</div>
+                                <div>C: ${price["c"]}</div>`;
+    chartTooltip.style.display = 'flex';
+    let height = chartTooltip.offsetHeight;
+    chartTooltip.style.left = x + 20 + 'px';
+    chartTooltip.style.top = y - 20 - height + 'px';
+}
+
+const updateTimestampLabel = (x, timestamps, y) => {
     let min = globalXValues[0];
     let max = globalXValues[1];
     let numOfPoints = timestamps.length - 1;
@@ -39,6 +56,16 @@ const updateTimestampLabel = (x, timestamps) => {
     let timestamp = timestamps[timeIndex];
 
     timestampCrosshairLabel.innerHTML = timestamp;
+
+    let candlestickTops = globalCandlestickData[0];
+    let candlestickBottoms = globalCandlestickData[1];
+
+    if (y >= candlestickTops[timeIndex] && y <= candlestickBottoms[timeIndex]) {
+        let price = globalFormattedData[timeIndex];
+        displayToolTip(x, y, price, timestamp);
+    } else {
+        chartTooltip.style.display = 'none';
+    }
 }
 
 const updatePriceLabel = (y, prices) => {
@@ -54,7 +81,6 @@ const updatePriceLabel = (y, prices) => {
         priceIndex = numOfPoints - 1
     } else {
         priceIndex = Math.floor((y - max) / pointHeight);
-        console.log(y, max, pointHeight);
     }
     let price = prices[priceIndex];
 
@@ -73,8 +99,7 @@ const updateTimestampAndPriceLabel = (x, y) => {
         let timestamp = globalFormattedData[i]["t"].toLocaleString("en", dataOptions);
         timestamps.push(timestamp);
     }
-    updateTimestampLabel(x, timestamps);
-
+    
     let prices = [];
     let maxPrice = globalPriceRange[1];
     let minPrice = globalPriceRange[0];
@@ -84,7 +109,10 @@ const updateTimestampAndPriceLabel = (x, y) => {
         prices.push(i);
     }
 
+    updateTimestampLabel(x, timestamps, y);
+
     updatePriceLabel(y, prices);
+
 }
 
 const createVerticalLine = (num, x, y) => {
@@ -201,7 +229,7 @@ canvas.addEventListener('mousemove', (e) => {
     let x = e.clientX - rect.left;
     let y = e.clientY - rect.top;
     createCrosshair(30, x, y);
-    updateTimestampAndPriceLabel(x, y);
+    // updateTimestampAndPriceLabel(x, y);
 });
 
 canvas.addEventListener('mouseenter', function () {
@@ -256,11 +284,11 @@ const getFormattedChartData = async () => {
 
     let formattedData = [];
 
-    for (let i = 30; i < data.length; i++) {
+    for (let i = 25; i < data.length; i++) {
         let d = data[i];
         let fD = {};
 
-        fD["t"] = convertTime(d["time"]);
+        fD["t"] = convertTime(d["time"] + (60 * 5));
         if (i === 0) {
             fD["o"] = d["open"];
         } else {
@@ -274,9 +302,85 @@ const getFormattedChartData = async () => {
         formattedData.push(fD);
     }
 
-    globalFormattedData = formattedData;
+    nextFiveData = formattedData.slice(formattedData.length - 5, formattedData.length);
+    globalFormattedData = formattedData.slice(0, formattedData.length - 5);;
 
-    return formattedData
+    return globalFormattedData
+}
+
+const getPriceMovements = (index) => {
+    let data = nextFiveData[index];
+
+    let maxIndex = 600;
+
+    let openPrice = data["o"];
+    let highPrice = data["h"];
+    let lowPrice = data["l"];
+    let closePrice = data["c"];
+
+    let lowIndex = Math.floor(Math.random() * (525 - 75 + 1) + 75);
+    let highIndex;
+    let prices, startIndex, endIndex;
+
+    if (lowIndex < 175) {
+        highIndex = lowIndex + Math.floor(Math.random() * ((525 - lowIndex) - 100 + 1)) + 100;
+        prices = [openPrice, lowPrice, highPrice, closePrice];
+        startIndex = [0, lowIndex, highIndex];
+        endIndex = [lowIndex, highIndex, maxIndex];
+      } else if (lowIndex > 425) {
+        highIndex = lowIndex - Math.floor(Math.random() * ((lowIndex - 75) - 100 + 1)) + 100;
+        prices = [openPrice, highPrice, lowPrice, closePrice];
+        startIndex = [0, highIndex, lowIndex];
+        endIndex = [highIndex, lowIndex, maxIndex];
+      } else {
+        let addOrTakeaway = Math.random() > 0.5;
+        if (addOrTakeaway) {
+          highIndex = lowIndex + Math.floor(Math.random() * ((525 - lowIndex) - 100 + 1)) + 100;
+          prices = [openPrice, lowPrice, highPrice, closePrice];
+          startIndex = [0, lowIndex, highIndex];
+          endIndex = [lowIndex, highIndex, maxIndex];
+        } else {
+          highIndex = lowIndex - Math.floor(Math.random() * ((lowIndex - 75) - 100 + 1)) + 100;
+          prices = [openPrice, highPrice, lowPrice, closePrice];
+          startIndex = [0, highIndex, lowIndex];
+          endIndex = [highIndex, lowIndex, maxIndex];
+        }
+      }
+    
+      let priceMovements = [openPrice];
+    
+      for (let k = 0; k < endIndex.length; k++) {
+        let targetPrice = prices[k + 1];
+        let startingPrice = prices[k];
+    
+        let firstDifference = targetPrice - startingPrice;
+        let firstAvg = firstDifference / (endIndex[k] - startIndex[k]);
+        let mean = firstAvg;
+        let stdDev = mean + 2;
+        let sample_size = 1;
+    
+        let price = startingPrice;
+        let avgPrice = startingPrice;
+        let avgPriceMovement = firstAvg;
+    
+        for (let i = 0; i < (endIndex[k] - startIndex[k]) - 1; i++) {
+          let randomNumber;
+          do {
+            randomNumber = Math.random() * (stdDev * 2) - stdDev;
+          } while (randomNumber < -stdDev || randomNumber > stdDev);
+    
+          avgPrice += avgPriceMovement;
+          price = avgPrice + randomNumber;
+    
+          if (!((startIndex[k] === 0) && (i === 0))) {
+            priceMovements.push(price);
+          }
+        }
+    
+        priceMovements.push(targetPrice);
+      }
+
+      return priceMovements;
 }
 
 const createChart = async () => {
@@ -357,13 +461,23 @@ const createChart = async () => {
 
             ctx.save();
 
+            let topValues = [];
+            let bottomValues = [];
+            data.datasets[0].data.forEach((datapoint, index) => {
+                let yValue = chart.getDatasetMeta(0).data[index].y;
+                let heightValue = chart.getDatasetMeta(0).data[index].height;
+                if (heightValue) {
+                    topValues.push(yValue + 25);
+                    bottomValues.push(heightValue + yValue + 25);
+                }
+            });
+
+            globalCandlestickData = [topValues, bottomValues];
+
             let maxTick = y.max;
             let minTick = y.min;
             let maxTickPixel = y.getPixelForValue(maxTick);
             let minTickPixel = y.getPixelForValue(minTick);
-            console.log(top);
-            console.log('Max Tick Pixel:', maxTickPixel);
-            console.log('Min Tick Pixel:', minTickPixel);
             globalYValues = [438, 38];
 
             let lastDate;
@@ -432,20 +546,7 @@ const createChart = async () => {
                     display: false,
                 },
                 tooltip: {
-                    callbacks: {
-                        beforeBody: (ctx) => {
-                            const bodyArr = [
-                                `O: ${ctx[0].raw.o.toFixed(2)}`,
-                                `H: ${ctx[0].raw.h.toFixed(2)}`,
-                                `L: ${ctx[0].raw.l.toFixed(2)}`,
-                                `C: ${ctx[0].raw.c.toFixed(2)}`,
-                            ]; 
-                            return bodyArr;
-                        },
-                        label: (ctx) => {
-                            return "";
-                        }
-                    }
+                    display: false,
                 }
             },
             parsing: {
@@ -494,6 +595,68 @@ const createChart = async () => {
         document.querySelector('.trading-pair-chart'),
         config
       );
+
+      let chartData = myChart.data.datasets[0].data;
+
+      const createNewDataPoint = (i, newDataPoint) => {
+            let d = nextFiveData[i];
+            let priceMovements = getPriceMovements(i);
+            let updatedDataPoint = newDataPoint;
+            let k = 0;
+            let msInterval = window.setInterval(() => {
+                let newPrice = priceMovements[k];
+                updatedDataPoint["s"] = [updatedDataPoint["o"], newPrice];
+                if (newPrice >= updatedDataPoint["h"]) {
+                    updatedDataPoint["h"] = newPrice;
+                } else if (newPrice <= updatedDataPoint["l"]) {
+                    updatedDataPoint["l"] = newPrice;
+                }
+                if (newPrice >= updatedDataPoint["o"]) {
+                    myChart.data.datasets[0].backgroundColor[chartData.length - 1] = 'purple';
+                    myChart.update();
+                } else {
+                    myChart.data.datasets[0].backgroundColor[chartData.length - 1] = 'blue';
+                    myChart.update();
+                }
+                chartData[chartData.length - 1] = updatedDataPoint;
+                myChart.update();
+                k++;
+                if (k >= 60) {
+                    clearInterval(msInterval);
+                }
+            }, 100);
+
+            chartData.splice(0, 1);
+      }
+
+        window.setTimeout(() => {
+            let newDataPoint = { ...nextFiveData[0] };
+            newDataPoint["h"] = newDataPoint["o"];
+            newDataPoint["l"] = newDataPoint["o"];
+            newDataPoint["c"] = newDataPoint["o"];
+            newDataPoint["s"] = [newDataPoint["o"], newDataPoint["o"]];
+            chartData.push(newDataPoint);
+            myChart.update();
+            let i = 0;
+            createNewDataPoint(i, newDataPoint);
+            i++;
+            let interval5m = window.setInterval(() => {
+                createNewDataPoint(i, newDataPoint);
+                i++;
+                if (i >= 5) {
+                    clearInterval(interval5m);
+                }
+
+                newDataPoint = { ...nextFiveData[i] };
+                newDataPoint["h"] = newDataPoint["o"];
+                newDataPoint["l"] = newDataPoint["o"];
+                newDataPoint["c"] = newDataPoint["o"];
+                newDataPoint["s"] = [newDataPoint["o"], newDataPoint["o"]];
+
+                chartData.push(newDataPoint);
+                myChart.update();
+            }, 6000);
+        }, 2000);
 }
 
 createChart();
