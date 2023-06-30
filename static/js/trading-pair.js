@@ -229,7 +229,7 @@ canvas.addEventListener('mousemove', (e) => {
     let x = e.clientX - rect.left;
     let y = e.clientY - rect.top;
     createCrosshair(30, x, y);
-    // updateTimestampAndPriceLabel(x, y);
+    updateTimestampAndPriceLabel(x, y);
 });
 
 canvas.addEventListener('mouseenter', function () {
@@ -383,6 +383,29 @@ const getPriceMovements = (index) => {
       return priceMovements;
 }
 
+const getBackgroundColors = () => {
+    let globalData = globalFormattedData;
+
+    let bgColors = [];
+
+    globalData.forEach((d) => {
+        let c = d["c"];
+        let o = d["o"];
+
+        let color;
+
+        if (c >= o) {
+            color = '#4ec437';
+        } else {
+            color = '#d31d1d';
+        }
+
+        bgColors.push(color);
+    });
+
+    return bgColors;
+}
+
 const createChart = async () => {
 
     let formattedData = await getFormattedChartData();
@@ -413,20 +436,13 @@ const createChart = async () => {
 
     globalTimeRange = [formattedData[0]["t"], maxDate];
 
+    let backgroundColors = getBackgroundColors();
+
     const data = {
         datasets: [{
             data: formattedData,
             borderColor: 'black',
-            backgroundColor: (ctx) => {
-                const { raw: { o, c} } = ctx;
-                let color;
-                if (c >= o) {
-                    color = '#4ec437';
-                } else {
-                    color = '#d31d1d';
-                }
-                return color;
-            },
+            backgroundColor: backgroundColors,
             borderWidth: 1,
             borderSkipped: false,
         }]
@@ -596,8 +612,6 @@ const createChart = async () => {
         config
       );
 
-      let chartData = myChart.data.datasets[0].data;
-
       const createNewDataPoint = (i, newDataPoint) => {
             let d = nextFiveData[i];
             let priceMovements = getPriceMovements(i);
@@ -606,57 +620,61 @@ const createChart = async () => {
             let msInterval = window.setInterval(() => {
                 let newPrice = priceMovements[k];
                 updatedDataPoint["s"] = [updatedDataPoint["o"], newPrice];
+                updatedDataPoint["c"] = newPrice;
+
                 if (newPrice >= updatedDataPoint["h"]) {
                     updatedDataPoint["h"] = newPrice;
                 } else if (newPrice <= updatedDataPoint["l"]) {
                     updatedDataPoint["l"] = newPrice;
                 }
+
                 if (newPrice >= updatedDataPoint["o"]) {
-                    myChart.data.datasets[0].backgroundColor[chartData.length - 1] = 'purple';
-                    myChart.update();
+                    myChart.data.datasets[0].backgroundColor[myChart.data.datasets[0].data.length - 1] = "#4ec437";
                 } else {
-                    myChart.data.datasets[0].backgroundColor[chartData.length - 1] = 'blue';
-                    myChart.update();
+                    myChart.data.datasets[0].backgroundColor[myChart.data.datasets[0].data.length - 1] = "#d31d1d";
+
                 }
-                chartData[chartData.length - 1] = updatedDataPoint;
+
+                myChart.data.datasets[0].data[myChart.data.datasets[0].data.length - 1] = updatedDataPoint;
+
                 myChart.update();
                 k++;
-                if (k >= 60) {
+                if (k >= 600) {
                     clearInterval(msInterval);
                 }
             }, 100);
-
-            chartData.splice(0, 1);
       }
 
-        window.setTimeout(() => {
-            let newDataPoint = { ...nextFiveData[0] };
+      window.setTimeout(() => {
+        let i = 0;
+    
+        const addNewDataPoint = () => {
+            let newDataPoint = { ...nextFiveData[i] };
             newDataPoint["h"] = newDataPoint["o"];
             newDataPoint["l"] = newDataPoint["o"];
             newDataPoint["c"] = newDataPoint["o"];
             newDataPoint["s"] = [newDataPoint["o"], newDataPoint["o"]];
-            chartData.push(newDataPoint);
+            
+            myChart.data.datasets[0].data.push(newDataPoint);
+            myChart.data.datasets[0].backgroundColor.push("#4ec437");
+    
+            if (myChart.data.datasets[0].data.length >= 30) {
+                myChart.data.datasets[0].data.shift();
+                myChart.data.datasets[0].backgroundColor.shift();
+            }
+    
             myChart.update();
-            let i = 0;
+    
             createNewDataPoint(i, newDataPoint);
             i++;
-            let interval5m = window.setInterval(() => {
-                createNewDataPoint(i, newDataPoint);
-                i++;
-                if (i >= 5) {
-                    clearInterval(interval5m);
-                }
-
-                newDataPoint = { ...nextFiveData[i] };
-                newDataPoint["h"] = newDataPoint["o"];
-                newDataPoint["l"] = newDataPoint["o"];
-                newDataPoint["c"] = newDataPoint["o"];
-                newDataPoint["s"] = [newDataPoint["o"], newDataPoint["o"]];
-
-                chartData.push(newDataPoint);
-                myChart.update();
-            }, 6000);
-        }, 2000);
+    
+            if (i < 5) {
+                setTimeout(addNewDataPoint, 60000);
+            }
+        };
+    
+        addNewDataPoint();
+    }, 500);
 }
 
 createChart();
