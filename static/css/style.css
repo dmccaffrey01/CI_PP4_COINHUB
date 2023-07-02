@@ -2005,3 +2005,7 @@ header.active {
     pointer-events: all;
     z-index: 14;
 }
+
+.markets-section {
+    padding-top: 0;
+}

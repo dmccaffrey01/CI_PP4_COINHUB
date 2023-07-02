@@ -23,7 +23,7 @@
     </div>
 </section>
 
-<section class="trending-crypto-section section light-gray-1">
+<section class="trending-crypto-section section light-gray-1 markets-section">
     <div class="content-container gp-50 section-container">
         <div class="heading-container content-container gp-10">
             <div class="heading-3 dark-text">Explore what's hot in the crypto economy</div>
@@ -99,7 +99,7 @@
 </section>
 
 <!-- Crypto Markets List -->
-<section class="crypto-list-markets-section section light-gray-1">
+<section class="crypto-list-markets-section section light-gray-1 markets-section">
     <div class="section-container crypto-list-markets-container content-container gp-50">
         <div class="heading-container content-container gp-10">
             <div class="heading-3 dark-text">Crypto Markets</div>
@@ -147,7 +147,11 @@
                                 <td class="crypto-volume">{{ crypto.volume }}</td>
                                 <td class="crypto-trade">
                                     <div class="table-content-wrapper w-100">
-                                        <div class="buy-btn btn">Buy</div>
+                                        {% if user.is_authenticated %}
+                                        <a href="{% url 'trading_pair' symbol=crypto.symbol %}" class="buy-btn btn">Buy</a>
+                                        {% else %}
+                                        <a href="{% url 'account_signup' %}" class="buy-btn btn">Buy</a>
+                                        {% endif %}
                                     </div>
                                 </td>
                             </tr>

@@ -13,9 +13,12 @@
             <div class="welcome-text dark-text">
                 CoinHub is the most popular place to buy and sell cryptocurrency. It's as easy as signing up and you can get started today.
             </div>
-            <div class="btn register-btn">
-                Sign Up
-            </div>
+            {% if user.is_authenticated %}
+            <a href="{% url 'trade' %}" class="btn register-btn">Start Trading</a>
+            {% else %}
+            <a href="{% url 'account_signup' %}" class="btn register-btn">Sign Up</a>
+            {% endif %}
+
         </div>
         <div class="img-container welcome-img-container">
             <img src="https://res.cloudinary.com/dzwyiggcp/image/upload/v1685476859/CI_PP4_COINHUB/welcome-home/vgklyxtnbr5ckwbqiivu.png" alt="Welcome Image">
@@ -45,7 +48,7 @@
         <div class="content-container w-100">
             <div class="crypto-list-home-heading-container w-100 pb-50">
                 <div class="crypto-list-heading dark-text">Popular cryptocurrencies</div>
-                <a href="#" class="view-more-markets-link text-gd-2">View more markets <i class="fa-solid fa-chevron-right"></i></a>
+                <a href="{% url 'markets' %}" class="view-more-markets-link text-gd-2">View more markets <i class="fa-solid fa-chevron-right"></i></a>
             </div>
             <!-- Popular Crypto List -->
             <div class="table-wrapper w-100">
@@ -82,7 +85,13 @@
                                 </td>
                                 <td class="crypto-trade">
                                     <div class="table-content-wrapper w-100">
-                                        <div class="buy-btn btn">Buy</div>
+                                        {% if user.is_authenticated %}
+                                        <a href="{% url 'trading_pair' symbol=crypto.symbol %}" class="buy-btn btn">Buy</a>
+                                        {% else %}
+                                        <a href="{% url 'account_signup' %}" class="buy-btn btn">Buy</a>
+                                        {% endif %}
+                                        
+                                        
                                     </div>
                                 </td>
                             </tr>
@@ -219,7 +228,11 @@
     <div class="section-container">
         <div class="content-container gp-50">
             <div class="heading-3 dark-text">Start earning today</div>
-            <div class="btn">Sign Up Now</div>
+            {% if user.is_authenticated %}
+            <a href="{% url 'trade' %}" class="btn">Buy Now</a>
+            {% else %}
+            <a href="{% url 'account_signup' %}" class="btn">Sign Up Now</a>
+            {% endif %}
         </div>
     </div>
 </section>

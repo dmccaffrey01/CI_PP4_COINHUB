@@ -96,7 +96,12 @@
             <div class="content-container buy-section-text-container gp-20">
                 <div class="dark-text heading-3">Trade {{ selected_crypto.name }}</div>
                 <div class="dark-text text-gd-2">Buy and sell {{ selected_crypto.name }} on the most secure crypto exchange</div>
-                <div class="btn">Buy {{ selected_crypto.symbol }} <i class="fa-solid fa-cart-shopping"></i></div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'trading_pair' symbol=selected_crypto.symbol %}" class="btn">Buy {{ selected_crypto.symbol }} <i class="fa-solid fa-cart-shopping"></i></a>
+                {% else %}
+                <a href="{% url 'account_signup' %}" class="btn">Buy {{ selected_crypto.symbol }} <i class="fa-solid fa-cart-shopping"></i></a>
+                {% endif %}
+                
             </div>
         </div>
     </div>
