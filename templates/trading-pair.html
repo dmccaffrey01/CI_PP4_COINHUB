@@ -13,13 +13,13 @@
                     <div class="dark-text">
                         {{ crypto.euro_trading_pair }}
                     </div>
-                    <i class="fa-solid fa-chevron-down dropdown-btn-icon"></i>
+                    <i class="fa-solid fa-chevron-down dropdown-btn-icon change-trading-pair-btn-icon"></i>
                 </div>
                 <div class="content-container gp-10 trading-pair-heading-item-container">
                     <div class="dark-text text-gd-2">
                         Last Price
                     </div>
-                    <div class="dark-text comma-format">
+                    <div class="dark-text comma-format last-price-text">
                         €{{ crypto.price }}
                     </div>
                 </div>
@@ -109,9 +109,7 @@
                 </div>
                 <div class="portfolio-chart-wrapper-container trading-pair-chart-wrapper-container content-container">
                     <div class="historical-price-chart-wrapper portfolio-price-chart-wrapper trading-pair-price-chart-wrapper">
-                        <div class="historical-price-chart-container portfolio-price-chart-container trading-pair-price-chart-container">
-                            <canvas class="trading-pair-chart"></canvas>
-                        </div>
+                        <div class="historical-price-chart-container portfolio-price-chart-container trading-pair-price-chart-container"></div>
                         <div class="trading-pair-chart-crosshair-container">
                             <div class="chart-tooltip"></div>
                             <div class="crosshair-vertical-line-container">
@@ -129,17 +127,67 @@
                 </div>
             </div>
         </section>
+
+        <section class="trading-pair-left-side-section section trading-pair-orders-section">
+            <div class="content-container orders-card-container">
+                <div class="heading-3">Orders</div>
+            </div>
+        </section>
     </div>
 
     <div class="trading-pair-right-side">
+        <section class="section trading-pair-right-side-section trading-pair-order-book-section">
+            <div class="content-container order-book-card-container trading-pair-right-side-card-container">
+                <div class="order-book-heading-container content-container trading-pair-right-side-heading-container">
+                    <div class="dark-text heading-3">Order Book</div>
+                </div>
+                <div class="order-book-main-container content-container trading-pair-right-side-main-container">
 
+                </div>
+            </div>
+        </section>
+        
+        <section class="section trading-pair-right-side-section trading-pair-buy-sell-section">
+            <div class="content-container buy-sell-card-container trading-pair-right-side-card-container">
+                <div class="buy-sell-heading-container content-container trading-pair-right-side-heading-container">
+                    <div class="dark-text heading-3">Buy Sell</div>
+                </div>
+                <div class="buy-sell-main-container content-container trading-pair-right-side-main-container">
+                    
+                </div>
+            </div>
+        </section>
+
+        <section class="section trading-pair-right-side-section trading-pair-trade-history-section">
+            <div class="content-container trade-history-card-container trading-pair-right-side-card-container">
+                <div class="trade-history-heading-container content-container trading-pair-right-side-heading-container">
+                    <div class="dark-text heading-3">Trade History</div>
+                </div>
+                <div class="trade-history-main-container content-container trading-pair-right-side-main-container">
+
+                </div>
+            </div>
+        </section>
     </div>
 </div>
+
+<div class="trading-pair-menu-btn">
+    <div class="hamburger-trading-pair">
+        <span class="bar-trading-pair"></span>
+        <span class="bar-trading-pair"></span>
+        <span class="bar-trading-pair"></span>
+    </div>
+</div>
+
+<div class="menu-overlay"></div>
+
+{% endblock %}
+
+{% block js %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 <script src="{% static 'js/format-numbers.js' %}"></script>
 <script src="{% static 'js/trade-search.js' %}"></script>
 <script src="{% static 'js/trading-pair.js' %}"></script>
-
 {% endblock %}

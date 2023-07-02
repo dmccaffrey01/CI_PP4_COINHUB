@@ -3,6 +3,7 @@ const tradeTable = document.querySelector(".crypto-trade-table-trading-pair");
 const changeTradingPairBtnIcon = document.querySelector(".change-trading-pair-btn-icon");
 
 const canvas = document.querySelector('.trading-pair-price-chart-wrapper');
+const canvasContainer = document.querySelector('.trading-pair-price-chart-container');
 
 const crosshair = document.querySelector('.trading-pair-chart-crosshair-container');
 const timestampCrosshairLabel = document.querySelector('.timestamp-crosshair-label');
@@ -23,14 +24,25 @@ let globalYValues = [];
 let globalCandlestickData = [];
 let nextFiveData = [];
 
-const displayToolTip = (x, y, price, timestamp) => {
+let globalCurrentPrice;
+
+const lastPriceElement = document.querySelector('.last-price-text');
+
+const updateLastPrice = () => {
     
+    let currentPrice = globalCurrentPrice;
+    
+    lastPriceElement.innerHTML = `€${currentPrice}`;
+}
+
+const displayToolTip = (x, y, price, timestamp) => {
+    chartTooltip.style.display = 'flex';
     chartTooltip.innerHTML = `<div>${timestamp}</div>
                                 <div>O: ${price["o"]}</div>
                                 <div>H: ${price["h"]}</div>
                                 <div>L: ${price["l"]}</div>
                                 <div>C: ${price["c"]}</div>`;
-    chartTooltip.style.display = 'flex';
+    
     let height = chartTooltip.offsetHeight;
     chartTooltip.style.left = x + 20 + 'px';
     chartTooltip.style.top = y - 20 - height + 'px';
@@ -59,7 +71,6 @@ const updateTimestampLabel = (x, timestamps, y) => {
 
     let candlestickTops = globalCandlestickData[0];
     let candlestickBottoms = globalCandlestickData[1];
-
     if (y >= candlestickTops[timeIndex] && y <= candlestickBottoms[timeIndex]) {
         let price = globalFormattedData[timeIndex];
         displayToolTip(x, y, price, timestamp);
@@ -373,11 +384,11 @@ const getPriceMovements = (index) => {
           price = avgPrice + randomNumber;
     
           if (!((startIndex[k] === 0) && (i === 0))) {
-            priceMovements.push(price);
+            priceMovements.push(price.toFixed(2));
           }
         }
     
-        priceMovements.push(targetPrice);
+        priceMovements.push(targetPrice.toFixed(2));
       }
 
       return priceMovements;
@@ -406,7 +417,12 @@ const getBackgroundColors = () => {
     return bgColors;
 }
 
+
+
 const createChart = async () => {
+    let canvasElement = document.createElement('canvas');
+    canvasElement.classList.add('trading-pair-chart');
+    canvasContainer.appendChild(canvasElement);
 
     let formattedData = await getFormattedChartData();
 
@@ -446,7 +462,7 @@ const createChart = async () => {
             borderWidth: 1,
             borderSkipped: false,
         }]
-      };
+        };
 
     const candlestick = {
         id: 'candlestick',
@@ -456,17 +472,33 @@ const createChart = async () => {
             ctx.lineWidth = 2;
             ctx.strokeStyle = '#333333';
 
+            let topValues = [];
+            let bottomValues = [];
+
             data.datasets[0].data.forEach((datapoint, index) => {
                 ctx.beginPath();
                 ctx.moveTo(chart.getDatasetMeta(0).data[index].x, chart.getDatasetMeta(0).data[index].y);
                 ctx.lineTo(chart.getDatasetMeta(0).data[index].x, y.getPixelForValue(datapoint.h));
                 ctx.stroke();
-    
+                
                 ctx.beginPath();
                 ctx.moveTo(chart.getDatasetMeta(0).data[index].x, chart.getDatasetMeta(0).data[index].y);
                 ctx.lineTo(chart.getDatasetMeta(0).data[index].x, y.getPixelForValue(datapoint.l));
                 ctx.stroke();
+
+                let open = datapoint.o;
+                let close = datapoint.c;
+                let arrOC = [open, close];
+                let max = Math.max(...arrOC);
+                let min = Math.min(...arrOC);
+                let topValue = y.getPixelForValue(max);
+                let bottomValue = y.getPixelForValue(min);
+                
+                topValues.push(topValue + 25);
+                bottomValues.push(bottomValue + 25);
             })
+
+            globalCandlestickData = [topValues, bottomValues];
         }
     }
 
@@ -476,19 +508,6 @@ const createChart = async () => {
             const { ctx, data, chartArea: { top, bottom, left, right, width, height }, scales: {x, y} } = chart;
 
             ctx.save();
-
-            let topValues = [];
-            let bottomValues = [];
-            data.datasets[0].data.forEach((datapoint, index) => {
-                let yValue = chart.getDatasetMeta(0).data[index].y;
-                let heightValue = chart.getDatasetMeta(0).data[index].height;
-                if (heightValue) {
-                    topValues.push(yValue + 25);
-                    bottomValues.push(heightValue + yValue + 25);
-                }
-            });
-
-            globalCandlestickData = [topValues, bottomValues];
 
             let maxTick = y.max;
             let minTick = y.min;
@@ -517,34 +536,13 @@ const createChart = async () => {
                     ctx.font = 'normal 16px sans-serif';
                     ctx.fillStyle = '#333333';
                     ctx.fillText(date, x.getPixelForValue(datapoint.t), bottom + 30)
-                    lastDate = datapoint;
-                }
-
-                if (index == data.datasets[0].data.length - 1) {
-                    date = new Date(datapoint.t);
-                    let minutes = date.getMinutes();
-                    let newMinutes;
-                    if (minutes % 5 == 0) {
-                        newMinutes = minutes + 5;
-                    } else {
-                        newMinutes = Math.ceil(minutes / 5) * 5
-                    }
-                    date.setMinutes(newMinutes);
-                    date = date.toLocaleString('en', dataOptions);
-
-                    let xVal = x.getPixelForValue(lastDate.t) + (datapointXDiff * 5);
-
-                    ctx.textAlign = 'center';
-                    ctx.font = 'normal 16px sans-serif';
-                    ctx.fillStyle = '#333333';
-                    ctx.fillText(date, xVal, bottom + 30)
                 }
             });
 
             globalXValues = xValues;
         }
     }
-  
+
     // config 
     const config = {
         type: 'bar',
@@ -582,7 +580,6 @@ const createChart = async () => {
                     ticks: {
                         display: false,
                     },
-                    max: maxDate,
                 },
                 y: {
                     beginAtZero: false,
@@ -604,21 +601,33 @@ const createChart = async () => {
             }
         },
         plugins: [candlestick, customScale]
-      };
-  
-      // render init block
-      const myChart = new Chart(
+        };
+
+        // render init block
+        const myChart = new Chart(
         document.querySelector('.trading-pair-chart'),
         config
-      );
+        );
 
-      const createNewDataPoint = (i, newDataPoint) => {
+        const getFilteredPriceMovements = (arr) => {
+            let newArr = [];
+            for (let i = 0; i < arr.length; i++) {
+                if (i % 10 === 0) {
+                    newArr.push(arr[i]);
+                }
+            }
+            return newArr;
+        }
+        
+        const createNewDataPoint = (i, newDataPoint) => {
             let d = nextFiveData[i];
             let priceMovements = getPriceMovements(i);
+            let filteredPriceMovements = getFilteredPriceMovements(priceMovements);
             let updatedDataPoint = newDataPoint;
             let k = 0;
             let msInterval = window.setInterval(() => {
-                let newPrice = priceMovements[k];
+                let newPrice = filteredPriceMovements[k];
+
                 updatedDataPoint["s"] = [updatedDataPoint["o"], newPrice];
                 updatedDataPoint["c"] = newPrice;
 
@@ -632,22 +641,24 @@ const createChart = async () => {
                     myChart.data.datasets[0].backgroundColor[myChart.data.datasets[0].data.length - 1] = "#4ec437";
                 } else {
                     myChart.data.datasets[0].backgroundColor[myChart.data.datasets[0].data.length - 1] = "#d31d1d";
-
                 }
 
                 myChart.data.datasets[0].data[myChart.data.datasets[0].data.length - 1] = updatedDataPoint;
 
                 myChart.update();
+
+                globalCurrentPrice = newPrice;
+
                 k++;
-                if (k >= 600) {
+                if (k >= 59) {
                     clearInterval(msInterval);
                 }
-            }, 100);
-      }
+            }, 1000);
+        }
 
-      window.setTimeout(() => {
+    window.setTimeout(() => {
         let i = 0;
-    
+
         const addNewDataPoint = () => {
             let newDataPoint = { ...nextFiveData[i] };
             newDataPoint["h"] = newDataPoint["o"];
@@ -657,24 +668,172 @@ const createChart = async () => {
             
             myChart.data.datasets[0].data.push(newDataPoint);
             myChart.data.datasets[0].backgroundColor.push("#4ec437");
-    
+
             if (myChart.data.datasets[0].data.length >= 30) {
                 myChart.data.datasets[0].data.shift();
                 myChart.data.datasets[0].backgroundColor.shift();
             }
-    
             myChart.update();
-    
+
             createNewDataPoint(i, newDataPoint);
             i++;
-    
+
             if (i < 5) {
                 setTimeout(addNewDataPoint, 60000);
+            } else {
+                setTimeout(() => {
+                    canvasContainer.removeChild(canvasElement);
+                    canvasElement.remove();
+                    createChart();
+                }, 60000)
+                
             }
         };
-    
+
         addNewDataPoint();
     }, 500);
+    
 }
 
 createChart();
+
+window.setInterval(() => {
+    updateLastPrice();
+}, 30000)
+
+const headerElement = document.querySelector('header');
+const menuBtn = document.querySelector('.trading-pair-menu-btn');
+const hamburgerTradingPair = document.querySelector('.hamburger-trading-pair');
+let moving = false;
+
+const toggleFooter = () => {
+    const footerElement = document.querySelector('footer');
+    if (footerElement.classList.contains("active")) {
+        footerElement.classList.remove("active");
+        footerElement.style.display = 'none';
+        footerElement.style.bottom = "-100px";
+        menuBtn.style.bottom = 30 + 'px';
+        moving = false;
+    } else {
+        footerElement.style.height = 100 + 'px';
+        footerElement.classList.add("active");
+        footerElement.style.display = 'flex';
+        
+        let bottom = -100;
+        let opacity = 0;
+        let menuBtnBottom = 30;
+
+        let showFooterInterval = window.setInterval(() => {
+            if (bottom > -1) {
+                clearInterval(showFooterInterval);
+                footerElement.style.bottom = 0 + 'px';
+                footerElement.style.opacity = 1;
+                menuBtn.style.bottom = 130 + 'px';
+                moving = false;
+            } else {
+                bottom++;
+                opacity++;
+                menuBtnBottom++;
+                footerElement.style.bottom = bottom + 'px';
+                footerElement.style.opacity = opacity;
+                menuBtn.style.bottom = menuBtnBottom + 'px';
+            }
+        }, 5);
+    }
+}
+
+const toggleHeader = () => {
+    const menuOverlay = document.querySelector('.menu-overlay');
+    
+    if (headerElement.classList.contains("active")) {
+        headerElement.classList.remove("active");
+        headerElement.style.display = 'none';
+        menuOverlay.style.display = 'none';
+        headerElement.style.top = "-100px";
+    } else {
+        headerElement.style.height = 100 + 'px';
+        headerElement.classList.add("active");
+        headerElement.style.display = 'flex';
+        menuOverlay.style.display = 'flex';
+        
+        let top = -100;
+        let opacity = 0;
+
+        let showHeaderInterval = window.setInterval(() => {
+            if (top > -1) {
+                clearInterval(showHeaderInterval);
+                headerElement.style.top = 0 + 'px';
+                headerElement.style.opacity = 1;
+                menuOverlay.style.filter = `blur(10px)`;
+            } else {
+                top++;
+                opacity++;
+                headerElement.style.top = top + 'px';
+                headerElement.style.opacity = opacity;
+                let blurEffect = (Math.round(opacity / 20))
+                let overlayOpacity = Math.round(blurEffect / 100)
+                menuOverlay.style.backgroundColor = `rgba(245, 245, 245, ${overlayOpacity})`;
+                menuOverlay.style.backdropFilter = `blur(${blurEffect}px)`;
+            }
+        }, 5);
+    }
+}
+
+const hideFooter = () => {
+    const footerElement = document.querySelector('footer');
+    footerElement.style.display = 'none';
+    footerElement.style.bottom = '-100px';
+}
+
+const hideHeader = () => {
+    let headerHeight = headerElement.offsetHeight;
+
+    menuBtn.style.display = 'flex';
+
+    header.style.overflow = 'hidden';
+
+    let newHeight = headerHeight;
+
+    let headerOpacity = 1;
+
+    let menuBtnOpacity = 0;
+
+    let i = 0;
+
+    let msIncrement = Math.round((1500 / headerHeight));
+    let hideHeaderInterval = setInterval(() => {
+        
+        if (newHeight <= 2) {
+            clearInterval(hideHeaderInterval);
+            headerElement.style.height = 0 + 'px';
+            headerElement.style.opacity = 0;
+            headerElement.style.display = 'none';
+            headerElement.style.top = '-100px';
+            menuBtn.style.opacity = 1;
+
+            menuBtn.addEventListener('click', () => {
+                if (!moving) {
+                    moving = true;
+                    hamburgerTradingPair.classList.toggle("active");
+                    menuBtn.classList.toggle("active");
+                    toggleHeader();
+                    toggleFooter();
+                }
+            });
+        } else {
+            newHeight = (headerHeight - (1 * (i + 1)));
+            headerElement.style.height = newHeight + 'px';
+            headerOpacity = 1 - ((1 / headerHeight) * (i + 1));
+            headerElement.style.opacity = headerOpacity;
+            menuBtnOpacity = 0 + ((1 / headerHeight) * (i + 1));
+            menuBtn.style.opacity = menuBtnOpacity;
+            i++;
+        }
+
+    }, msIncrement);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    hideHeader();
+    hideFooter();
+});
