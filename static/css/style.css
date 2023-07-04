@@ -20,6 +20,7 @@
     --TRANSPARENT-LIGHT-2: #f5f5f541;
     --BLUE-LIGHT-1: #00e8fc;
     --BLUE-LIGHT-2: #F5F8FF;
+    --BLUE-LIGHT-3: #00e7fce5;
     --BLUE-DARK-1: #044a72;
     --BLUE-DARK-2: #053554;
     --GREEN-1: #4ec437;
@@ -1915,7 +1916,7 @@ canvas.price-sparkline {
 }
 
 .trading-pair-right-side-heading-container {
-    height: 90px;
+    height: 60px;
     padding: 0 20px;
     width: 100%;
     border-bottom: 1px solid var(--GRAY-LIGHT-2);
@@ -1923,7 +1924,7 @@ canvas.price-sparkline {
 }
 
 .trading-pair-right-side-main-container {
-    height: calc(100% - 90px);
+    height: calc(100% - 60px);
 }
 
 .order-book-card-container {
@@ -2015,7 +2016,7 @@ header.active {
 .order-book-main-container {
     width: 100%;
     padding: 10px;
-    font-size: 0.95rem;
+    font-size: 1.05rem;
 }
 
 .order-book-numbers-container {
@@ -2062,3 +2063,191 @@ header.active {
     height: 100%;
 }
 
+.trading-pair-heading {
+    font-size: 2rem;
+}
+
+.buy-sell-tab-heading {
+    width: 50%;
+    height: 100%;
+    background-color: var(--GRAY-LIGHT-3);
+    cursor: pointer;
+}
+
+.buy-sell-heading-container {
+    padding: 0;
+    border: none;
+}
+
+.buy-sell-tab-heading-container {
+    height: 100%;
+    justify-content: flex-end;
+}
+
+.buy-tab-heading.active {
+    border-top: 5px solid var(--GREEN-1);;
+    border-radius: 15px 0 0 0;
+    color: var(--GREEN-1);
+    background-color: var(--GRAY-LIGHT-1);
+}
+
+.sell-tab-heading.active {
+    border-top: 5px solid var(--RED-1);;
+    border-radius: 0px 15px 0 0;
+    color: var(--RED-1);
+    background-color: var(--GRAY-LIGHT-1);
+}
+
+.buy-order-btns-container {
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.buy-sell-main-container {
+    width: 100%;
+    padding: 20px;
+    justify-content: space-between;
+}
+
+.buy-sell-order-container {
+    gap: 25px;
+}
+
+.limit-price-input-container {
+    display: none;
+}
+
+.limit-price-input-container.active {
+    display: flex;
+}
+
+.buy-order-btn {
+    cursor: pointer;
+    position: relative;
+}
+
+.buy-order-btn.active {
+    color: var(--BLUE-DARK-1);
+}
+
+.buy-order-btn::after {
+    position: absolute;
+    content: '';
+    bottom: -2px;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background-color: var(--BLUE-DARK-1);
+    transition: width 0.5s ease;
+}
+
+.buy-order-btn:hover::after,
+.buy-order-btn.active::after {
+    width: 100%;
+}
+
+.buy-sell-tab-input-container {
+    width: 100%;
+    padding: 12px 20px;
+    border: 1px solid var(--GRAY-LIGHT-2);
+    border-radius: 5px;
+    justify-content: space-between;
+}
+
+.buy-sell-tab-text {
+    font-size: 1.3rem;
+    color: var(--GRAY-DARK-1);
+}
+
+.buy-sell-tab-input-sybmol-container {
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.buy-sell-tab-input {
+    background-color: var(--GRAY-LIGHT-1);
+    border: none;
+    outline: none;
+    font-size: 1.3rem;
+    color: var(--GRAY-DARK-1);
+    text-align: right;
+    width: 50%;
+}
+
+.buy-sell-tab-input::placeholder {
+    color: var(--GRAY-LIGHT-2);
+}
+
+.buy-sell-tab-input-symbol {
+    font-size: 1.1rem;
+}
+
+.amount-total-input-container {
+    gap: 25px;
+}
+
+.amount-total-bar-container {
+    width: 100%;
+}
+
+.amount-total-bar {
+    width: 80%;
+    height: 20px;
+    border-radius: 50px;
+    position: relative;
+    background-color: var(--GRAY-LIGHT-3);
+    border: 1px solid var(--GRAY-LIGHT-2);;
+}
+
+.bar-marker {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--BLUE-DARK-1);
+    position: absolute;
+    top: 0px;
+    z-index: 12;
+}
+
+.bar-0 {
+    left: 0px;
+}
+
+.bar-25 {
+    left: calc(25% - 10px);
+}
+
+.bar-50 {
+    left: calc(50% - 10px);
+}
+
+.bar-75 {
+    left: calc(75% - 10px);
+}
+
+.bar-100 {
+    left: calc(100% - 20px);
+}
+
+.bar-slider-marker {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--BLUE-DARK-1);
+    position: absolute;
+    top: -5px;
+    left: calc(75% - 15px);
+    cursor: pointer;
+    z-index: 13;
+}
+
+.bar-slider {
+    z-index: 11;
+    position: absolute;
+    width: 75%;
+    height: 100%;
+    border-radius: 50px;
+    background-color: var(--BLUE-LIGHT-1);
+    left: 0;
+    top: 0;
+}

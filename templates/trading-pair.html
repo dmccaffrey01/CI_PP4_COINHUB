@@ -130,7 +130,7 @@
 
         <section class="trading-pair-left-side-section section trading-pair-orders-section">
             <div class="content-container orders-card-container">
-                <div class="heading-3">Orders</div>
+                <div class="dark-text heading-3 trading-pair-heading">Orders</div>
             </div>
         </section>
     </div>
@@ -139,7 +139,7 @@
         <section class="section trading-pair-right-side-section trading-pair-order-book-section">
             <div class="content-container order-book-card-container trading-pair-right-side-card-container">
                 <div class="order-book-heading-container content-container trading-pair-right-side-heading-container">
-                    <div class="dark-text heading-3">Order Book</div>
+                    <div class="dark-text heading-3 trading-pair-heading">Order Book</div>
                 </div>
                 <div class="order-book-main-container content-container-rows trading-pair-right-side-main-container">
                     <div class="order-book-sell-numbers-container order-book-numbers-container content-container">
@@ -184,10 +184,57 @@
         
         <section class="section trading-pair-right-side-section trading-pair-buy-sell-section">
             <div class="content-container buy-sell-card-container trading-pair-right-side-card-container">
+                
                 <div class="buy-sell-heading-container content-container trading-pair-right-side-heading-container">
-                    <div class="dark-text heading-3">Buy Sell</div>
+                    <div class="content-container-rows buy-sell-tab-heading-container w-100">
+                        <div class="trading-pair-heading heading-3 buy-tab-heading buy-sell-tab-heading content-container active">Buy</div>
+                        <div class="trading-pair-heading heading-3 sell-tab-heading buy-sell-tab-heading content-container">Sell</div>
+                    </div>
                 </div>
+
                 <div class="buy-sell-main-container content-container trading-pair-right-side-main-container">
+                    <div class="buy-order-btns-container content-container-rows">
+                        <div class="buy-order-btn limit-order-btn dark-text active">LIMIT</div>
+                        <div class="buy-order-btn market-order-btn dark-text">MARKET</div>
+                    </div>
+
+                    <div class="content-container w-100 buy-sell-order-container">
+                        <div class="limit-price-input-container buy-sell-tab-input-container content-container-rows active">
+                            <div class="limit-price-text buy-sell-tab-text">Limit Price</div>
+                            <div class="limit-price-input-sybmol-container buy-sell-tab-input-sybmol-container content-container-rows">
+                                <input type="text" class="limit-price-input buy-sell-tab-input" placeholder="{{ crypto.price }}">
+                                <div class="limit-price-input-symbol buy-sell-tab-input-symbol">EUR</div>
+                            </div>
+                        </div>
+                        <div class="amount-total-input-container content-container w-100">
+                            <div class="amount-input-container buy-sell-tab-input-container content-container-rows">
+                                <div class="amount-text buy-sell-tab-text">Amount</div>
+                                <div class="amount-input-symbol-container buy-sell-tab-input-sybmol-container content-container-rows">
+                                    <input type="text" class="limit-order-amount-input buy-sell-tab-input" placeholder="0.00000000">
+                                    <div class="amount-input-symbol buy-sell-tab-input-symbol">{{ crypto.symbol }}</div>
+                                </div>
+                            </div>
+                            <div class="amount-total-bar-container content-container">
+                                <div class="amount-total-bar">
+                                    <div class="bar-marker bar-0"></div>
+                                    <div class="bar-marker bar-25"></div>
+                                    <div class="bar-marker bar-50"></div>
+                                    <div class="bar-marker bar-75"></div>
+                                    <div class="bar-marker bar-100"></div>
+                                    <div class="bar-slider-marker"></div>
+                                    <div class="bar-slider"></div>
+                                </div>
+                            </div>
+                            <div class="total-input-container buy-sell-tab-input-container content-container-rows">
+                                <div class="total-text buy-sell-tab-text">Total</div>
+                                <div class="total-input-symbol-container buy-sell-tab-input-sybmol-container content-container-rows">
+                                    <input type="text" class="limit-order-total-input buy-sell-tab-input" placeholder="0.00">
+                                    <div class="total-input-symbol buy-sell-tab-input-symbol">EUR</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="buy-sell-tab btn buy">Buy {{ crypto.symbol }}</div>
+                    </div>
                     
                 </div>
             </div>
@@ -196,7 +243,7 @@
         <section class="section trading-pair-right-side-section trading-pair-trade-history-section">
             <div class="content-container trade-history-card-container trading-pair-right-side-card-container">
                 <div class="trade-history-heading-container content-container trading-pair-right-side-heading-container">
-                    <div class="dark-text heading-3">Trade History</div>
+                    <div class="dark-text heading-3 trading-pair-heading">Trade History</div>
                 </div>
                 <div class="trade-history-main-container content-container trading-pair-right-side-main-container">
 

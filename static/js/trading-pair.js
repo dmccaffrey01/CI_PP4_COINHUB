@@ -946,3 +946,32 @@ document.addEventListener('DOMContentLoaded', () => {
     hideHeader();
     hideFooter();
 });
+
+const buyTabButton = document.querySelector(".buy-tab-heading");
+const sellTabButton = document.querySelector(".sell-tab-heading");
+
+buyTabButton.addEventListener('click', () => {
+    sellTabButton.classList.remove("active");
+    buyTabButton.classList.add("active");
+});
+
+sellTabButton.addEventListener('click', () => {
+    buyTabButton.classList.remove("active");
+    sellTabButton.classList.add("active");
+});
+
+const limitOrderBtn = document.querySelector(".limit-order-btn");
+const marketOrderBtn = document.querySelector(".market-order-btn");
+const limitOrderContianer = document.querySelector(".limit-price-input-container");
+
+limitOrderBtn.addEventListener('click', () => {
+    marketOrderBtn.classList.remove("active");
+    limitOrderBtn.classList.add("active");
+    limitOrderContianer.classList.add("active");
+});
+
+marketOrderBtn.addEventListener('click', () => {
+    limitOrderBtn.classList.remove("active");
+    marketOrderBtn.classList.add("active");
+    limitOrderContianer.classList.remove("active");
+});
