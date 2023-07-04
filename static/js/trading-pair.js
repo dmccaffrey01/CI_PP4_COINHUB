@@ -25,14 +25,118 @@ let globalCandlestickData = [];
 let nextFiveData = [];
 
 let globalCurrentPrice;
-
-const lastPriceElement = document.querySelector('.last-price-text');
+let globalBuySellMinMax = [];
 
 const updateLastPrice = () => {
-    
-    let currentPrice = globalCurrentPrice;
+    const lastPriceElement = document.querySelector('.last-price-text');
+
+    let currentPrice = globalCurrentPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
     
     lastPriceElement.innerHTML = `€${currentPrice}`;
+}
+
+const getOrderBookPriceData = () => {
+    let maxNum = (globalCurrentPrice * 0.0004);
+    let maxRange = [(maxNum - (maxNum * 0.25)), (maxNum + (maxNum * 0.25))];
+    let maxPrice = ((Math.random() * (maxRange[1] - maxRange[0])) + maxRange[0]);
+    let stepPrice = maxPrice / 12;
+    let halfStepPrice = stepPrice / 2;
+    let arr = [];
+    for (let i = 0; i < 12; i++) {
+        let currentStepPrice = stepPrice * (i + 1);
+        let max = currentStepPrice + halfStepPrice;
+        let min = currentStepPrice - halfStepPrice;
+        let price = ((Math.random() * (max - min)) + min);
+        arr.push(price);
+    }
+    return arr;
+}
+
+function randn_bm(min, max, skew) {
+    let u = 0, v = 0;
+    while(u === 0) u = Math.random() 
+    while(v === 0) v = Math.random()
+    let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v )
+    
+    num = num / 10.0 + 0.5 
+    if (num > 1 || num < 0) 
+      num = randn_bm(min, max, skew) 
+    
+    else{
+      num = Math.pow(num, skew) 
+      num *= max - min 
+      num += min 
+    }
+    return num
+  }
+
+const getOrderBookAmountData = () => {
+    let maxAmount = 0.8;
+    let minAmount = 0.01;
+
+    let arr = [];
+    for (let i = 0; i < 12; i++) {
+        let amount = randn_bm(minAmount, maxAmount, 3);
+        arr.push(amount);
+    }
+    return arr;
+}
+
+getOrderBookAmountData();
+
+const updateOrderBook = () => {
+    const sellPriceList = document.querySelector(".sell-price-numbers-list");
+    const sellAmountList = document.querySelector(".sell-amount-numbers-list");
+    const buyPriceList = document.querySelector(".buy-price-numbers-list");
+    const buyAmountList = document.querySelector(".buy-amount-numbers-list");
+    const currentNumberPrice = document.querySelector(".current-number-price");
+    const currentNumberAmount = document.querySelector(".current-number-amount");
+
+    const prices = document.querySelectorAll(".order-book-num");
+    if (prices.length > 0) {
+        prices.forEach(price => {
+            price.remove();
+        })
+    }
+
+    currentNumberPrice.innerHTML = globalCurrentPrice;
+    currentNumberAmount.innerHTML = ((Math.random() * (7.99 - 2.00)) + 2.00).toFixed(2);
+
+    let buyPrices = getOrderBookPriceData();
+    let sellPrices = getOrderBookPriceData();
+    let buyAmounts = getOrderBookAmountData();
+    let sellAmounts = getOrderBookAmountData();
+
+    for (let i = 0; i < sellPrices.length; i++) {
+        let buyPriceElement = document.createElement("div");
+        let sellPriceElement = document.createElement("div");
+        let sellAmountElement = document.createElement("div");
+        let buyAmountElement = document.createElement("div");
+        
+        buyPriceElement.classList.add("order-book-num");
+        sellPriceElement.classList.add("order-book-num");
+        sellAmountElement.classList.add("order-book-num");
+        buyAmountElement.classList.add("order-book-num");
+
+        let buyPrice = (parseFloat(globalCurrentPrice) - buyPrices[i]).toFixed(2);
+        let sellPrice = (parseFloat(globalCurrentPrice) + sellPrices[i]).toFixed(2);
+        let sellAmount = sellAmounts[i].toFixed(8);
+        let buyAmount = buyAmounts[i].toFixed(8);
+
+        buyPriceElement.innerHTML = buyPrice;
+        sellPriceElement.innerHTML = sellPrice;
+        sellAmountElement.innerHTML = sellAmount;
+        buyAmountElement.innerHTML = buyAmount;
+
+        buyPriceList.appendChild(buyPriceElement);
+        sellPriceList.appendChild(sellPriceElement);
+        sellAmountList.appendChild(sellAmountElement);
+        buyAmountList.appendChild(buyAmountElement);
+
+        if (i == sellPrices.length - 1) {
+            globalBuySellMinMax = [buyPrice, sellPrice];
+        }
+    }
 }
 
 const displayToolTip = (x, y, price, timestamp) => {
@@ -649,6 +753,8 @@ const createChart = async () => {
 
                 globalCurrentPrice = newPrice;
 
+                updateOrderBook();
+
                 k++;
                 if (k >= 59) {
                     clearInterval(msInterval);
@@ -695,7 +801,10 @@ const createChart = async () => {
     
 }
 
-createChart();
+document.addEventListener('DOMContentLoaded', function() {
+    createChart();
+});
+
 
 window.setInterval(() => {
     updateLastPrice();

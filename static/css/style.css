@@ -1915,13 +1915,15 @@ canvas.price-sparkline {
 }
 
 .trading-pair-right-side-heading-container {
-    height: 120px;
+    height: 90px;
+    padding: 0 20px;
     width: 100%;
     border-bottom: 1px solid var(--GRAY-LIGHT-2);
+    align-items: flex-start;
 }
 
 .trading-pair-right-side-main-container {
-    height: calc(100% - 120px);
+    height: calc(100% - 90px);
 }
 
 .order-book-card-container {
@@ -2009,3 +2011,54 @@ header.active {
 .markets-section {
     padding-top: 0;
 }
+
+.order-book-main-container {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.95rem;
+}
+
+.order-book-numbers-container {
+    justify-content: flex-start;
+    height: 100%;
+    width: 39%;
+}
+
+.order-book-current-number-container {
+    width: 22%;
+    gap: 20px;
+    padding: 0 2px;
+    justify-content: flex-start;
+    height: 100%;
+}
+
+.current-number-amount-container, .current-number-price-container {
+    gap: 5px;
+}
+
+.current-number-price, .current-number-amount {
+    color: var(--GRAY-DARK-1);
+}
+
+.sell-numbers-heading-container, .sell-numbers-main-container, .buy-numbers-heading-container, .buy-numbers-main-container {
+    justify-content: space-between;
+    width: 100%;
+}
+
+.sell-numbers-heading-container, .sell-numbers-main-container {
+    flex-direction: row-reverse;
+}
+
+.sell-numbers-main-container, .buy-numbers-main-container {
+    height: calc(100% - 20px);
+}
+
+.sell-numbers-heading-container, .buy-numbers-heading-container {
+    height: 20px;
+}
+
+.sell-numbers-list, .buy-numbers-list {
+    justify-content: space-between;
+    height: 100%;
+}
+
