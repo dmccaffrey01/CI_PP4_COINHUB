@@ -1934,15 +1934,11 @@ canvas.price-sparkline {
 /* Order Book Section */
 
 .order-book-card-container {
-    height: 370px;
+    height: 530px;
 }
 
 .buy-sell-card-container {
-    height: 480px;
-}
-
-.trade-history-card-container {
-    height: 300px;
+    height: 640px;
 }
 
 .trading-pair-menu-btn {
@@ -2022,7 +2018,7 @@ header.active {
 .order-book-main-container {
     width: 100%;
     padding: 10px;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
 }
 
 .order-book-numbers-container {
@@ -2109,16 +2105,19 @@ header.active {
 .buy-order-btns-container {
     width: 100%;
     justify-content: space-evenly;
+    height: 50px;
 }
 
 .buy-sell-main-container {
     width: 100%;
-    padding: 20px;
-    justify-content: space-between;
+    padding: 30px 20px;
+    justify-content: flex-start;
+    gap: 50px;
 }
 
 .buy-sell-order-container {
-    gap: 25px;
+    height: calc(100% - 50px);
+    justify-content: space-between;
 }
 
 .limit-price-input-container {
@@ -2260,6 +2259,20 @@ header.active {
     top: 0;
 }
 
+.user-assets-info-container {
+    width: 80%;
+    gap: 10px;
+}
+
+.user-asset-info-container {
+    justify-content: space-between;
+    width: 100%;
+}
+
+.crypto-asset-info {
+    gap: 5px;
+}
+
 /* Orders Section */
 
 .orders-table-container {
@@ -2291,19 +2304,7 @@ header.active {
     padding: 16px 0 5px 0;
     font-weight: 600;
 }
-/*
-td.orders-cancel, 
-th.orders-cancel-heading, 
-td.orders-name, 
-th.orders-name-heading, 
-td.orders-type, 
-th.orders-type-heading, 
-td.orders-status, 
-th.orders-status-heading {
-    width: 12.5%;
-    text-align: center;
-}
-*/
+
 td.orders-time, th.orders-time-heading {
     width: 15%;
 }

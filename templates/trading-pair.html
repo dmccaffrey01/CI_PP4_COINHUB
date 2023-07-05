@@ -153,7 +153,7 @@
                             <tr>
                                 <td class="orders-time">05/07/23 11:30</td>
                                 <td class="orders-name">BTC-EUR</td>
-                                <td class="orders-type">Limit</td>
+                                <td class="orders-type">Limit - Buy</td>
                                 <td class="orders-price">28,500</td>
                                 <td class="orders-amount">0.51238797</td>
                                 <td class="orders-total">15,000.04</td>
@@ -165,13 +165,13 @@
                             <tr>
                                 <td class="orders-time">05/07/23 11:30</td>
                                 <td class="orders-name">BTC-EUR</td>
-                                <td class="orders-type">Limit</td>
+                                <td class="orders-type">Limit - Buy</td>
                                 <td class="orders-price">28,500</td>
                                 <td class="orders-amount">0.51238797</td>
                                 <td class="orders-total">15,000.04</td>
                                 <td class="orders-status">Pending</td>
                                 <td class="orders-cancel">
-                                    <div class="btn cancel-order-btn">CANCEL <i class="fa-solid fa-xmark"></i></div>
+                                    
                                 </td>
                             </tr>
                         </tbody>
@@ -182,54 +182,6 @@
     </div>
 
     <div class="trading-pair-right-side">
-        <section class="section trading-pair-right-side-section trading-pair-order-book-section">
-            <div class="content-container order-book-card-container trading-pair-side-card-container">
-                <div class="order-book-heading-container content-container trading-pair-side-heading-container">
-                    <div class="dark-text heading-3 trading-pair-heading">Order Book</div>
-                </div>
-
-                <div class="order-book-main-container content-container-rows trading-pair-side-main-container">
-                    <div class="order-book-sell-numbers-container order-book-numbers-container content-container">
-                        <div class="sell-numbers-heading-container content-container-rows">
-                            <div class="text-gd-2">PRICE(EUR)</div>
-                            <div class="text-gd-2">AMOUNT({{ crypto.symbol }})</div>
-                        </div>
-                        <div class="sell-numbers-main-container content-container-rows">
-                            <div class="sell-numbers-list sell-price-numbers-list content-container negative"></div>
-                            <div class="sell-numbers-list sell-amount-numbers-list content-container"></div>
-                        </div>
-                    </div>
-                    <div class="order-book-current-number-container content-container">
-                        <div class="current-number-price-container content-container">
-                            <div class="text-gd-2 content-container">
-                                <div class="text-gd-2">PRICE</div>
-                                <div class="text-gd-2">(EUR)</div>
-                            </div>
-                            <div class="current-number-price">0</div>
-                        </div>
-                        <div class="current-number-amount-container content-container">
-                            <div class="text-gd-2 content-container">
-                                <div class="text-gd-2">AMOUNT</div>
-                                <div class="text-gd-2">({{ crypto.symbol }})</div>
-                            </div>
-                            <div class="current-number-amount">0</div>
-                        </div>
-                    </div>
-                    <div class="order-book-buy-numbers-container order-book-numbers-container content-container">
-                        <div class="buy-numbers-heading-container content-container-rows">
-                            <div class="text-gd-2">PRICE(EUR)</div>
-                            <div class="text-gd-2">AMOUNT({{ crypto.symbol }})</div>
-                        </div>
-                        <div class="buy-numbers-main-container content-container-rows">
-                            <div class="buy-numbers-list buy-price-numbers-list content-container positive"></div>
-                            <div class="buy-numbers-list buy-amount-numbers-list content-container"></div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-        
         <section class="section trading-pair-right-side-section trading-pair-buy-sell-section">
             <div class="content-container buy-sell-card-container trading-pair-side-card-container">
                 
@@ -281,21 +233,90 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="user-assets-info-container content-container">
+                            <div class="user-asset-info-container crypto-asset-info-container content-container-rows">
+                                <div class="dark-text text-gd-2">{{ crypto.symbol }} Available:</div>
+                                <div class="dark-text crypto-asset-info content-container-rows">
+                                    {% if asset.total_amount > 0 %}
+                                    <div class="crypto-asset-info-amount">
+                                        {{ asset.total_amount }}
+                                    </div>
+                                    {% else %}
+                                    <div class="crypto-asset-info-amount">
+                                        0.00
+                                    </div>
+                                    {% endif %}
+                                    <div class="crypto-asset-info-symbol">{{ crypto.symbol }}</div>
+                                </div>
+                            </div>
+                            <div class="user-asset-info-container crypto-asset-info-container content-container-rows">
+                                <div class="dark-text text-gd-2">EUR Available:</div>
+                                <div class="dark-text crypto-asset-info content-container-rows">
+                                    <div class="crypto-asset-info-symbol">€</div>
+                                    {% if euro.total_amount > 0 %}
+                                    <div class="euro-asset-info-amount comma-format">
+                                        {{ euro.total_amount }}
+                                    </div>
+                                    {% else %}
+                                    <div class="euro-asset-info-amount comma-format">
+                                        0.00
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
                         <div class="buy-sell-tab btn buy">Buy {{ crypto.symbol }}</div>
                     </div>
                     
                 </div>
             </div>
         </section>
-
-        <section class="section trading-pair-right-side-section trading-pair-trade-history-section">
-            <div class="content-container trade-history-card-container trading-pair-side-card-container">
-                <div class="trade-history-heading-container content-container trading-pair-side-heading-container">
-                    <div class="dark-text heading-3 trading-pair-heading">Trade History</div>
+        
+        <section class="section trading-pair-right-side-section trading-pair-order-book-section">
+            <div class="content-container order-book-card-container trading-pair-side-card-container">
+                <div class="order-book-heading-container content-container trading-pair-side-heading-container">
+                    <div class="dark-text heading-3 trading-pair-heading">Order Book</div>
                 </div>
-                <div class="trade-history-main-container content-container trading-pair-side-main-container">
 
+                <div class="order-book-main-container content-container-rows trading-pair-side-main-container">
+                    <div class="order-book-sell-numbers-container order-book-numbers-container content-container">
+                        <div class="sell-numbers-heading-container content-container-rows">
+                            <div class="text-gd-2">PRICE(EUR)</div>
+                            <div class="text-gd-2">AMOUNT({{ crypto.symbol }})</div>
+                        </div>
+                        <div class="sell-numbers-main-container content-container-rows">
+                            <div class="sell-numbers-list sell-price-numbers-list content-container negative"></div>
+                            <div class="sell-numbers-list sell-amount-numbers-list content-container"></div>
+                        </div>
+                    </div>
+                    <div class="order-book-current-number-container content-container">
+                        <div class="current-number-price-container content-container">
+                            <div class="text-gd-2 content-container">
+                                <div class="text-gd-2">PRICE</div>
+                                <div class="text-gd-2">(EUR)</div>
+                            </div>
+                            <div class="current-number-price">0</div>
+                        </div>
+                        <div class="current-number-amount-container content-container">
+                            <div class="text-gd-2 content-container">
+                                <div class="text-gd-2">AMOUNT</div>
+                                <div class="text-gd-2">({{ crypto.symbol }})</div>
+                            </div>
+                            <div class="current-number-amount">0</div>
+                        </div>
+                    </div>
+                    <div class="order-book-buy-numbers-container order-book-numbers-container content-container">
+                        <div class="buy-numbers-heading-container content-container-rows">
+                            <div class="text-gd-2">PRICE(EUR)</div>
+                            <div class="text-gd-2">AMOUNT({{ crypto.symbol }})</div>
+                        </div>
+                        <div class="buy-numbers-main-container content-container-rows">
+                            <div class="buy-numbers-list buy-price-numbers-list content-container positive"></div>
+                            <div class="buy-numbers-list buy-amount-numbers-list content-container"></div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </section>
     </div>

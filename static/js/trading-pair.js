@@ -36,13 +36,13 @@ const updateLastPrice = () => {
 }
 
 const getOrderBookPriceData = () => {
-    let maxNum = (globalCurrentPrice * 0.0004);
+    let maxNum = (globalCurrentPrice * 0.0005);
     let maxRange = [(maxNum - (maxNum * 0.25)), (maxNum + (maxNum * 0.25))];
     let maxPrice = ((Math.random() * (maxRange[1] - maxRange[0])) + maxRange[0]);
-    let stepPrice = maxPrice / 12;
+    let stepPrice = maxPrice / 17;
     let halfStepPrice = stepPrice / 2;
     let arr = [];
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 17; i++) {
         let currentStepPrice = stepPrice * (i + 1);
         let max = currentStepPrice + halfStepPrice;
         let min = currentStepPrice - halfStepPrice;
@@ -75,7 +75,7 @@ const getOrderBookAmountData = () => {
     let minAmount = 0.01;
 
     let arr = [];
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 17; i++) {
         let amount = randn_bm(minAmount, maxAmount, 3);
         arr.push(amount);
     }
@@ -748,6 +748,29 @@ const createChart = async () => {
                 }
 
                 myChart.data.datasets[0].data[myChart.data.datasets[0].data.length - 1] = updatedDataPoint;
+
+                let chartMax = myChart.scales['y'].max;
+                let chartMin = myChart.scales['y'].min;
+                console.log(chartMax, chartMin);
+                let maxDiff = chartMax - updatedDataPoint["h"];
+                let minDiff = chartMin - updatedDataPoint["l"];
+
+                let newMax;
+                let newMin;
+                if (maxDiff < 20) {
+                    newMax = Math.ceil(updatedDataPoint["h"] / 20) * 20;
+                } else {
+                    newMax = chartMax;
+                }
+                
+                if (minDiff < 20) {
+                    newMin = Math.floor(updatedDataPoint["l"] / 20) * 20;
+                } else {
+                    newMin = chartMin;
+                }
+
+                myChart.scales['y'].max = newMax;
+                myChart.scales['y'].min = newMin;
 
                 myChart.update();
 

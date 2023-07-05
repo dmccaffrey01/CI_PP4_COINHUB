@@ -98,7 +98,9 @@ def portfolio(request):
 
 def trading_pair(request, symbol):
     user = request.user
-    assets = Asset.objects.filter(user=user)
+    asset = Asset.objects.filter(user=user, symbol=symbol).first()
+    euro_symbol = 'EUR'
+    euro = Asset.objects.filter(user=user, symbol=euro_symbol).first()
 
     create_crypto_list(request)
     crypto = CryptoCurrency.objects.filter(symbol=symbol).first()
@@ -112,7 +114,8 @@ def trading_pair(request, symbol):
 
     context = {
         'user': user,
-        'assets': assets,
+        'asset': asset,
+        'euro': euro,
         'crypto': crypto,
         'cryptocurrencies': cryptocurrencies,
         'low_24h': lowest_number,
