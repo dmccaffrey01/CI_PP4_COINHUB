@@ -130,18 +130,65 @@
 
         <section class="trading-pair-left-side-section section trading-pair-orders-section">
             <div class="content-container orders-card-container">
-                <div class="dark-text heading-3 trading-pair-heading">Orders</div>
+                <div class="trading-pair-side-heading-container content-container orders-heading-container">
+                    <div class="dark-text heading-3 trading-pair-heading">Orders</div>
+                </div>
+
+                <div class="trading-pair-side-main-container content-container orders-table-container">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th class="orders-time-heading">Time Placed</th>
+                                <th class="orders-name-heading">Name</th>
+                                <th class="orders-type-heading">Type</th>
+                                <th class="orders-price-heading">Price</th>
+                                <th class="orders-amount-heading">Amount</th>
+                                <th class="orders-total-heading">Total</th>
+                                <th class="orders-status-heading">Status</th>
+                                <th class="orders-cancel-heading"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="orders-table-body">
+                            <div class="no-orders-text">No Orders To Show</div>
+                            <tr>
+                                <td class="orders-time">05/07/23 11:30</td>
+                                <td class="orders-name">BTC-EUR</td>
+                                <td class="orders-type">Limit</td>
+                                <td class="orders-price">28,500</td>
+                                <td class="orders-amount">0.51238797</td>
+                                <td class="orders-total">15,000.04</td>
+                                <td class="orders-status">Pending</td>
+                                <td class="orders-cancel">
+                                    <div class="btn cancel-order-btn">CANCEL <i class="fa-solid fa-xmark"></i></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="orders-time">05/07/23 11:30</td>
+                                <td class="orders-name">BTC-EUR</td>
+                                <td class="orders-type">Limit</td>
+                                <td class="orders-price">28,500</td>
+                                <td class="orders-amount">0.51238797</td>
+                                <td class="orders-total">15,000.04</td>
+                                <td class="orders-status">Pending</td>
+                                <td class="orders-cancel">
+                                    <div class="btn cancel-order-btn">CANCEL <i class="fa-solid fa-xmark"></i></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
     </div>
 
     <div class="trading-pair-right-side">
         <section class="section trading-pair-right-side-section trading-pair-order-book-section">
-            <div class="content-container order-book-card-container trading-pair-right-side-card-container">
-                <div class="order-book-heading-container content-container trading-pair-right-side-heading-container">
+            <div class="content-container order-book-card-container trading-pair-side-card-container">
+                <div class="order-book-heading-container content-container trading-pair-side-heading-container">
                     <div class="dark-text heading-3 trading-pair-heading">Order Book</div>
                 </div>
-                <div class="order-book-main-container content-container-rows trading-pair-right-side-main-container">
+
+                <div class="order-book-main-container content-container-rows trading-pair-side-main-container">
                     <div class="order-book-sell-numbers-container order-book-numbers-container content-container">
                         <div class="sell-numbers-heading-container content-container-rows">
                             <div class="text-gd-2">PRICE(EUR)</div>
@@ -179,20 +226,21 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
         
         <section class="section trading-pair-right-side-section trading-pair-buy-sell-section">
-            <div class="content-container buy-sell-card-container trading-pair-right-side-card-container">
+            <div class="content-container buy-sell-card-container trading-pair-side-card-container">
                 
-                <div class="buy-sell-heading-container content-container trading-pair-right-side-heading-container">
+                <div class="buy-sell-heading-container content-container trading-pair-side-heading-container">
                     <div class="content-container-rows buy-sell-tab-heading-container w-100">
                         <div class="trading-pair-heading heading-3 buy-tab-heading buy-sell-tab-heading content-container active">Buy</div>
                         <div class="trading-pair-heading heading-3 sell-tab-heading buy-sell-tab-heading content-container">Sell</div>
                     </div>
                 </div>
 
-                <div class="buy-sell-main-container content-container trading-pair-right-side-main-container">
+                <div class="buy-sell-main-container content-container trading-pair-side-main-container">
                     <div class="buy-order-btns-container content-container-rows">
                         <div class="buy-order-btn limit-order-btn dark-text active">LIMIT</div>
                         <div class="buy-order-btn market-order-btn dark-text">MARKET</div>
@@ -241,11 +289,11 @@
         </section>
 
         <section class="section trading-pair-right-side-section trading-pair-trade-history-section">
-            <div class="content-container trade-history-card-container trading-pair-right-side-card-container">
-                <div class="trade-history-heading-container content-container trading-pair-right-side-heading-container">
+            <div class="content-container trade-history-card-container trading-pair-side-card-container">
+                <div class="trade-history-heading-container content-container trading-pair-side-heading-container">
                     <div class="dark-text heading-3 trading-pair-heading">Trade History</div>
                 </div>
-                <div class="trade-history-main-container content-container trading-pair-right-side-main-container">
+                <div class="trade-history-main-container content-container trading-pair-side-main-container">
 
                 </div>
             </div>

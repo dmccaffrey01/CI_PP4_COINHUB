@@ -1752,6 +1752,8 @@ canvas.price-sparkline {
     padding-top: 20px;
 }
 
+/* Trading Pair Heading Section */
+
 .trading-pair-heading-container {
     padding: 50px;
     border: 1px solid var(--GRAY-LIGHT-2);
@@ -1798,6 +1800,8 @@ canvas.price-sparkline {
     background-color: var(--GRAY-LIGHT-1);
     z-index: 5;
 }
+
+/* Trading Pair Price Chart Section */
 
 .trading-pair-chart-heading-container {
     justify-content: space-between;
@@ -1904,28 +1908,30 @@ canvas.price-sparkline {
 .orders-card-container {
     width: 1200px;
     height: 300px;
-    padding: 50px;
     border: 1px solid var(--GRAY-LIGHT-2);
     border-radius: 15px;
 }
 
-.trading-pair-right-side-card-container {
+.trading-pair-side-card-container {
     width: 100%;
     border: 1px solid var(--GRAY-LIGHT-2);
     border-radius: 15px;
+    height: 100%;
 }
 
-.trading-pair-right-side-heading-container {
+.trading-pair-side-heading-container {
     height: 60px;
     padding: 0 20px;
     width: 100%;
     border-bottom: 1px solid var(--GRAY-LIGHT-2);
-    align-items: flex-start;
+    
 }
 
-.trading-pair-right-side-main-container {
+.trading-pair-side-main-container {
     height: calc(100% - 60px);
 }
+
+/* Order Book Section */
 
 .order-book-card-container {
     height: 370px;
@@ -2066,6 +2072,8 @@ header.active {
 .trading-pair-heading {
     font-size: 2rem;
 }
+
+/* Buy Sell Tab Section */
 
 .buy-sell-tab-heading {
     width: 50%;
@@ -2250,4 +2258,65 @@ header.active {
     background-color: var(--BLUE-LIGHT-1);
     left: 0;
     top: 0;
+}
+
+/* Orders Section */
+
+.orders-table-container {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0 20px;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.orders-table thead, .orders-table tbody, .orders-table tr {
+    width: 100%;
+}
+
+.orders-table td, .orders-table th {
+    padding: 5px 0;
+    width: 12.5%;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--GRAY-DARK-1);
+}
+
+.orders-table th {
+    color: var(--BLUE-DARK-1);
+    padding: 16px 0 5px 0;
+    font-weight: 600;
+}
+/*
+td.orders-cancel, 
+th.orders-cancel-heading, 
+td.orders-name, 
+th.orders-name-heading, 
+td.orders-type, 
+th.orders-type-heading, 
+td.orders-status, 
+th.orders-status-heading {
+    width: 12.5%;
+    text-align: center;
+}
+*/
+td.orders-time, th.orders-time-heading {
+    width: 15%;
+}
+
+
+td.orders-cancel, th.orders-cancel-heading {
+    width: 10%;
+}
+
+.cancel-order-btn {
+    background-color: var(--RED-1);
+    font-size: 0.9rem;
+    padding: 7px 10px;
+    color: var(--WHITE);
+    margin: auto;
 }
