@@ -751,7 +751,6 @@ const createChart = async () => {
 
                 let chartMax = myChart.scales['y'].max;
                 let chartMin = myChart.scales['y'].min;
-                console.log(chartMax, chartMin);
                 let maxDiff = chartMax - updatedDataPoint["h"];
                 let minDiff = chartMin - updatedDataPoint["l"];
 
@@ -970,17 +969,103 @@ document.addEventListener('DOMContentLoaded', () => {
     hideFooter();
 });
 
+const insufficientFundsBtn = document.querySelector(".insufficient-funds-btn");
+const insufficientFundsBtnText = document.querySelector(".insufficient-funds-btn-text");
+const buySellBtn = document.querySelector(".buy-sell-tab-btn");
+const buySellBtnText = document.querySelector(".buy-sell-btn-text");
+
+const getUserEuro = async () => {
+    let response = await fetch('/get_user_data');
+    let userData = await response.json();
+    let euroData = userData.euro;
+    let euro = 0;
+    if (euroData.length > 0) {
+        euro = euroData["total_amount"];
+    }
+    return euro;
+}
+
+const getUserAsset = async () => {
+    let response = await fetch('/get_user_data');
+    let userData = await response.json();
+    let assetsData = userData.assets;
+    let symbol = getCurrentCryptoSymbol();
+    let userHasAsset = false;
+    let assetIndex;
+    for (let i = 0; i < assetsData.length; i++) {
+        let asset = assetsData[i];
+        if (asset.symbol === symbol) {
+            userHasAsset = true;
+            assetIndex = i;
+            break;
+        }
+    }
+
+    let assetAmount = 0;
+    if (userHasAsset) {
+        assetAmount = assetsData[assetIndex]["total_amount"];
+        console.log("success");
+    }
+    return assetAmount;
+}
+
+const updateBuySellBtn = async (symbol) => {
+    if (symbol == "EUR") {
+        let euro = await getUserEuro();
+        if (euro < 1) {
+            buySellBtn.style.display = "none";
+            insufficientFundsBtn.style.display = "flex";
+        } else {
+            buySellBtn.style.display = "flex";
+            insufficientFundsBtn.style.display = "none";
+        }
+    } else {
+        let amount = await getUserAsset();
+        if (amount === 0) {
+            buySellBtn.style.display = "none";
+            insufficientFundsBtn.style.display = "flex";
+        } else {
+            buySellBtn.style.display = "flex";
+            insufficientFundsBtn.style.display = "none";
+        }
+    }
+}
+
 const buyTabButton = document.querySelector(".buy-tab-heading");
 const sellTabButton = document.querySelector(".sell-tab-heading");
 
-buyTabButton.addEventListener('click', () => {
+const switchToBuyTab = async () => {
+    await updateBuySellBtn("EUR");
+    
     sellTabButton.classList.remove("active");
     buyTabButton.classList.add("active");
+
+    if (buySellBtn.style.display === "flex") {
+        buySellBtn.classList.remove("sell");
+        buySellBtn.classList.add("buy");
+        buySellBtnText.innerText = "Buy";
+    }
+}
+
+const switchToSellTab = async () => {
+    await updateBuySellBtn("CRYPTO");
+
+    buyTabButton.classList.remove("active");
+    sellTabButton.classList.add("active");
+
+    if (buySellBtn.style.display === "flex") {
+        buySellBtn.classList.remove("buy");
+        buySellBtn.classList.add("sell");
+        buySellBtnText.innerText = "Sell";
+    }
+}
+
+buyTabButton.addEventListener('click', () => {
+    switchToBuyTab();
 });
 
 sellTabButton.addEventListener('click', () => {
-    buyTabButton.classList.remove("active");
-    sellTabButton.classList.add("active");
+    switchToSellTab();
 });
 
 const limitOrderBtn = document.querySelector(".limit-order-btn");
@@ -997,4 +1082,76 @@ marketOrderBtn.addEventListener('click', () => {
     limitOrderBtn.classList.remove("active");
     marketOrderBtn.classList.add("active");
     limitOrderContianer.classList.remove("active");
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateBuySellBtn("EUR");
+});
+
+const amountTotalBar = document.querySelector(".amount-total-bar");
+const barOverlay = document.querySelector(".bar-overlay");
+const barSlider = amountTotalBar.querySelector(".bar-slider");
+const barSliderMarker = amountTotalBar.querySelector(".bar-slider-marker");
+
+barOverlay.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+
+    let barWidth = barOverlay.offsetWidth;
+    let markerWidth = barSliderMarker.offsetWidth;
+    
+    let sliderRect = barOverlay.getBoundingClientRect();
+
+    let initialX = e.pageX - sliderRect.left;
+
+    barSlider.style.width = initialX + "px";
+
+    barSliderMarker.style.left = (initialX - (markerWidth / 2)) + "px";
+
+    const mousemoveHandler = (e) => {
+        let currentX = e.pageX - sliderRect.left;
+
+        let barWidthPercent = barWidth / 100;
+
+        let minMax25 = [(barWidthPercent * 20), (barWidthPercent * 30), (barWidthPercent * 25)];
+        let minMax50 = [(barWidthPercent * 45), (barWidthPercent * 55), (barWidthPercent * 50)];
+        let minMax75 = [(barWidthPercent * 70), (barWidthPercent * 80), (barWidthPercent * 75)];
+
+        if (currentX < 5) {
+            return;
+        } else if (currentX > barWidth - 5) {
+            return;
+        } else if (currentX > minMax25[0] && currentX < minMax25[1]) {
+            barSlider.style.width = minMax25[2] + "px";
+            barSliderMarker.style.left = (minMax25[2] - (markerWidth / 2)) + "px";
+            console.log(currentX, minMax25);
+        } else if (currentX > minMax50[0] && currentX < minMax50[1]) {
+            barSlider.style.width = minMax50[2] + "px";
+            barSliderMarker.style.left = (minMax50[2] - (markerWidth / 2)) + "px";
+        } else if (currentX > minMax75[0] && currentX < minMax75[1]) {
+            barSlider.style.width = minMax75[2] + "px";
+            barSliderMarker.style.left = (minMax75[2] - (markerWidth / 2)) + "px";
+        } else {
+            barSlider.style.width = currentX + "px";
+            barSliderMarker.style.left = (currentX - (markerWidth / 2)) + "px";
+        }
+    }
+
+    document.addEventListener("mousemove", mousemoveHandler);
+
+    document.addEventListener("mouseup", () => {
+        document.removeEventListener("mousemove", mousemoveHandler);
+    });
+})
+
+
+
+
+
+
+
+
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState == 'visible') {
+        window.location.reload();
+    }
 });

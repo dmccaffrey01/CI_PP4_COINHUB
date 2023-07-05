@@ -157,11 +157,15 @@ def get_trading_pair_data(request, symbol):
 @login_required
 def get_user_data(request):
     user = request.user
-
+    assets = Asset.objects.filter(user=user).values()
+    euro_symbol = 'EUR'
+    euro = Asset.objects.filter(user=user, symbol=euro_symbol).values()
     data = {
         'username': user.username,
         'balance': user.balance,
         'balance_history': user.balance_history,
+        'assets': list(assets),
+        'euro': list(euro),
     }
 
     return JsonResponse(data, safe=False)

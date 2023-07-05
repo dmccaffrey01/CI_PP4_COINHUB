@@ -223,6 +223,7 @@
                                     <div class="bar-marker bar-100"></div>
                                     <div class="bar-slider-marker"></div>
                                     <div class="bar-slider"></div>
+                                    <div class="bar-overlay"></div>
                                 </div>
                             </div>
                             <div class="total-input-container buy-sell-tab-input-container content-container-rows">
@@ -265,7 +266,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="buy-sell-tab btn buy">Buy {{ crypto.symbol }}</div>
+                        <div class="buy-sell-tab-btn btn content-container-rows buy">
+                            <div class="buy-sell-btn-text">Buy</div>
+                            <div class="btn-symbol">{{ crypto.symbol }}</div>
+                        </div>
+                        <div class="insufficient-funds-btn btn">
+                            <a href="{% url 'deposit_page' %}" class="insufficient-funds-btn-text">Add Funds</a>
+                        </div>
                     </div>
                     
                 </div>
