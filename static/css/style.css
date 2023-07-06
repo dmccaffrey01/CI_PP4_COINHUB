@@ -2159,6 +2159,7 @@ header.active {
     border: 1px solid var(--GRAY-LIGHT-2);
     border-radius: 5px;
     justify-content: space-between;
+    position: relative;
 }
 
 .buy-sell-tab-text {
@@ -2169,6 +2170,7 @@ header.active {
 .buy-sell-tab-input-sybmol-container {
     gap: 10px;
     justify-content: flex-end;
+    position: relative;
 }
 
 .buy-sell-tab-input {
@@ -2236,6 +2238,24 @@ header.active {
     left: calc(100% - 20px);
 }
 
+.bar-marker-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.bar-marker-text {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: -20px;
+    left: 0;
+    font-size: 0.8rem;
+    color: var(--GRAY-DARK-2);
+}
+
 .bar-slider-marker {
     width: 30px;
     height: 30px;
@@ -2299,6 +2319,58 @@ header.active {
 .insufficient-funds-btn {
     display: none;
 }
+
+.buy-sell-error-message-container {
+    height: 30px;
+    width: 200px;
+    padding: 0 10px;
+    position: absolute;
+    left: calc(100% + 10px);
+    top: 0px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--RED-1);
+    border-radius: 5px;
+}
+
+.buy-sell-error-message-text {
+    color: var(--WHITE);
+    font-size: 0.9rem;
+}
+
+.buy-sell-error-icon-container {
+    width: 30px;
+    height: 30px;
+    background-color: var(--RED-1);
+    border-radius: 50%;
+    position: absolute;
+    left: 100px;
+    cursor: pointer;
+}
+
+.buy-sell-error-icon-container:hover .buy-sell-error-message-container {
+    display: flex;
+}
+
+.buy-sell-error-icon-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buy-sell-error-icon-container i {
+    color: var(--WHITE);
+    font-size: 1.15rem;
+}
+
+.buy-sell-tab-input-container.error {
+    border: 1px solid var(--RED-1);
+}
+
 
 /* Orders Section */
 

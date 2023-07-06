@@ -24,7 +24,7 @@ let globalYValues = [];
 let globalCandlestickData = [];
 let nextFiveData = [];
 
-let globalCurrentPrice;
+let globalCurrentPrice = document.querySelector('.last-price-text').innerText.replace(",", "").replace("€", "");
 let globalBuySellMinMax = [];
 
 const updateLastPrice = () => {
@@ -754,7 +754,7 @@ const createChart = async () => {
                 let maxDiff = chartMax - updatedDataPoint["h"];
                 let minDiff = chartMin - updatedDataPoint["l"];
 
-                let newMax;
+                let newMax;globalCurrentPrice
                 let newMin;
                 if (maxDiff < 20) {
                     newMax = Math.ceil(updatedDataPoint["h"] / 20) * 20;
@@ -980,9 +980,10 @@ const getUserEuro = async () => {
     let euroData = userData.euro;
     let euro = 0;
     if (euroData.length > 0) {
-        euro = euroData["total_amount"];
+        euro = euroData[0]["total_amount"];
     }
-    return euro;
+    
+    return parseFloat(euro);
 }
 
 const getUserAsset = async () => {
@@ -1004,7 +1005,6 @@ const getUserAsset = async () => {
     let assetAmount = 0;
     if (userHasAsset) {
         assetAmount = assetsData[assetIndex]["total_amount"];
-        console.log("success");
     }
     return assetAmount;
 }
@@ -1093,7 +1093,24 @@ const barOverlay = document.querySelector(".bar-overlay");
 const barSlider = amountTotalBar.querySelector(".bar-slider");
 const barSliderMarker = amountTotalBar.querySelector(".bar-slider-marker");
 
-barOverlay.addEventListener("mousedown", (e) => {
+const amountInput = document.querySelector(".buy-sell-tab-amount-input");
+const totalInput = document.querySelector(".buy-sell-tab-total-input");
+
+const updateAmountTotalInputs = (percentValue, euroAvailable, type) => {
+    let totalValue = euroAvailable * (percentValue / 100);
+    if (percentValue == 0 || percentValue == "" || percentValue == NaN) {
+        totalValue = 1;
+    }
+    let amountValue= totalValue / globalCurrentPrice;
+    if (type == "slider" || type == "total") {
+        amountInput.value = amountValue.toFixed(8);
+    }
+    if (type == "slider" || type == "amount") {
+        totalInput.value = totalValue.toFixed(2);
+    }
+}
+
+barOverlay.addEventListener("mousedown", async (e) => {
     e.preventDefault();
 
     let barWidth = barOverlay.offsetWidth;
@@ -1103,37 +1120,50 @@ barOverlay.addEventListener("mousedown", (e) => {
 
     let initialX = e.pageX - sliderRect.left;
 
-    barSlider.style.width = initialX + "px";
+    let percentValue = (initialX / barWidth) * 100;
 
-    barSliderMarker.style.left = (initialX - (markerWidth / 2)) + "px";
+    const updateBar = (currentX) => {
+        let barWidthPercent = barWidth / 100;
+
+        let minMax0 = [(barWidthPercent * 0), (barWidthPercent * 5), 1];
+        let minMax25 = [(barWidthPercent * 20), (barWidthPercent * 30), (barWidthPercent * 25)];
+        let minMax50 = [(barWidthPercent * 45), (barWidthPercent * 55), (barWidthPercent * 50)];
+        let minMax75 = [(barWidthPercent * 70), (barWidthPercent * 80), (barWidthPercent * 75)];
+        let minMax100 = [(barWidthPercent * 95), (barWidthPercent * 100), (barWidthPercent * 100)];
+
+        if (currentX < minMax0[1]) {
+            percentValue = 0;
+            barSlider.style.width = "0px";
+            barSliderMarker.style.left = "-5px";
+        } else if (currentX > minMax100[0]) {
+            percentValue = 100;
+            barSlider.style.width = barWidth + "px";
+            barSliderMarker.style.left = (barWidth - 20) + "px";
+        } else if (currentX > minMax25[0] && currentX < minMax25[1]) {
+            percentValue = 25;
+            barSlider.style.width = minMax25[2] + "px";
+            barSliderMarker.style.left = (minMax25[2] - (markerWidth / 2)) + "px";
+        } else if (currentX > minMax50[0] && currentX < minMax50[1]) {
+            percentValue = 50;
+            barSlider.style.width = minMax50[2] + "px";
+            barSliderMarker.style.left = (minMax50[2] - (markerWidth / 2)) + "px";
+        } else if (currentX > minMax75[0] && currentX < minMax75[1]) {
+            percentValue = 75;
+            barSlider.style.width = minMax75[2] + "px";
+            barSliderMarker.style.left = (minMax75[2] - (markerWidth / 2)) + "px";
+        } else {
+            percentValue = (currentX / barWidth) * 100;
+            barSlider.style.width = currentX + "px";
+            barSliderMarker.style.left = (currentX - (markerWidth / 2)) + "px";
+        }
+    }
 
     const mousemoveHandler = (e) => {
         let currentX = e.pageX - sliderRect.left;
 
-        let barWidthPercent = barWidth / 100;
+        updateBar(currentX);
 
-        let minMax25 = [(barWidthPercent * 20), (barWidthPercent * 30), (barWidthPercent * 25)];
-        let minMax50 = [(barWidthPercent * 45), (barWidthPercent * 55), (barWidthPercent * 50)];
-        let minMax75 = [(barWidthPercent * 70), (barWidthPercent * 80), (barWidthPercent * 75)];
-
-        if (currentX < 5) {
-            return;
-        } else if (currentX > barWidth - 5) {
-            return;
-        } else if (currentX > minMax25[0] && currentX < minMax25[1]) {
-            barSlider.style.width = minMax25[2] + "px";
-            barSliderMarker.style.left = (minMax25[2] - (markerWidth / 2)) + "px";
-            console.log(currentX, minMax25);
-        } else if (currentX > minMax50[0] && currentX < minMax50[1]) {
-            barSlider.style.width = minMax50[2] + "px";
-            barSliderMarker.style.left = (minMax50[2] - (markerWidth / 2)) + "px";
-        } else if (currentX > minMax75[0] && currentX < minMax75[1]) {
-            barSlider.style.width = minMax75[2] + "px";
-            barSliderMarker.style.left = (minMax75[2] - (markerWidth / 2)) + "px";
-        } else {
-            barSlider.style.width = currentX + "px";
-            barSliderMarker.style.left = (currentX - (markerWidth / 2)) + "px";
-        }
+        updateAmountTotalInputs(percentValue, euroAvailable, "slider");
     }
 
     document.addEventListener("mousemove", mousemoveHandler);
@@ -1141,7 +1171,151 @@ barOverlay.addEventListener("mousedown", (e) => {
     document.addEventListener("mouseup", () => {
         document.removeEventListener("mousemove", mousemoveHandler);
     });
+
+    updateBar(initialX);
+
+    const euroAvailable = await getUserEuro();
+
+    updateAmountTotalInputs(percentValue, euroAvailable, "slider");
 })
+
+function buySellNumberVerification(variable) {
+    return !isNaN(variable) && Number(variable) >= 0;
+}
+
+const globalUpdateBar = (currentX, percentValue) => {
+    let barWidth = barOverlay.offsetWidth;
+    let markerWidth = barSliderMarker.offsetWidth;
+    let halfMarkerWidth = markerWidth / 2;
+
+    let min = (halfMarkerWidth / barWidth) * 100
+    let max = ((barWidth - halfMarkerWidth) / barWidth) * 100;
+    if (percentValue < min) {
+        barSlider.style.width = "0px";
+        barSliderMarker.style.left = "-5px";
+    } else if (percentValue > max) {
+        barSlider.style.width = barWidth + "px";
+        barSliderMarker.style.left = (barWidth - 20) + "px";
+    } else {
+        barSlider.style.width = currentX + "px";
+        barSliderMarker.style.left = (currentX - (markerWidth / 2)) + "px";
+    }
+}
+
+const showBuySellError = (input) => {
+    let errorMessageNotification = document.createElement("div");
+    errorMessageNotification.classList.add("buy-sell-error-message-container");
+
+    let message;
+    
+    if (input.classList.contains("buy-sell-tab-amount-input")) {
+        message = "Please enter a valid amount";
+    } else {
+        message = "Please enter a valid total";
+    }
+
+    let errorMessageDiv = document.createElement("div");
+    errorMessageDiv.classList.add("buy-sell-error-message-text");
+    errorMessageDiv.innerText = message;
+
+    errorMessageNotification.appendChild(errorMessageDiv);
+
+    let parentDiv = input.parentElement;
+
+    let iconContainer = document.createElement("div");
+    iconContainer.classList.add("buy-sell-error-icon-container");
+
+    let iconWrapper = document.createElement("div");
+    iconWrapper.classList.add("buy-sell-error-icon-wrapper");
+    iconWrapper.innerHTML = `<i class="fa-solid fa-exclamation"></i>`;
+    iconWrapper.appendChild(errorMessageNotification);
+
+    iconContainer.appendChild(iconWrapper);
+
+    let grandparentDiv = parentDiv.parentElement;
+
+    grandparentDiv.appendChild(iconContainer);
+
+    grandparentDiv.classList.add("error");
+}
+
+totalInput.addEventListener("keydown", () => {
+    window.setTimeout(async () => {
+        let inputValue = totalInput.value;
+        
+        if (!buySellNumberVerification(inputValue)) {
+            inputValue = inputValue.substr(0, inputValue.length - 1);
+            totalInput.value = inputValue;
+            showBuySellError(totalInput);
+            return;
+        }
+            
+        let euroAvailable = await getUserEuro();
+
+        if (parseFloat(inputValue) > euroAvailable) {
+            inputValue = inputValue.substr(0, inputValue.length - 1);
+            totalInput.value = inputValue;
+            showBuySellError(totalInput);
+            return;
+        }
+
+        let inputToEuroValue = inputValue / euroAvailable;
+
+        let barWidth = barOverlay.offsetWidth;
+
+        let initialX = (inputToEuroValue * barWidth)
+
+        let percentValue = (initialX / barWidth) * 100;
+
+        globalUpdateBar(initialX, percentValue);
+
+        updateAmountTotalInputs(percentValue, euroAvailable, "total");
+    }, 0);
+})
+
+amountInput.addEventListener("keydown", () => {
+    window.setTimeout(async () => {
+        let inputValue = amountInput.value;
+        
+        if (!buySellNumberVerification(inputValue)) {
+            inputValue = inputValue.substr(0, inputValue.length - 1);
+            amountInput.value = inputValue;
+            showBuySellError(amountInput);
+            return;
+        }
+            
+        let euroAvailable = await getUserEuro();
+
+        let newInputValue;
+        if (inputValue == "") {
+            newInputValue = 1 / globalCurrentPrice;
+        } else {
+            newInputValue = parseFloat(inputValue);
+        }
+
+        let euroValue = newInputValue * globalCurrentPrice;
+
+        if (euroValue > euroAvailable) {
+            inputValue = inputValue.substr(0, inputValue.length - 1);
+            amountInput.value = inputValue;
+            showBuySellError(amountInput);
+            return;
+        }
+
+        let euroValueToEuroAvailable = euroValue / euroAvailable;
+
+        let barWidth = barOverlay.offsetWidth;
+
+        let initialX = (euroValueToEuroAvailable * barWidth)
+
+        let percentValue = (initialX / barWidth) * 100;
+        globalUpdateBar(initialX, percentValue);
+
+        updateAmountTotalInputs(percentValue, euroAvailable, "amount");
+    }, 0);
+})
+
+
 
 
 
