@@ -102,8 +102,6 @@ class CryptoDetail(models.Model):
 
 
 class CustomUser(AbstractUser):
-    balance = models.DecimalField(max_digits=20, decimal_places=2, default=0)
-    balance_history = models.TextField(default="[]")
     
     groups = models.ManyToManyField(Group, related_name='custom_users')
     user_permissions = models.ManyToManyField(
@@ -113,16 +111,28 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
+
 class Asset(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='assets')
     name = models.CharField(max_length=100)
     symbol = models.CharField(max_length=10)
     iconUrl = models.URLField()
-    total_amount = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    total_amount = models.DecimalField(max_digits=40, decimal_places=8, default=0)
+    amount_history = models.TextField(default="[]")
+
+    def __str__(self):
+        return self.name
+    
+
+class Transaction(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='transactions')
+    time = models.CharField(max_length=200)
+    symbol = models.CharField(max_length=10)
+    type = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=20, decimal_places=2, default=0)
-    price_change = models.DecimalField(max_digits=20, decimal_places=2, default=0)
-    total_balance = models.DecimalField(max_digits=20, decimal_places=2, default=0)
-    asset_balance_history = models.TextField(default="[]")
+    amount = models.DecimalField(max_digits=20, decimal_places=8, default=0)
+    total = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    status = models.CharField(max_length=20)
 
     def __str__(self):
         return self.name

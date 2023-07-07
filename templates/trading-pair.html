@@ -10,7 +10,7 @@
                     <div class="trending-icon-container">
                         <img src="{{ crypto.icon }}" alt="{{ crypto.name }} icon" class="icon">
                     </div>
-                    <div class="dark-text">
+                    <div class="dark-text crypto-euro-trading-pair">
                         {{ crypto.euro_trading_pair }}
                     </div>
                     <i class="fa-solid fa-chevron-down dropdown-btn-icon change-trading-pair-btn-icon"></i>
@@ -200,7 +200,7 @@
 
                     <div class="content-container w-100 buy-sell-order-container">
                         <div class="limit-price-input-container buy-sell-tab-input-container content-container-rows active">
-                            <div class="limit-price-text buy-sell-tab-text">Limit Price</div>
+                            <div class="limit-price-text buy-sell-tab-text">Price</div>
                             <div class="limit-price-input-sybmol-container buy-sell-tab-input-sybmol-container content-container-rows">
                                 <input type="text" class="limit-price-input buy-sell-tab-input" placeholder="{{ crypto.price }}">
                                 <div class="limit-price-input-symbol buy-sell-tab-input-symbol">EUR</div>
@@ -264,7 +264,7 @@
                                     </div>
                                     {% else %}
                                     <div class="crypto-asset-info-amount">
-                                        0.00
+                                        0.00000000
                                     </div>
                                     {% endif %}
                                     <div class="crypto-asset-info-symbol">{{ crypto.symbol }}</div>
@@ -274,9 +274,9 @@
                                 <div class="dark-text text-gd-2">EUR Available:</div>
                                 <div class="dark-text crypto-asset-info content-container-rows">
                                     <div class="crypto-asset-info-symbol">€</div>
-                                    {% if euro.total_amount > 0 %}
+                                    {% if euro_amount > 0 %}
                                     <div class="euro-asset-info-amount comma-format">
-                                        {{ euro.total_amount }}
+                                        {{ euro_amount }}
                                     </div>
                                     {% else %}
                                     <div class="euro-asset-info-amount comma-format">

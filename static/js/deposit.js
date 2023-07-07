@@ -162,9 +162,9 @@ const depositToBalance = async () => {
     let formData = getFormData();
     let amount = formData["amount"];
     let balanceData = await depositAmount(amount);
-    let balance = balanceData["balance"];
+    let balance = balanceData["total_amount"];
     window.setTimeout(() => {
-        showBalance(balance, amount);
+        showBalance(Number(balance).toFixed(2), amount);
     }, 1000);
 }
 

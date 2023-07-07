@@ -82,7 +82,14 @@ def deposit_page(request):
     
     user = request.user
 
-    return render(request, 'deposit.html', {'user': user})
+    euro_symbol = "EUR"
+    euro_asset = Asset.objects.filter(user=user, symbol=euro_symbol).first()
+    if euro_asset:
+        euro_available = round(euro_asset.total_amount, 2)
+    else:
+        euro_available = 0
+
+    return render(request, 'deposit.html', {'euro': euro_available})
 
 
 def portfolio(request):
@@ -95,6 +102,7 @@ def portfolio(request):
     }
 
     return render(request, 'portfolio.html', context)
+
 
 def trading_pair(request, symbol):
     user = request.user
@@ -111,11 +119,11 @@ def trading_pair(request, symbol):
     lowest_number = format(min(sparkline_numbers), '.2f') if sparkline_numbers else None
     highest_number = format(max(sparkline_numbers), '.2f') if sparkline_numbers else None
 
-
     context = {
         'user': user,
         'asset': asset,
         'euro': euro,
+        'euro_amount': round(euro.total_amount, 2),
         'crypto': crypto,
         'cryptocurrencies': cryptocurrencies,
         'low_24h': lowest_number,
@@ -123,6 +131,41 @@ def trading_pair(request, symbol):
     }
 
     return render(request, 'trading-pair.html', context)
+
+
+def buy_sell_order(request, time, symbol, orderType, bsType, price, amount, total):
+    user = request.user
+
+    price = float(price)
+    amount = float(amount)
+    total = float(total)
+
+    euro_symbol = "EUR"
+    euro_asset = Asset.objects.filter(user=user, symbol=euro_symbol).first()
+    if euro_asset:
+        euro_available = euro_asset.total_amount
+    else:
+        euro_available = 0
+
+    asset_symbol = symbol
+    asset = Asset.objects.filter(user=user, symbol=asset_symbol)
+    if asset:
+        asset_available = asset.total_amount
+    else:
+        asset_available = 0
+
+    if total > euro_available and bsType == "Buy":
+        response = {
+            "success": "false",
+            "message": "Total Exceeds Euro Available",
+        }
+    elif amount > asset_available and bsType == "Sell":
+        response = {
+            "success": "false",
+            "message": f"Amount Exceeds {asset['name']} Available",
+        }
+    else:
+        cc = "c"
 
 
 def get_trading_pair_data(request, symbol):
@@ -177,37 +220,30 @@ def deposit(request, amount):
     deposit_amount = Decimal(amount)
 
     asset, created = Asset.objects.get_or_create(user=user, name='Euro')
-
+    
     if not created:
         asset.symbol = 'EUR'
         asset.iconUrl = 'https://res.cloudinary.com/dzwyiggcp/image/upload/v1687604163/CI_PP4_COINHUB/icons/vskcbpae6osco4zr3btg.png'
-        asset.price = 1
-
-    asset.total_amount += deposit_amount
-    old_balance = asset.total_balance
-    asset.total_balance += deposit_amount * asset.price
-    new_balance = asset.total_balance
-
-    balance_entry = {
+    
+    old_amount = asset.total_amount
+    new_amount = old_amount + deposit_amount
+    asset.total_amount = new_amount
+    
+    amount_entry = {
         'amount': float(deposit_amount),
         'timestamp': str(timezone.now()),
-        'old_balance': float(old_balance),
-        'new_balance': float(new_balance),
+        'old_amount': float(old_amount),
+        'new_amount': float(new_amount),
     }
 
-    asset_balance_history = json.loads(asset.asset_balance_history)
-    asset_balance_history.append(balance_entry)
-
+    amount_history = asset.amount_history
+    new_amount_history = amount_history.replace("'", "\"")
+    new_amount_history = json.loads(new_amount_history)
+    new_amount_history.append(amount_entry)
+    asset.amount_history = new_amount_history
     asset.save()
 
-    balance_history = json.loads(user.balance_history)
-    balance_history.append(balance_entry)
-
-    user.balance = new_balance
-    user.balance_history = json.dumps(balance_history)
-    user.save()
-
-    return JsonResponse({'balance': new_balance})
+    return JsonResponse({'total_amount': new_amount})
 
 
 def get_crypto_detail_data(request, cryptocurrency):
@@ -353,7 +389,6 @@ def get_crypto_detail_main_data(request, cryptocurrency):
 
             max_supply = crypto_data['supply']['max'] if crypto_data['supply']['max'] is not None else 0
         
-
             crypto_detail, _ = CryptoDetail.objects.get_or_create(
                 uuid=crypto_data['uuid'],
                 defaults={
