@@ -1399,17 +1399,17 @@ limitPriceInput.addEventListener("input", () => {
 buySellBtn.addEventListener("click", async () => {
     // Loading();
 
-    let time = globalTimeRange[1];
+    let time = (new Date(globalTimeRange[1]).getTime() / 1000) - (5 * 60);
     let symbol = getCurrentCryptoSymbol();
     let orderType = getOrderType();
     let bsType = getBuySellType();
     let price = globalCurrentPrice;
-    if (type === "Limit") {
+    if (bsType === "Limit") {
         price = limitPriceInput.value;
     }
     let amount = amountInput.value;
     let total = totalInput.value;
-
+    console.log(time);
 });
 
 

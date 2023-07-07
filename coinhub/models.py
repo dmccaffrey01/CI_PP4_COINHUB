@@ -126,7 +126,7 @@ class Asset(models.Model):
 
 class Transaction(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='transactions')
-    time = models.CharField(max_length=200)
+    time = models.DecimalField(max_digits=20, decimal_places=0, default=0)
     symbol = models.CharField(max_length=10)
     type = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=20, decimal_places=2, default=0)
