@@ -1392,12 +1392,139 @@ limitPriceInput.addEventListener("input", () => {
 })
 
 /**
+ * Add Loading Icon to container
+ */
+
+const loadingIconContainer = document.querySelector(".loading-icon-container");
+
+const addLoadingIcon = () => {
+    let loadingIcon = document.createElement("div");
+    loadingIconContainer.appendChild(loadingIcon);
+    loadingIcon.classList.add("loading-icon");
+}
+
+/** 
+ * Remove Loading Icon
+ */
+
+const removeLoadingIcon = () => {
+    let loadingIcon = document.querySelector(".loading-icon");
+    loadingIcon.remove();
+}
+
+/**
+ * Hide Buy Sell Tab Wrapper
+ */
+
+const hideBuySellWrapper = () => {
+    let buySellWrapper = document.querySelector(".buy-sell-main-wrapper");
+    buySellWrapper.style.display = "none";
+}
+
+/**
+ * Show Buy Sell Tab Wrapper
+ */
+
+const showBuySellWrapper = () => {
+    let buySellWrapper = document.querySelector(".buy-sell-main-wrapper");
+    buySellWrapper.style.display = "flex";
+}
+
+/**
+ * Hide Buy Sell Message
+ */
+
+const hideBuySellMessage = () => {
+    let buySellMessageContainer = document.querySelector(".buy-sell-message-container");
+
+    buySellMessageContainer.style.display = "none";
+}
+
+
+/**
+ * Show Buy Sell Message
+ */
+
+const showBuySellMessage = (message, success) => {
+    let buySellMessageContainer = document.querySelector(".buy-sell-message-container");
+    let buySellMessageText = document.querySelector(".buy-sell-message-text");
+    let buySellMessageBtn = document.querySelector(".buy-sell-message-btn");
+
+    buySellMessageText.innerText = message;
+
+    if (success) {
+        buySellMessageBtn.innerText = "Place Another Order";
+    } else {
+        buySellMessageBtn.innerText = "Try Again";
+    }
+
+    buySellMessageContainer.style.display = "flex";
+
+    buySellMessageBtn.addEventListener("click", () => {
+        hideBuySellMessage();
+        showBuySellWrapper();
+    });
+}
+
+/**
+ * Get the transaction data to update the table
+ */
+
+const getTransactionData = async () => {
+    let response = await fetch('/get_transaction_data');
+    let transactionResponse = await response.json();
+    if (transactionResponse["is_transactions"]) {
+        return transactionResponse["transactions"];
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Update the orders table to display the transactions
+ */
+
+const updateOrdersTable = async () => {
+    let tableBody = document.querySelector(".orders-table-body");
+
+    tableBody.innerHTML = "";
+    
+    let transactionData = await getTransactionData();
+    if (transactionData) {
+        transactionData.forEach((transaction) => {
+            let tableRow = document.createElement("tr");
+            tableRow.innerHTML = `<td class="orders-time">${transaction["time"]}</td>
+                                    <td class="orders-name">${transaction["symbol"]}-EUR</td>
+                                    <td class="orders-type">${transaction["type"]}</td>
+                                    <td class="orders-price">${transaction["price"]}</td>
+                                    <td class="orders-amount">${transaction["amount"]}</td>
+                                    <td class="orders-total">${transaction["total"]}</td>
+                                    <td class="orders-status">${transaction["status"]}</td>`;
+            if (transaction["status"] == "Pending") {
+                tableRow.innerHTML += `<td class="orders-cancel">
+                                        <div class="btn cancel-order-btn">CANCEL <i class="fa-solid fa-xmark"></i></div>
+                                        </td>`;
+            } else {
+                tableRow.innerHTML += `<td class="orders-cancel"></td>`;
+            }
+
+            tableBody.appendChild(tableRow);
+        });
+    } else {
+        tableBody.innerHTML = `<div class="no-order-to-show-container content-container">
+                                    <div class="no-order-to-show-text dark-text">No Orders To Show</div>
+                                </div>`
+    } 
+}
+
+/**
  * Creates a new trasnsaction whenever the buy sell button is clicked
  * Gets the data from the tab and sends off to view
  */
 
 buySellBtn.addEventListener("click", async () => {
-    // Loading();
+    hideBuySellWrapper();
+    addLoadingIcon();
 
     let time = (new Date(globalTimeRange[1]).getTime() / 1000) - (5 * 60);
     let symbol = getCurrentCryptoSymbol();
@@ -1409,7 +1536,15 @@ buySellBtn.addEventListener("click", async () => {
     }
     let amount = amountInput.value;
     let total = totalInput.value;
-    console.log(time);
+
+    let response = await fetch(`/buy_sell_order/${time}/${symbol}/${orderType}/${bsType}/${price}/${amount}/${total}`);
+    let responseJson = await response.json();
+    
+    removeLoadingIcon();
+
+    showBuySellMessage(responseJson["message"], responseJson["success"])
+    
+    updateOrdersTable();
 });
 
 

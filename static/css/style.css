@@ -1929,6 +1929,24 @@ canvas.price-sparkline {
 
 .trading-pair-side-main-container {
     height: calc(100% - 60px);
+    position: relative;
+}
+
+.buy-sell-main-wrapper {
+    width: 100%;
+    height: 100%;
+    gap: 50px;
+}
+
+.buy-sell-message-container {
+    height: 100%;
+    width: 100%;
+    gap: 50px;
+    display: none;
+}
+
+.buy-sell-message-text {
+    text-align: center;
 }
 
 /* Order Book Section */
@@ -2378,6 +2396,8 @@ header.active {
     width: 100%;
     justify-content: flex-start;
     padding: 0 20px;
+    overflow-y: scroll;
+    position: relative;
 }
 
 .orders-table {
@@ -2419,4 +2439,11 @@ td.orders-cancel, th.orders-cancel-heading {
     padding: 7px 10px;
     color: var(--WHITE);
     margin: auto;
+}
+
+.no-order-to-show-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
 }

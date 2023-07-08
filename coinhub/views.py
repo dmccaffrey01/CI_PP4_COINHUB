@@ -121,6 +121,13 @@ def trading_pair(request, symbol):
     lowest_number = format(min(sparkline_numbers), '.2f') if sparkline_numbers else None
     highest_number = format(max(sparkline_numbers), '.2f') if sparkline_numbers else None
 
+    pending_status = "Pending"
+    hour_time = int(time.time()) - 3660
+    transactions = Transaction.objects.filter(
+        Q(user=user) & (Q(status=pending_status) | Q(time__gt=hour_time))
+    )
+    is_transactions = True if len(transactions.values()) > 0 else False
+
     context = {
         'user': user,
         'asset': asset,
@@ -130,15 +137,36 @@ def trading_pair(request, symbol):
         'cryptocurrencies': cryptocurrencies,
         'low_24h': lowest_number,
         'high_24h': highest_number,
+        'transactions': transactions,
+        'is_transactions': is_transactions,
     }
 
     return render(request, 'trading-pair.html', context)
 
 
-def buy_sell_order(request, time, symbol, orderType, bsType, price, amount, total):
+def get_transaction_data(request):
+    user = request.user
+    
+    pending_status = "Pending"
+    hour_time = int(time.time()) - 3660
+    transactions = Transaction.objects.filter(
+        Q(user=user) & (Q(status=pending_status) | Q(time__gt=hour_time))
+    ).values()
+    is_transactions = True if len(transactions) > 0 else False
+    transactions_data = []
+    for transaction in transactions:
+        transactions_data.append(transaction)
+    data = {
+        'transactions': transactions_data,
+        'is_transactions': is_transactions,
+    }
+    return JsonResponse(data, safe=False)
+
+
+def buy_sell_order(request, time_placed, symbol, orderType, bsType, price, amount, total):
     user = request.user
 
-    time = float(time)
+    time_placed = float(time_placed)
     price = float(price)
     amount = float(amount)
     total = float(total)
@@ -151,11 +179,13 @@ def buy_sell_order(request, time, symbol, orderType, bsType, price, amount, tota
         euro_available = 0
 
     asset_symbol = symbol
-    asset = Asset.objects.filter(user=user, symbol=asset_symbol)
+    asset = Asset.objects.filter(user=user, symbol=asset_symbol).first()
     if asset:
         asset_available = asset.total_amount
     else:
         asset_available = 0
+
+    asset_name = asset.name
 
     if total > euro_available and bsType == "Buy":
         response = {
@@ -165,14 +195,34 @@ def buy_sell_order(request, time, symbol, orderType, bsType, price, amount, tota
     elif amount > asset_available and bsType == "Sell":
         response = {
             "success": "false",
-            "message": f"Amount Exceeds {asset['name']} Available",
+            "message": f"Amount Exceeds {asset_name} Available",
         }
     else:
-        euro_asset -= total
 
-        transaction = Transaction.objects.get_or_create(
+        old_amount = float(euro_asset.total_amount)
+        new_amount = old_amount - total
+        euro_asset.total_amount = new_amount
+
+        timestamp = int(time.time())
+
+        amount_entry = {
+            'amount': float(total),
+            'timestamp': timestamp,
+            'old_amount': float(old_amount),
+            'new_amount': float(new_amount),
+        }
+
+        amount_history = euro_asset.amount_history
+        new_amount_history = amount_history.replace("'", "\"")
+        new_amount_history = json.loads(new_amount_history)
+        new_amount_history.append(amount_entry)
+        euro_asset.amount_history = new_amount_history
+
+        euro_asset.save()
+
+        transaction = Transaction.objects.create(
             user=user,
-            time=time,
+            time=time_placed,
             symbol=symbol,
             price=price,
             amount=amount,
@@ -181,6 +231,8 @@ def buy_sell_order(request, time, symbol, orderType, bsType, price, amount, tota
 
         transaction.type = f"{bsType} - {orderType}"    
         transaction.status = "Pending"
+
+        transaction.save()
 
         check_transactions(request)
 
@@ -214,6 +266,9 @@ def check_transactions(request):
         symbol = transaction.symbol
 
         time_diff = current_time - t_time
+
+        highs = []
+        lows = []
         
         if time_diff > (UNIX_HOUR * 5):
             rounded_current_time = math.floor(current_time / UNIX_HOUR) * UNIX_HOUR
@@ -241,9 +296,6 @@ def check_transactions(request):
                     "toTs": current_time
                 },
             ]
-
-            highs = []
-            lows = []
         else:
             limit_counter = time_diff / UNIX_MIN
             
@@ -283,9 +335,9 @@ def check_transactions(request):
         min_low = min(lows)
 
         if transaction.type == "Buy - Limit" or transaction.type == "Sell - Limit":
-            fulfill_transaction(transaction)
+            fulfill_transaction(request, transaction)
         if transaction.price < max_high and transaction.price > min_low:
-            fulfill_transaction(transaction)
+            fulfill_transaction(request, transaction)
 
         return current_price
 
@@ -295,12 +347,14 @@ def fulfill_transaction(request, transaction):
 
     symbol = transaction.symbol
 
+    total = transaction.total
+
     crypto = CryptoCurrency.objects.get(symbol=symbol)
 
     asset, created = Asset.objects.get_or_create(user=user, symbol=symbol)
 
     if not created:
-        asset.iconUrl = crypto.iconUrl
+        asset.iconUrl = crypto.icon
         asset.name = crypto.name
         asset.total_amount = 0
 
@@ -309,7 +363,7 @@ def fulfill_transaction(request, transaction):
     asset.total_amount = new_amount
 
     amount_entry = {
-        'amount': float(deposit_amount),
+        'amount': float(total),
         'timestamp': int(time.time()),
         'old_amount': float(old_amount),
         'new_amount': float(new_amount),
@@ -320,7 +374,12 @@ def fulfill_transaction(request, transaction):
     new_amount_history = json.loads(new_amount_history)
     new_amount_history.append(amount_entry)
     asset.amount_history = new_amount_history
+
     asset.save()
+
+    transaction.status = "Fulfilled"
+
+    transaction.save()
 
     return new_amount
 

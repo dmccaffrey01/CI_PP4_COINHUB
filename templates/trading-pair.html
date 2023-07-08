@@ -149,31 +149,28 @@
                             </tr>
                         </thead>
                         <tbody class="orders-table-body">
-                            <div class="no-orders-text">No Orders To Show</div>
+                        {% if is_transactions %}
+                        {% for transaction in transactions %}
                             <tr>
-                                <td class="orders-time">05/07/23 11:30</td>
-                                <td class="orders-name">BTC-EUR</td>
-                                <td class="orders-type">Limit - Buy</td>
-                                <td class="orders-price">28,500</td>
-                                <td class="orders-amount">0.51238797</td>
-                                <td class="orders-total">15,000.04</td>
-                                <td class="orders-status">Pending</td>
+                                <td class="orders-time">{{ transaction.time }}</td>
+                                <td class="orders-name">{{ transaction.symbol }}-EUR</td>
+                                <td class="orders-type">{{ transaction.type }}</td>
+                                <td class="orders-price">{{ transaction.price }}</td>
+                                <td class="orders-amount">{{ transaction.amount }}</td>
+                                <td class="orders-total">{{ transaction.total }}</td>
+                                <td class="orders-status">{{ transaction.status }}</td>
                                 <td class="orders-cancel">
+                                    {% if transaction.status == "Pending" %}
                                     <div class="btn cancel-order-btn">CANCEL <i class="fa-solid fa-xmark"></i></div>
+                                    {% endif %}
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="orders-time">05/07/23 11:30</td>
-                                <td class="orders-name">BTC-EUR</td>
-                                <td class="orders-type">Limit - Buy</td>
-                                <td class="orders-price">28,500</td>
-                                <td class="orders-amount">0.51238797</td>
-                                <td class="orders-total">15,000.04</td>
-                                <td class="orders-status">Pending</td>
-                                <td class="orders-cancel">
-                                    
-                                </td>
-                            </tr>
+                        {% endfor %}
+                        {% else %}
+                            <div class="no-order-to-show-container content-container">
+                                <div class="no-order-to-show-text dark-text">No Orders To Show</div>
+                            </div>
+                        {% endif %}
                         </tbody>
                     </table>
                 </div>
@@ -193,108 +190,114 @@
                 </div>
 
                 <div class="buy-sell-main-container content-container trading-pair-side-main-container">
-                    <div class="buy-order-btns-container content-container-rows">
-                        <div class="buy-order-btn limit-order-btn dark-text active">LIMIT</div>
-                        <div class="buy-order-btn market-order-btn dark-text">MARKET</div>
+                    <div class="loading-icon-container"></div>
+                    <div class="buy-sell-message-container content-container">
+                        <div class="buy-sell-message-text dark-text">Thank You!</div>
+                        <div class="buy-sell-message-btn btn">Place another Order</div>
                     </div>
+                    <div class="buy-sell-main-wrapper content-container">
+                        <div class="buy-order-btns-container content-container-rows">
+                            <div class="buy-order-btn limit-order-btn dark-text active">LIMIT</div>
+                            <div class="buy-order-btn market-order-btn dark-text">MARKET</div>
+                        </div>
 
-                    <div class="content-container w-100 buy-sell-order-container">
-                        <div class="limit-price-input-container buy-sell-tab-input-container content-container-rows active">
-                            <div class="limit-price-text buy-sell-tab-text">Price</div>
-                            <div class="limit-price-input-sybmol-container buy-sell-tab-input-sybmol-container content-container-rows">
-                                <input type="text" class="limit-price-input buy-sell-tab-input" placeholder="{{ crypto.price }}">
-                                <div class="limit-price-input-symbol buy-sell-tab-input-symbol">EUR</div>
-                            </div>
-                        </div>
-                        <div class="amount-total-input-container content-container w-100">
-                            <div class="amount-input-container buy-sell-tab-input-container content-container-rows">
-                                <div class="amount-text buy-sell-tab-text">Amount</div>
-                                <div class="amount-input-symbol-container buy-sell-tab-input-sybmol-container content-container-rows">
-                                    <input type="text" class="buy-sell-tab-amount-input buy-sell-tab-input" placeholder="0.00000000">
-                                    <div class="amount-input-symbol buy-sell-tab-input-symbol">{{ crypto.symbol }}</div>
+                        <div class="content-container w-100 buy-sell-order-container">
+                            <div class="limit-price-input-container buy-sell-tab-input-container content-container-rows active">
+                                <div class="limit-price-text buy-sell-tab-text">Price</div>
+                                <div class="limit-price-input-sybmol-container buy-sell-tab-input-sybmol-container content-container-rows">
+                                    <input type="text" class="limit-price-input buy-sell-tab-input" placeholder="{{ crypto.price }}">
+                                    <div class="limit-price-input-symbol buy-sell-tab-input-symbol">EUR</div>
                                 </div>
                             </div>
-                            <div class="amount-total-bar-container content-container">
-                                <div class="amount-total-bar">
-                                    <div class="bar-marker bar-0">
-                                        <div class="bar-marker-container">
-                                            <div class="bar-marker-text">0%</div>
-                                        </div>
+                            <div class="amount-total-input-container content-container w-100">
+                                <div class="amount-input-container buy-sell-tab-input-container content-container-rows">
+                                    <div class="amount-text buy-sell-tab-text">Amount</div>
+                                    <div class="amount-input-symbol-container buy-sell-tab-input-sybmol-container content-container-rows">
+                                        <input type="text" class="buy-sell-tab-amount-input buy-sell-tab-input" placeholder="0.00000000">
+                                        <div class="amount-input-symbol buy-sell-tab-input-symbol">{{ crypto.symbol }}</div>
                                     </div>
-                                    <div class="bar-marker bar-25">
-                                        <div class="bar-marker-container">
-                                            <div class="bar-marker-text">25%</div>
+                                </div>
+                                <div class="amount-total-bar-container content-container">
+                                    <div class="amount-total-bar">
+                                        <div class="bar-marker bar-0">
+                                            <div class="bar-marker-container">
+                                                <div class="bar-marker-text">0%</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="bar-marker bar-50">
-                                        <div class="bar-marker-container">
-                                            <div class="bar-marker-text">50%</div>
+                                        <div class="bar-marker bar-25">
+                                            <div class="bar-marker-container">
+                                                <div class="bar-marker-text">25%</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="bar-marker bar-75">
-                                        <div class="bar-marker-container">
-                                            <div class="bar-marker-text">75%</div>
+                                        <div class="bar-marker bar-50">
+                                            <div class="bar-marker-container">
+                                                <div class="bar-marker-text">50%</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="bar-marker bar-100">
-                                        <div class="bar-marker-container">
-                                            <div class="bar-marker-text">100%</div>
+                                        <div class="bar-marker bar-75">
+                                            <div class="bar-marker-container">
+                                                <div class="bar-marker-text">75%</div>
+                                            </div>
                                         </div>
+                                        <div class="bar-marker bar-100">
+                                            <div class="bar-marker-container">
+                                                <div class="bar-marker-text">100%</div>
+                                            </div>
+                                        </div>
+                                        <div class="bar-slider-marker"></div>
+                                        <div class="bar-slider"></div>
+                                        <div class="bar-overlay"></div>
                                     </div>
-                                    <div class="bar-slider-marker"></div>
-                                    <div class="bar-slider"></div>
-                                    <div class="bar-overlay"></div>
+                                </div>
+                                <div class="total-input-container buy-sell-tab-input-container content-container-rows">
+                                    <div class="total-text buy-sell-tab-text">Total</div>
+                                    <div class="total-input-symbol-container buy-sell-tab-input-sybmol-container content-container-rows">
+                                        <input type="text" class="buy-sell-tab-total-input buy-sell-tab-input" placeholder="1.00">
+                                        <div class="total-input-symbol buy-sell-tab-input-symbol">EUR</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="total-input-container buy-sell-tab-input-container content-container-rows">
-                                <div class="total-text buy-sell-tab-text">Total</div>
-                                <div class="total-input-symbol-container buy-sell-tab-input-sybmol-container content-container-rows">
-                                    <input type="text" class="buy-sell-tab-total-input buy-sell-tab-input" placeholder="1.00">
-                                    <div class="total-input-symbol buy-sell-tab-input-symbol">EUR</div>
+                            <div class="user-assets-info-container content-container">
+                                <div class="user-asset-info-container crypto-asset-info-container content-container-rows">
+                                    <div class="dark-text text-gd-2">{{ crypto.symbol }} Available:</div>
+                                    <div class="dark-text crypto-asset-info content-container-rows">
+                                        {% if asset.total_amount > 0 %}
+                                        <div class="crypto-asset-info-amount">
+                                            {{ asset.total_amount }}
+                                        </div>
+                                        {% else %}
+                                        <div class="crypto-asset-info-amount">
+                                            0.00000000
+                                        </div>
+                                        {% endif %}
+                                        <div class="crypto-asset-info-symbol">{{ crypto.symbol }}</div>
+                                    </div>
+                                </div>
+                                <div class="user-asset-info-container crypto-asset-info-container content-container-rows">
+                                    <div class="dark-text text-gd-2">EUR Available:</div>
+                                    <div class="dark-text crypto-asset-info content-container-rows">
+                                        <div class="crypto-asset-info-symbol">€</div>
+                                        {% if euro_amount > 0 %}
+                                        <div class="euro-asset-info-amount comma-format">
+                                            {{ euro_amount }}
+                                        </div>
+                                        {% else %}
+                                        <div class="euro-asset-info-amount comma-format">
+                                            0.00
+                                        </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="user-assets-info-container content-container">
-                            <div class="user-asset-info-container crypto-asset-info-container content-container-rows">
-                                <div class="dark-text text-gd-2">{{ crypto.symbol }} Available:</div>
-                                <div class="dark-text crypto-asset-info content-container-rows">
-                                    {% if asset.total_amount > 0 %}
-                                    <div class="crypto-asset-info-amount">
-                                        {{ asset.total_amount }}
-                                    </div>
-                                    {% else %}
-                                    <div class="crypto-asset-info-amount">
-                                        0.00000000
-                                    </div>
-                                    {% endif %}
-                                    <div class="crypto-asset-info-symbol">{{ crypto.symbol }}</div>
-                                </div>
+                            <div class="buy-sell-tab-btn btn content-container-rows buy">
+                                <div class="buy-sell-btn-text">Buy</div>
+                                <div class="btn-symbol">{{ crypto.symbol }}</div>
                             </div>
-                            <div class="user-asset-info-container crypto-asset-info-container content-container-rows">
-                                <div class="dark-text text-gd-2">EUR Available:</div>
-                                <div class="dark-text crypto-asset-info content-container-rows">
-                                    <div class="crypto-asset-info-symbol">€</div>
-                                    {% if euro_amount > 0 %}
-                                    <div class="euro-asset-info-amount comma-format">
-                                        {{ euro_amount }}
-                                    </div>
-                                    {% else %}
-                                    <div class="euro-asset-info-amount comma-format">
-                                        0.00
-                                    </div>
-                                    {% endif %}
-                                </div>
+                            <div class="insufficient-funds-btn btn">
+                                <a href="{% url 'deposit_page' %}" class="insufficient-funds-btn-text">Add Funds</a>
                             </div>
-                        </div>
-                        <div class="buy-sell-tab-btn btn content-container-rows buy">
-                            <div class="buy-sell-btn-text">Buy</div>
-                            <div class="btn-symbol">{{ crypto.symbol }}</div>
-                        </div>
-                        <div class="insufficient-funds-btn btn">
-                            <a href="{% url 'deposit_page' %}" class="insufficient-funds-btn-text">Add Funds</a>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </section>
