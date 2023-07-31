@@ -161,7 +161,7 @@
                                 <td class="orders-status">{{ transaction.status }}</td>
                                 <td class="orders-cancel">
                                     {% if transaction.status == "Pending" %}
-                                    <div class="btn cancel-order-btn">CANCEL <i class="fa-solid fa-xmark"></i></div>
+                                    <a href="{% url 'delete_transaction' transaction.transaction_uuid crypto.symbol %}" class="btn cancel-order-btn">CANCEL <i class="fa-solid fa-xmark"></i></a>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -193,7 +193,7 @@
                     <div class="loading-icon-container"></div>
                     <div class="buy-sell-message-container content-container">
                         <div class="buy-sell-message-text dark-text">Thank You!</div>
-                        <div class="buy-sell-message-btn btn">Place another Order</div>
+                        <p onclick="window.location='{% url 'trading_pair' symbol=crypto.symbol %}';" class="buy-sell-message-btn btn">Place another Order</p>
                     </div>
                     <div class="buy-sell-main-wrapper content-container">
                         <div class="buy-order-btns-container content-container-rows">
@@ -205,7 +205,7 @@
                             <div class="limit-price-input-container buy-sell-tab-input-container content-container-rows active">
                                 <div class="limit-price-text buy-sell-tab-text">Price</div>
                                 <div class="limit-price-input-sybmol-container buy-sell-tab-input-sybmol-container content-container-rows">
-                                    <input type="text" class="limit-price-input buy-sell-tab-input" placeholder="{{ crypto.price }}">
+                                    <input type="text" class="limit-price-input buy-sell-tab-input" placeholder="{{ crypto.price }}" value="{{ crypto.price }}">
                                     <div class="limit-price-input-symbol buy-sell-tab-input-symbol">EUR</div>
                                 </div>
                             </div>

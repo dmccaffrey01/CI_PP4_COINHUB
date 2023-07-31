@@ -1130,7 +1130,7 @@ const barSliderMarker = amountTotalBar.querySelector(".bar-slider-marker");
 const amountInput = document.querySelector(".buy-sell-tab-amount-input");
 const totalInput = document.querySelector(".buy-sell-tab-total-input");
 
-const updateAmountTotalInputs = (percentValue, euroAvailable, type, assetAvailable) => {
+const updateAmountTotalInputs = (percentValue, euroAvailable, type, assetAvailable, price) => {
     let orderType = getOrderType();
 
     let buySellType = getBuySellType(orderType);
@@ -1142,10 +1142,10 @@ const updateAmountTotalInputs = (percentValue, euroAvailable, type, assetAvailab
     } else if (buySellType == "Buy") {
         totalValue = euroAvailable * (percentValue / 100);
     } else {
-        totalValue = assetAvailable * globalCurrentPrice;
+        totalValue = assetAvailable * price * (percentValue / 100);
     }
-
-    let amountValue = totalValue / globalCurrentPrice;
+    console.log(totalValue, assetAvailable, price);
+    let amountValue = totalValue / price;
 
     if (type == "slider" || type == "total") {
         amountInput.value = amountValue.toFixed(8);
@@ -1208,7 +1208,14 @@ barOverlay.addEventListener("mousedown", async (e) => {
 
         updateBar(currentX);
 
-        updateAmountTotalInputs(percentValue, euroAvailable, "slider", assetAvailable);
+        let orderType = getOrderType();
+
+        let price = globalCurrentPrice;
+        if (orderType == "Limit") {
+            price = document.querySelector(".limit-price-input").value;
+        }
+
+        updateAmountTotalInputs(percentValue, euroAvailable, "slider", assetAvailable, price);
     }
 
     document.addEventListener("mousemove", mousemoveHandler);
@@ -1223,7 +1230,14 @@ barOverlay.addEventListener("mousedown", async (e) => {
 
     const assetAvailable = await getUserAsset();
 
-    updateAmountTotalInputs(percentValue, euroAvailable, "slider", assetAvailable);
+    let orderType = getOrderType();
+
+    let price = globalCurrentPrice;
+    if (orderType == "Limit") {
+        price = document.querySelector(".limit-price-input").value;
+    }
+
+    updateAmountTotalInputs(percentValue, euroAvailable, "slider", assetAvailable, price);
 })
 
 function buySellNumberVerification(variable) {
@@ -1322,7 +1336,14 @@ totalInput.addEventListener("keydown", () => {
 
         globalUpdateBar(initialX, percentValue);
 
-        updateAmountTotalInputs(percentValue, euroAvailable, "total", assetAvailable);
+        let orderType = getOrderType();
+
+        let price = globalCurrentPrice;
+        if (orderType == "Limit") {
+            price = document.querySelector(".limit-price-input").value;
+        }
+
+        updateAmountTotalInputs(percentValue, euroAvailable, "total", assetAvailable, price);
     }, 0);
 })
 
@@ -1370,7 +1391,14 @@ amountInput.addEventListener("keydown", () => {
         let percentValue = (initialX / barWidth) * 100;
         globalUpdateBar(initialX, percentValue);
 
-        updateAmountTotalInputs(percentValue, euroAvailable, "amount", assetAvailable);
+        let orderType = getOrderType();
+
+        let price = globalCurrentPrice;
+        if (orderType == "Limit") {
+            price = document.querySelector(".limit-price-input").value;
+        }
+
+        updateAmountTotalInputs(percentValue, euroAvailable, "amount", assetAvailable, price);
     }, 0);
 })
 
@@ -1459,11 +1487,6 @@ const showBuySellMessage = (message, success) => {
     }
 
     buySellMessageContainer.style.display = "flex";
-
-    buySellMessageBtn.addEventListener("click", () => {
-        hideBuySellMessage();
-        showBuySellWrapper();
-    });
 }
 
 /**
@@ -1502,7 +1525,6 @@ const updateOrdersTable = async () => {
                                     <td class="orders-status">${transaction["status"]}</td>`;
             if (transaction["status"] == "Pending") {
                 tableRow.innerHTML += `<td class="orders-cancel">
-                                        <div class="btn cancel-order-btn">CANCEL <i class="fa-solid fa-xmark"></i></div>
                                         </td>`;
             } else {
                 tableRow.innerHTML += `<td class="orders-cancel"></td>`;
@@ -1531,11 +1553,20 @@ buySellBtn.addEventListener("click", async () => {
     let orderType = getOrderType();
     let bsType = getBuySellType();
     let price = globalCurrentPrice;
-    if (bsType === "Limit") {
+    if (orderType === "Limit") {
         price = limitPriceInput.value;
     }
     let amount = amountInput.value;
     let total = totalInput.value;
+    if (total <= 0) {
+        amount = 0;
+        total = 0;
+        price = 0;
+    }
+
+    if (!price) {
+        price = 0;
+    }
 
     let response = await fetch(`/buy_sell_order/${time}/${symbol}/${orderType}/${bsType}/${price}/${amount}/${total}`);
     let responseJson = await response.json();
@@ -1545,6 +1576,10 @@ buySellBtn.addEventListener("click", async () => {
     showBuySellMessage(responseJson["message"], responseJson["success"])
     
     updateOrdersTable();
+
+    window.setTimeout( () => {
+        window.location.reload();
+    }, 3000);
 });
 
 

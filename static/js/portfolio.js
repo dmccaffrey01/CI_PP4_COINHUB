@@ -35,6 +35,21 @@ const createVerticalLine = (num) => {
 }
 
 
+const timePeriodBtns = document.querySelectorAll('.historical-price-time-periods-btn');
+
+const getTimePeriod = () => {
+    let timePeriod;
+    
+    timePeriodBtns.forEach(btn => {
+        if (btn.classList.contains('active')) {
+            timePeriod = btn.getAttribute('data-time-period');
+        }
+    });
+
+    return timePeriod;
+
+}
+
 
 const getUserData = async () => {
     try {
@@ -52,6 +67,97 @@ const convertToEpoch = (timestamp) => {
     return epochTime;
 };
 
+const formatBalanceHistory = (balanceHistory) => {
+    let formattedBalanceHistory = [];
+    let totalBalance = balanceHistory[0].new_balance;
+    balanceHistory.forEach((balanceUpdate, i) => {
+        balanceChanged = false;
+        for (let k = i - 1; k >= 0; k--) {
+            if (i != 0) {
+                if (balanceHistory[k].symbol === balanceUpdate.symbol && !balanceChanged) {
+                    totalBalance -= balanceHistory[k].new_balance;
+                    totalBalance += balanceUpdate.new_balance;
+                    balanceChanged = true;
+                } else if (k == 0 && !balanceChanged) {
+                    totalBalance += balanceUpdate.new_balance;
+                }
+            }
+        }
+        let balanceEntry = {
+            timestamp: balanceUpdate.timestamp,
+            new_balance: totalBalance,
+        }
+
+        formattedBalanceHistory.push(balanceEntry);
+    });
+
+    return formattedBalanceHistory;
+}
+
+const getChartData = async (timePeriod, symbol) => {
+    try {
+      const response = await fetch(`/crypto_detail_price_data_from_api/${timePeriod}/${symbol}/`);
+      const results = await response.text();
+      return results;
+    } catch (error) {
+      return null;
+    }
+};
+
+
+let priceHistoryAssets = [];
+
+const getAssetPrice = async (timestamp, symbol) => {
+
+    priceHistoryAssets.forEach(asset => {
+        if (symbol == 'EUR') {
+            return 1;
+        } else if (asset.symbol === symbol) {
+            
+        } else {
+            
+            console.log(assetPriceHistory);
+        }
+    });
+}
+
+const getBalanceHistory = (data) => {
+    let parsedData = JSON.parse(data);
+    let assets = parsedData.assets;
+    
+    let balanceHistory = [];
+
+    assets.forEach(asset => {
+        let asset_history = asset.amount_history;
+        asset_history = asset_history.replace(/'/g, '"');
+        let parsedHistory = JSON.parse(asset_history);
+
+        for (let i = 0; i < parsedHistory.length; i++) {
+
+            let timestamp = parsedHistory[i].timestamp;
+
+            let assetPrice = getAssetPrice(timestamp, asset.symbol);
+
+            let newBalance = parsedHistory[i].new_amount * assetPrice;
+
+            let balanceEntry = {
+                timestamp: timestamp,
+                new_balance: newBalance,
+                symbol: asset.symbol
+            };
+
+            balanceHistory.push(balanceEntry);
+        }
+    });
+
+    // Sort the balanceHistory array by timestamps in ascending order
+    balanceHistory.sort((a, b) => a.timestamp - b.timestamp);
+
+    let formattedBalancHistory = formatBalanceHistory(balanceHistory);
+    console.log(formattedBalancHistory);
+    return formattedBalancHistory;
+};
+
 var historicalData;
 
 const formatChartData = (data) => {
@@ -59,8 +165,7 @@ const formatChartData = (data) => {
     let lastBalanceArr = [];
     let timeArr = [];
 
-    let parsedData = JSON.parse(data);
-    let balanceHistory = JSON.parse(parsedData["balance_history"])
+    let balanceHistory = getBalanceHistory(data);
     for (let i = 0; i < balanceHistory.length; i++) {
         let lastBalance = balanceHistory[i]['new_balance'];
         let time = balanceHistory[i]['timestamp'];
@@ -74,20 +179,7 @@ const formatChartData = (data) => {
     return formattedData;
 };
 
-const timePeriodBtns = document.querySelectorAll('.historical-price-time-periods-btn');
 
-const getTimePeriod = () => {
-    let timePeriod;
-    
-    timePeriodBtns.forEach(btn => {
-        if (btn.classList.contains('active')) {
-            timePeriod = btn.getAttribute('data-time-period');
-        }
-    });
-
-    return timePeriod;
-
-}
 
 const roundTime = (currentTime, timeInterval) => {
     let roundedTime;
@@ -208,7 +300,7 @@ const formatHistoricalData = () => {
 
     let timestamps = roundTimestamps(historicalData[1], timeInterval);
     let balances = historicalData[0];
-
+    console.log(balances);
     let formattedTimestamps = [];
     let formattedBalances = [];
 
@@ -371,9 +463,7 @@ const updateHistoricalPrice = (num) => {
 const createHistoricalPriceChart = async () => {
 
     const timestamps = formattedHistoricalData[1];
-    console.log(timestamps);
     const prices = formattedHistoricalData[0];
-    console.log([prices]);
     const labels = timestamps.map((timestamp) => {
         const date = new Date(timestamp);
         const year = date.getFullYear();

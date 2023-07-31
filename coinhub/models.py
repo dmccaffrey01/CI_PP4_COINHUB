@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import User
+import uuid
 
 
 class CryptoCurrency(models.Model):
@@ -101,19 +102,8 @@ class CryptoDetail(models.Model):
         return self.name
 
 
-class CustomUser(AbstractUser):
-    
-    groups = models.ManyToManyField(Group, related_name='custom_users')
-    user_permissions = models.ManyToManyField(
-        Permission, related_name='custom_users', blank=True
-    )
-    
-    def __str__(self):
-        return self.username
-
-
 class Asset(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='assets')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='assets')
     name = models.CharField(max_length=100)
     symbol = models.CharField(max_length=10)
     iconUrl = models.URLField()
@@ -125,7 +115,7 @@ class Asset(models.Model):
     
 
 class Transaction(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='transactions')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='transactions')
     time = models.DecimalField(max_digits=20, decimal_places=0, default=0)
     symbol = models.CharField(max_length=10)
     type = models.CharField(max_length=100)
@@ -133,6 +123,7 @@ class Transaction(models.Model):
     amount = models.DecimalField(max_digits=20, decimal_places=8, default=0)
     total = models.DecimalField(max_digits=20, decimal_places=2, default=0)
     status = models.CharField(max_length=20)
+    transaction_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
     def __str__(self):
         return f"Transaction {self.id}"

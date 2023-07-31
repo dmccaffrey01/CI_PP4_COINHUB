@@ -21,5 +21,6 @@ urlpatterns = [
     path('trading_pair/<str:symbol>/', views.trading_pair, name='trading_pair'),
     path('get_trading_pair_data/<str:symbol>/', views.get_trading_pair_data, name='get_trading_pair_data'),
     path('get_transaction_data/', views.get_transaction_data, name='get_transaction_data'),
+    path('delete_transaction/<str:transaction_uuid>/<str:symbol>', views.delete_transaction, name='delete_transaction'),
     path('buy_sell_order/<str:time_placed>/<str:symbol>/<str:orderType>/<str:bsType>/<str:price>/<str:amount>/<str:total>/', views.buy_sell_order, name='buy_sell_order'),
 ]

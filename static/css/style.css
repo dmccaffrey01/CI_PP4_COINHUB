@@ -2410,7 +2410,7 @@ header.active {
 }
 
 .orders-table td, .orders-table th {
-    padding: 5px 0;
+    padding: 8px 0;
     width: 12.5%;
     text-align: center;
     font-size: 1rem;

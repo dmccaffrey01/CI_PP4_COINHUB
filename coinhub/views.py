@@ -1,7 +1,7 @@
 import os
 import requests
-from django.shortcuts import render
-from .models import CryptoCurrency, PopularCryptoCurrency, TopGainerCrypto, TopLoserCrypto, CryptoDetail, CustomUser, Asset, Transaction
+from django.shortcuts import render, redirect
+from .models import CryptoCurrency, PopularCryptoCurrency, TopGainerCrypto, TopLoserCrypto, CryptoDetail, Asset, Transaction
 from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
@@ -108,18 +108,31 @@ def portfolio(request):
 
 def trading_pair(request, symbol):
     user = request.user
-    asset = Asset.objects.filter(user=user, symbol=symbol).first()
+    crypto = CryptoCurrency.objects.filter(symbol=symbol).first()
+    asset, asset_created = Asset.objects.get_or_create(user=user, symbol=symbol)
     euro_symbol = 'EUR'
-    euro = Asset.objects.filter(user=user, symbol=euro_symbol).first()
+    euro, euro_created = Asset.objects.get_or_create(user=user, symbol=euro_symbol)
+
+    if asset_created:
+        asset.name = crypto.name
+        asset.iconUrl = crypto.icon
+        asset.save()
+
+    if euro_created:
+        euro.name = 'Euro'
+        euro.iconUrl = 'https://res.cloudinary.com/dzwyiggcp/image/upload/v1687604163/CI_PP4_COINHUB/icons/vskcbpae6osco4zr3btg.png'
+        euro.save()
 
     create_crypto_list(request)
-    crypto = CryptoCurrency.objects.filter(symbol=symbol).first()
+    
     cryptocurrencies = CryptoCurrency.objects.all()
 
     sparkline_data = json.loads(crypto.sparkline)
     sparkline_numbers = [float(num) for num in sparkline_data] if sparkline_data else []
     lowest_number = format(min(sparkline_numbers), '.2f') if sparkline_numbers else None
     highest_number = format(max(sparkline_numbers), '.2f') if sparkline_numbers else None
+
+    check_transactions(request)
 
     pending_status = "Pending"
     hour_time = int(time.time()) - 3660
@@ -178,11 +191,17 @@ def buy_sell_order(request, time_placed, symbol, orderType, bsType, price, amoun
     else:
         euro_available = 0
 
+    crypto = CryptoCurrency.objects.filter(symbol=symbol).first()
+
     asset_symbol = symbol
-    asset = Asset.objects.filter(user=user, symbol=asset_symbol).first()
-    if asset:
+    asset, created = Asset.objects.get_or_create(user=user, symbol=asset_symbol)
+
+    if not created:
         asset_available = asset.total_amount
     else:
+        asset.name = crypto.name
+        asset.iconUrl = crypto.icon
+        asset.total_amount = 0
         asset_available = 0
 
     asset_name = asset.name
@@ -197,28 +216,34 @@ def buy_sell_order(request, time_placed, symbol, orderType, bsType, price, amoun
             "success": "false",
             "message": f"Amount Exceeds {asset_name} Available",
         }
+    elif total == 0:
+        response = {
+            "success": "false",
+            "message": f"Minimum Total is 0",
+        }
     else:
 
-        old_amount = float(euro_asset.total_amount)
-        new_amount = old_amount - total
-        euro_asset.total_amount = new_amount
+        if bsType == "Buy":
+            old_amount = float(euro_asset.total_amount)
+            new_amount = old_amount - total
+            euro_asset.total_amount = new_amount
 
-        timestamp = int(time.time())
+            timestamp = int(time.time())
 
-        amount_entry = {
-            'amount': float(total),
-            'timestamp': timestamp,
-            'old_amount': float(old_amount),
-            'new_amount': float(new_amount),
-        }
+            amount_entry = {
+                'amount': float(total),
+                'timestamp': timestamp,
+                'old_amount': float(old_amount),
+                'new_amount': float(new_amount),
+            }
 
-        amount_history = euro_asset.amount_history
-        new_amount_history = amount_history.replace("'", "\"")
-        new_amount_history = json.loads(new_amount_history)
-        new_amount_history.append(amount_entry)
-        euro_asset.amount_history = new_amount_history
+            amount_history = euro_asset.amount_history
+            new_amount_history = amount_history.replace("'", "\"")
+            new_amount_history = json.loads(new_amount_history)
+            new_amount_history.append(amount_entry)
+            euro_asset.amount_history = new_amount_history
 
-        euro_asset.save()
+            euro_asset.save()
 
         transaction = Transaction.objects.create(
             user=user,
@@ -251,8 +276,6 @@ def check_transactions(request):
 
     transactions = Transaction.objects.filter(user=user, status=pending_text)
 
-    prices = []
-
     UNIX_MIN = 60
 
     current_time = int(time.time())
@@ -262,6 +285,10 @@ def check_transactions(request):
     UNIX_HOUR = 3600
 
     for transaction in transactions:
+
+        if transaction.type == "Buy - Market" or transaction.type == "Sell - Market":
+            fulfill_transaction(request, transaction)
+
         t_time = transaction.time
         symbol = transaction.symbol
 
@@ -334,12 +361,10 @@ def check_transactions(request):
         max_high = max(highs)
         min_low = min(lows)
 
-        if transaction.type == "Buy - Limit" or transaction.type == "Sell - Limit":
-            fulfill_transaction(request, transaction)
         if transaction.price < max_high and transaction.price > min_low:
             fulfill_transaction(request, transaction)
 
-        return current_price
+    return True
 
 
 def fulfill_transaction(request, transaction):
@@ -349,17 +374,23 @@ def fulfill_transaction(request, transaction):
 
     total = transaction.total
 
+    euro = Asset.objects.get(symbol='EUR', user=user)
+
+    if transaction.type == 'Sell - Limit' or transaction.type == 'Sell - Market':
+        transaction_amount = -transaction.amount
+    else:
+        transaction_amount = transaction.amount
+
     crypto = CryptoCurrency.objects.get(symbol=symbol)
 
     asset, created = Asset.objects.get_or_create(user=user, symbol=symbol)
 
-    if not created:
+    if created:
         asset.iconUrl = crypto.icon
         asset.name = crypto.name
-        asset.total_amount = 0
 
     old_amount = asset.total_amount
-    new_amount = old_amount + transaction.amount
+    new_amount = old_amount + transaction_amount
     asset.total_amount = new_amount
 
     amount_entry = {
@@ -377,11 +408,65 @@ def fulfill_transaction(request, transaction):
 
     asset.save()
 
+    if transaction.type == "Sell - Market" or transaction.type == "Sell - Limit":
+        old_amount = euro.total_amount
+        new_amount = old_amount + total
+        euro.total_amount = new_amount
+
+        amount_entry = {
+            'amount': float(total),
+            'timestamp': int(time.time()),
+            'old_amount': float(old_amount),
+            'new_amount': float(new_amount),
+        }
+
+        amount_history = euro.amount_history
+        new_amount_history = amount_history.replace("'", "\"")
+        new_amount_history = json.loads(new_amount_history)
+        new_amount_history.append(amount_entry)
+        euro.amount_history = new_amount_history
+
+        euro.save()
+
     transaction.status = "Fulfilled"
 
     transaction.save()
 
     return new_amount
+
+
+def delete_transaction(request, transaction_uuid, symbol):
+    user = request.user
+
+    transaction = Transaction.objects.get(transaction_uuid=transaction_uuid, user=user)
+
+    asset = Asset.objects.get(user=user, symbol='EUR')
+
+    deposit_amount = transaction.total
+
+    old_amount = asset.total_amount
+    new_amount = old_amount + deposit_amount
+    asset.total_amount = new_amount
+    
+    asset.save()
+
+    amount_entry = {
+        'amount': float(deposit_amount),
+        'timestamp': int(time.time()),
+        'old_amount': float(old_amount),
+        'new_amount': float(new_amount),
+    }
+
+    amount_history = asset.amount_history
+    new_amount_history = amount_history.replace("'", "\"")
+    new_amount_history = json.loads(new_amount_history)
+    new_amount_history.append(amount_entry)
+    asset.amount_history = new_amount_history
+    asset.save()
+
+    transaction.delete()
+
+    return redirect('trading_pair', symbol)
 
 
 def get_trading_pair_data(request, symbol):
@@ -420,7 +505,6 @@ def get_user_data(request):
     euro_symbol = 'EUR'
     euro = Asset.objects.filter(user=user, symbol=euro_symbol).values()
     data = {
-        'username': user.username,
         'assets': list(assets),
         'euro': list(euro),
     }
@@ -432,11 +516,12 @@ def get_user_data(request):
 def deposit(request, amount):
     user = request.user
     deposit_amount = Decimal(amount)
+    symbol = 'EUR'
 
-    asset, created = Asset.objects.get_or_create(user=user, name='Euro')
+    asset, created = Asset.objects.get_or_create(user=user, symbol=symbol)
     
-    if not created:
-        asset.symbol = 'EUR'
+    if created:
+        asset.symbol = symbol
         asset.iconUrl = 'https://res.cloudinary.com/dzwyiggcp/image/upload/v1687604163/CI_PP4_COINHUB/icons/vskcbpae6osco4zr3btg.png'
         asset.total_amount = 0
     
@@ -444,6 +529,8 @@ def deposit(request, amount):
     new_amount = old_amount + deposit_amount
     asset.total_amount = new_amount
     
+    asset.save()
+
     amount_entry = {
         'amount': float(deposit_amount),
         'timestamp': int(time.time()),
@@ -802,3 +889,4 @@ def get_market_data(request):
     }
 
     return JsonResponse(market_data, safe=False)
+
