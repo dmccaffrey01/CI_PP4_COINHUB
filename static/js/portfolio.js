@@ -67,34 +67,42 @@ const convertToEpoch = (timestamp) => {
     return epochTime;
 };
 
+
+
 const formatBalanceHistory = (balanceHistory) => {
     let formattedBalanceHistory = [];
-    let totalBalance = balanceHistory[0].new_balance;
-    balanceHistory.forEach((balanceUpdate, i) => {
-        balanceChanged = false;
-        for (let k = i - 1; k >= 0; k--) {
-            if (i != 0) {
-                if (balanceHistory[k].symbol === balanceUpdate.symbol && !balanceChanged) {
-                    totalBalance -= balanceHistory[k].new_balance;
-                    totalBalance += balanceUpdate.new_balance;
-                    balanceChanged = true;
-                } else if (k == 0 && !balanceChanged) {
-                    totalBalance += balanceUpdate.new_balance;
-                }
-            }
-        }
+    let userBalance = {};
+
+    balanceHistory.forEach(balanceUpdate => {
+        const { timestamp, symbol, new_balance } = balanceUpdate;
         let balanceEntry = {
-            timestamp: balanceUpdate.timestamp,
-            new_balance: totalBalance,
+            timestamp: timestamp,
+        };
+
+        if (symbol in userBalance) {
+            userBalance[symbol] = new_balance;
+        } else {
+            userBalance[symbol] = new_balance;
         }
+
+        // Create an array of asset entries from the userBalance object
+        let assetEntries = [];
+        for (const assetSymbol in userBalance) {
+            assetEntries.push({
+                symbol: assetSymbol,
+                new_balance: userBalance[assetSymbol]
+            });
+        }
+
+        // Add the asset entries to the balance entry
+        balanceEntry.assets = assetEntries;
 
         formattedBalanceHistory.push(balanceEntry);
     });
-
     return formattedBalanceHistory;
-}
+};
 
-const getChartData = async (timePeriod, symbol) => {
+const getAssetApiData = async (timePeriod, symbol) => {
     try {
       const response = await fetch(`/crypto_detail_price_data_from_api/${timePeriod}/${symbol}/`);
       const results = await response.text();
@@ -105,41 +113,82 @@ const getChartData = async (timePeriod, symbol) => {
 };
 
 
-let priceHistoryAssets = [];
+let priceHistoryAssets = [
+    {
+        'symbol': 'EUR',
+        'price': 1
+    }
+];
+
+const parseAssetApiData = (apiData) => {
+    const parsedData = JSON.parse(apiData);
+    return parsedData.map(entry => ({
+        timestamp: entry.time,
+        last_price: entry.last_price
+    }));
+};
 
 const getAssetPrice = async (timestamp, symbol) => {
+    if (symbol === 'EUR') {
+        return 1;
+    }
 
-    priceHistoryAssets.forEach(asset => {
-        if (symbol == 'EUR') {
-            return 1;
-        } else if (asset.symbol === symbol) {
-            
-        } else {
-            
-            console.log(assetPriceHistory);
+    const asset = priceHistoryAssets.find(asset => asset.symbol === symbol);
+    const timePeriod = getTimePeriod();
+    if (asset && asset.timePeriod == timePeriod) {
+        const assetPriceData = asset.priceHistory;
+        const lastIndex = assetPriceData.length - 1;
+
+        // Find the price data that matches or is closest to the input timestamp
+        for (let i = lastIndex; i >= 0; i--) {
+            const currentTimestamp = assetPriceData[i].timestamp * 1000;
+            if (timestamp >= currentTimestamp) {
+                return assetPriceData[i].last_price;
+            }
         }
-    });
+
+        // If the input timestamp is earlier than the first recorded timestamp, return the first price
+        return assetPriceData[0].last_price;
+    }
+
+    const apiResponse = await getAssetApiData(timePeriod, symbol);
+    const assetPriceData = parseAssetApiData(apiResponse);
+    const priceHistoryEntry = {
+        'symbol': symbol,
+        'priceHistory': assetPriceData,
+        'timePeriod': timePeriod
+    };
+    priceHistoryAssets.push(priceHistoryEntry);
+
+    // The data is assumed to be sorted by timestamp, so the last price will be the latest one
+    return assetPriceData[assetPriceData.length - 1].last_price;
 }
 
-const getBalanceHistory = (data) => {
+const formatAssets = async (assets, timestamp) => {
+    let totalBalance = 0;
+    for (const asset of assets) {
+        const assetPrice = await getAssetPrice(timestamp, asset.symbol);
+        totalBalance += asset.new_balance * assetPrice;
+    }
+    return totalBalance;
+}
+
+const getBalanceHistory = async (data) => {
     let parsedData = JSON.parse(data);
     let assets = parsedData.assets;
     
     let balanceHistory = [];
 
-    assets.forEach(asset => {
+    // Define an asynchronous function to process each asset
+    const processAsset = async (asset) => {
         let asset_history = asset.amount_history;
         asset_history = asset_history.replace(/'/g, '"');
         let parsedHistory = JSON.parse(asset_history);
 
         for (let i = 0; i < parsedHistory.length; i++) {
-
             let timestamp = parsedHistory[i].timestamp;
 
-            let assetPrice = getAssetPrice(timestamp, asset.symbol);
-
-            let newBalance = parsedHistory[i].new_amount * assetPrice;
-
+            let newBalance = parsedHistory[i].new_amount;
             let balanceEntry = {
                 timestamp: timestamp,
                 new_balance: newBalance,
@@ -148,26 +197,29 @@ const getBalanceHistory = (data) => {
 
             balanceHistory.push(balanceEntry);
         }
-    });
+    };
+
+    // Use a for...of loop to process each asset one by one
+    for (const asset of assets) {
+        await processAsset(asset);
+    }
 
     // Sort the balanceHistory array by timestamps in ascending order
     balanceHistory.sort((a, b) => a.timestamp - b.timestamp);
+    let formattedBalanceHistory = formatBalanceHistory(balanceHistory);
 
-    let formattedBalancHistory = formatBalanceHistory(balanceHistory);
-    console.log(formattedBalancHistory);
-    return formattedBalancHistory;
+    return formattedBalanceHistory;
 };
 
-var historicalData;
 
-const formatChartData = (data) => {
+const formatChartData = async (data) => {
     let formattedData = [];
     let lastBalanceArr = [];
     let timeArr = [];
 
-    let balanceHistory = getBalanceHistory(data);
+    let balanceHistory = await getBalanceHistory(data);
     for (let i = 0; i < balanceHistory.length; i++) {
-        let lastBalance = balanceHistory[i]['new_balance'];
+        let lastBalance = balanceHistory[i]['assets'];
         let time = balanceHistory[i]['timestamp'];
         time = convertToEpoch(time);
         lastBalanceArr.push(lastBalance);
@@ -175,7 +227,6 @@ const formatChartData = (data) => {
     }
     formattedData.push(lastBalanceArr);
     formattedData.push(timeArr);
-    historicalData = formattedData;
     return formattedData;
 };
 
@@ -286,11 +337,30 @@ const getArrayAverage = (arr) => {
     const average = sum / arr.length;
   
     return average;
-  };
+};
 
-let formattedHistoricalData = [];
+const getMostRecentBalance = (time, data) => {
+    let timestamps = data[1];
+    let startTime = time / 1000;
+    let foundMostRecentTime = false;
+    let mostRecentTimeIndex = 0;
+    for (let i = timestamps.length; i > 0; i--) {
+        if (timestamps[i] < startTime && !foundMostRecentTime) {
+            mostRecentTimeIndex = i;
+            foundMostRecentTime = true;
+            break;
+        }
+    }
+    let mostRecentBalance = data[0][mostRecentTimeIndex];
+    let mostRecentTime = data[1][mostRecentTimeIndex];
+    let result = {
+        assets: mostRecentBalance,
+        time: mostRecentTime
+    }
+    return result;
+}
 
-const formatHistoricalData = () => {
+const formatHistoricalData = async (data) => {
     let timePeriod = getTimePeriod();
     let pointsData = getChartPointsData(timePeriod, "normal");
     let roundedTime = pointsData["roundedTime"];
@@ -298,9 +368,8 @@ const formatHistoricalData = () => {
     let originTime = pointsData["originTime"]; 
     let timeInterval = pointsData["timeInterval"];
 
-    let timestamps = roundTimestamps(historicalData[1], timeInterval);
-    let balances = historicalData[0];
-    console.log(balances);
+    let timestamps = roundTimestamps(data[1], timeInterval);
+    let balances = data[0];
     let formattedTimestamps = [];
     let formattedBalances = [];
 
@@ -320,28 +389,29 @@ const formatHistoricalData = () => {
         } else {
             stopTime = i - timeFrame;
         }
-        
-        let balance;
         for (let k = stopTime; k < i; k += timeFrame) {
             for (let j = 0; j < timestamps.length; j++) {
                 if (timestamps[j] >= k && timestamps[j] <= k + timeFrame) {
-                    balance = balances[j];
-                    balanceUpdates.push(balance);
+                    let assets = balances[j];
+                    balanceUpdates.push(assets);
                 }
             }
         }
-        let mostRecentBalance;;
+        let mostRecentBalance;
         if (balanceUpdates.length > 0) {
-            mostRecentBalance = balanceUpdates[balanceUpdates.length - 1];
-            previousBalance = mostRecentBalance;
+            mostRecentAssets = balanceUpdates[balanceUpdates.length - 1];
+            mostRecentAssets = getMostRecentBalance(i, data);
+            mostRecentBalance = await formatAssets(mostRecentAssets.assets, i);
+            previousBalance = mostRecentAssets;
         } else if (i == originTime) {
-            mostRecentBalance = 0;
-            previousBalance = mostRecentBalance;
+            mostRecentAssets = getMostRecentBalance(i, data);
+            mostRecentBalance = await formatAssets(mostRecentAssets.assets, i);
+            previousBalance = mostRecentAssets;
         } else {
-            mostRecentBalance = previousBalance;
+            mostRecentBalance = await formatAssets(previousBalance.assets, i);
         }
 
-        previousBalance = mostRecentBalance;
+        previousBalance = mostRecentAssets;
         formattedBalances.push(mostRecentBalance);
     }
 
@@ -373,40 +443,41 @@ const formatHistoricalData = () => {
             for (let k = stopTime; k < i; k += timeFrame) {
                 for (let j = 0; j < timestamps.length; j++) {
                     if (timestamps[j] >= k && timestamps[j] <= k + timeFrame) {
-                        balance = balances[j];
-                        balanceUpdates.push(balance);
+                        let assets = balances[j];
+                        balanceUpdates.push(assets);
                     }
                 }
             }
-            let mostRecentBalance;;
+            let mostRecentBalance;
+            let mostRecentStopTime = (i - (timeFrame * 60 * 24 * 366));
             if (balanceUpdates.length > 0) {
-                mostRecentBalance = balanceUpdates[balanceUpdates.length - 1];
-                previousBalance = mostRecentBalance;
+                mostRecentAssets = balanceUpdates[balanceUpdates.length - 1];
+                mostRecentAssets = getMostRecentBalance(mostRecentStopTime, data);
+                mostRecentBalance = await formatAssets(mostRecentAssets.assets, i);
+                previousBalance = mostRecentAssets;
             } else if (i == originTime) {
-                mostRecentBalance = 0;
-                previousBalance = mostRecentBalance;
+                mostRecentAssets = getMostRecentBalance(mostRecentStopTime, data);
+                mostRecentBalance = await formatAssets(mostRecentAssets.assets, i);
+                previousBalance = mostRecentAssets;
             } else {
-                mostRecentBalance = previousBalance;
+                mostRecentBalance = await formatAssets(previousBalance.assets, i);
             }
     
-            previousBalance = mostRecentBalance;
+            previousBalance = mostRecentAssets;
             formattedBalances.push(mostRecentBalance);
         }
     }
 
     formattedData.push(formattedBalances);
     formattedData.push(formattedTimestamps);
-
-    formattedHistoricalData = formattedData;
     return formattedData;
 }
 
 const historicalPriceChange = document.querySelector('.historical-crypto-change');
 const historicalPrice = document.querySelector('.historical-crypto-price');
 
-const updateHistoricalPriceChange = () => {
-    formatHistoricalData();
-    const originPrice = formattedHistoricalData[0][0];
+const updateHistoricalPriceChange = (data) => {
+    const originPrice = data[0][0];
 
     const currentPrice = historicalPrice.innerText.slice(1).replace(/,/g, '');
     const difference = (currentPrice - originPrice).toFixed(2);
@@ -460,10 +531,9 @@ const updateHistoricalPrice = (num) => {
     historicalPrice.innerHTML = `€${price}`;
 }
 
-const createHistoricalPriceChart = async () => {
-
-    const timestamps = formattedHistoricalData[1];
-    const prices = formattedHistoricalData[0];
+const createHistoricalPriceChart = async (data) => {
+    const timestamps = data[1];
+    const prices = data[0];
     const labels = timestamps.map((timestamp) => {
         const date = new Date(timestamp);
         const year = date.getFullYear();
@@ -546,7 +616,7 @@ const createHistoricalPriceChart = async () => {
 
     await new Promise((resolve) => setTimeout(resolve, 100));
 
-    updateHistoricalPriceChange();
+    // updateHistoricalPriceChange();
     
     newCanvas.addEventListener('mousemove', function (event) {
         let rect = newCanvas.getBoundingClientRect();
@@ -563,7 +633,7 @@ const createHistoricalPriceChart = async () => {
         let date = new Date(timestamp);
 
         updateHistoricalPrice(price);
-        updateHistoricalPriceChange();
+        // updateHistoricalPriceChange();
         updateTimestampDate(date);
 
         verticalLineContainer.style.left = x + 'px';
@@ -588,9 +658,9 @@ const createHistoricalPriceChart = async () => {
 
 const loadDataAndCreateChart = async () => {
     const userData = await getUserData();
-    formatChartData(userData);
-    formatHistoricalData();
-    await createHistoricalPriceChart();
+    let chartData = await formatChartData(userData);
+    let formattedData = await formatHistoricalData(chartData);
+    await createHistoricalPriceChart(formattedData);
 };
 
 const switchTimePeriod = (event) => {
