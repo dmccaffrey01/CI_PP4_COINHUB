@@ -128,13 +128,14 @@ const parseAssetApiData = (apiData) => {
     }));
 };
 
-const getAssetPrice = async (timestamp, symbol) => {
+const getAssetPrice = async (timestamp, symbol, counter) => {
     if (symbol === 'EUR') {
         return 1;
     }
 
-    const asset = priceHistoryAssets.find(asset => asset.symbol === symbol);
     const timePeriod = getTimePeriod();
+    const asset = priceHistoryAssets.find(asset => asset.symbol === symbol && asset.timePeriod === timePeriod);
+    
     if (asset && asset.timePeriod == timePeriod) {
         const assetPriceData = asset.priceHistory;
         const lastIndex = assetPriceData.length - 1;
@@ -142,6 +143,7 @@ const getAssetPrice = async (timestamp, symbol) => {
         // Find the price data that matches or is closest to the input timestamp
         for (let i = lastIndex; i >= 0; i--) {
             const currentTimestamp = assetPriceData[i].timestamp * 1000;
+            
             if (timestamp >= currentTimestamp) {
                 return assetPriceData[i].last_price;
             }
@@ -164,10 +166,10 @@ const getAssetPrice = async (timestamp, symbol) => {
     return assetPriceData[assetPriceData.length - 1].last_price;
 }
 
-const formatAssets = async (assets, timestamp) => {
+const formatAssets = async (assets, timestamp, counter) => {
     let totalBalance = 0;
     for (const asset of assets) {
-        const assetPrice = await getAssetPrice(timestamp, asset.symbol);
+        const assetPrice = await getAssetPrice(timestamp, asset.symbol, counter);
         totalBalance += asset.new_balance * assetPrice;
     }
     return totalBalance;
@@ -344,7 +346,9 @@ const getMostRecentBalance = (time, data) => {
     let startTime = time / 1000;
     let foundMostRecentTime = false;
     let mostRecentTimeIndex = 0;
+    
     for (let i = timestamps.length; i > 0; i--) {
+        console.log(timestamps[i], startTime);
         if (timestamps[i] < startTime && !foundMostRecentTime) {
             mostRecentTimeIndex = i;
             foundMostRecentTime = true;
@@ -377,6 +381,8 @@ const formatHistoricalData = async (data) => {
 
     let previousBalance;
 
+    let counter = 0;
+
     for (let i = originTime; i < roundedTime; i += timeFrame) {
         
         let balanceUpdates = [];
@@ -399,20 +405,26 @@ const formatHistoricalData = async (data) => {
         }
         let mostRecentBalance;
         if (balanceUpdates.length > 0) {
-            mostRecentAssets = balanceUpdates[balanceUpdates.length - 1];
-            mostRecentAssets = getMostRecentBalance(i, data);
-            mostRecentBalance = await formatAssets(mostRecentAssets.assets, i);
+            let mostRecentUpdate = balanceUpdates[balanceUpdates.length - 1];
+            let mostRecentAssets = {
+                assets: mostRecentUpdate,
+                time: i
+            };
+            console.log(mostRecentUpdate, originTime);
+            console.log(timestamps[balanceUpdates.length - 1], originTime);
+            mostRecentBalance = await formatAssets(mostRecentAssets.assets, i, counter);
             previousBalance = mostRecentAssets;
         } else if (i == originTime) {
-            mostRecentAssets = getMostRecentBalance(i, data);
-            mostRecentBalance = await formatAssets(mostRecentAssets.assets, i);
+            mostRecentAssets = getMostRecentBalance(originTime, data);
+            mostRecentBalance = await formatAssets(mostRecentAssets.assets, i, counter);
             previousBalance = mostRecentAssets;
         } else {
-            mostRecentBalance = await formatAssets(previousBalance.assets, i);
+            mostRecentBalance = await formatAssets(previousBalance.assets, i, counter);
         }
 
         previousBalance = mostRecentAssets;
         formattedBalances.push(mostRecentBalance);
+        counter++;
     }
 
     if (timePeriod == "1y" || timePeriod == "all") {
@@ -439,7 +451,6 @@ const formatHistoricalData = async (data) => {
                 stopTime = i - timeFrame;
             }
             
-            let balance;
             for (let k = stopTime; k < i; k += timeFrame) {
                 for (let j = 0; j < timestamps.length; j++) {
                     if (timestamps[j] >= k && timestamps[j] <= k + timeFrame) {
@@ -449,27 +460,31 @@ const formatHistoricalData = async (data) => {
                 }
             }
             let mostRecentBalance;
-            let mostRecentStopTime = (i - (timeFrame * 60 * 24 * 366));
             if (balanceUpdates.length > 0) {
-                mostRecentAssets = balanceUpdates[balanceUpdates.length - 1];
-                mostRecentAssets = getMostRecentBalance(mostRecentStopTime, data);
-                mostRecentBalance = await formatAssets(mostRecentAssets.assets, i);
+                let mostRecentUpdate = balanceUpdates[balanceUpdates.length - 1];
+                let mostRecentAssets = {
+                    assets: mostRecentUpdate,
+                    time: i
+                };
+                mostRecentBalance = await formatAssets(mostRecentAssets.assets, i, counter);
                 previousBalance = mostRecentAssets;
             } else if (i == originTime) {
-                mostRecentAssets = getMostRecentBalance(mostRecentStopTime, data);
-                mostRecentBalance = await formatAssets(mostRecentAssets.assets, i);
+                mostRecentAssets = getMostRecentBalance(originTime, data);
+                mostRecentBalance = await formatAssets(mostRecentAssets.assets, i, counter);
                 previousBalance = mostRecentAssets;
             } else {
-                mostRecentBalance = await formatAssets(previousBalance.assets, i);
+                mostRecentBalance = await formatAssets(previousBalance.assets, i, counter);
             }
     
             previousBalance = mostRecentAssets;
             formattedBalances.push(mostRecentBalance);
+            counter++;
         }
     }
 
     formattedData.push(formattedBalances);
     formattedData.push(formattedTimestamps);
+    
     return formattedData;
 }
 
@@ -685,8 +700,11 @@ const switchTimePeriod = (event) => {
 timePeriodBtns.forEach(btn => {
     btn.addEventListener('click', switchTimePeriod)
 })
-  
-loadDataAndCreateChart();
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadDataAndCreateChart();
+});
+
 
 
 
