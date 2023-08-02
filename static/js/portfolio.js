@@ -258,7 +258,11 @@ const roundTime = (currentTime, timeInterval) => {
 const roundTimestamps = (arr, timeInterval) => {
     let newArr = [];
     for (let i = 0; i < arr.length; i++) {
-        let newTime = roundTime(arr[i], timeInterval);
+        let num = arr[i];
+        if (arr[i] < 100000000000) {
+            num = num * 1000;
+        }
+        let newTime = roundTime(num, timeInterval);
         newArr.push(newTime);
     }
 
@@ -348,7 +352,6 @@ const getMostRecentBalance = (time, data) => {
     let mostRecentTimeIndex = 0;
     
     for (let i = timestamps.length; i > 0; i--) {
-        console.log(timestamps[i], startTime);
         if (timestamps[i] < startTime && !foundMostRecentTime) {
             mostRecentTimeIndex = i;
             foundMostRecentTime = true;
@@ -357,6 +360,14 @@ const getMostRecentBalance = (time, data) => {
     }
     let mostRecentBalance = data[0][mostRecentTimeIndex];
     let mostRecentTime = data[1][mostRecentTimeIndex];
+    if (!foundMostRecentTime) {
+        mostRecentBalance = [
+            {
+                symbol: 'EUR',
+                new_balance: 0,
+            }
+        ]
+    }
     let result = {
         assets: mostRecentBalance,
         time: mostRecentTime
@@ -397,29 +408,29 @@ const formatHistoricalData = async (data) => {
         }
         for (let k = stopTime; k < i; k += timeFrame) {
             for (let j = 0; j < timestamps.length; j++) {
-                if (timestamps[j] >= k && timestamps[j] <= k + timeFrame) {
+                if (timestamps[j] >= k && timestamps[j] <= (k + timeFrame)) {
                     let assets = balances[j];
                     balanceUpdates.push(assets);
                 }
             }
         }
         let mostRecentBalance;
-        if (balanceUpdates.length > 0) {
-            let mostRecentUpdate = balanceUpdates[balanceUpdates.length - 1];
-            let mostRecentAssets = {
-                assets: mostRecentUpdate,
-                time: i
-            };
-            console.log(mostRecentUpdate, originTime);
-            console.log(timestamps[balanceUpdates.length - 1], originTime);
-            mostRecentBalance = await formatAssets(mostRecentAssets.assets, i, counter);
-            previousBalance = mostRecentAssets;
-        } else if (i == originTime) {
+        let mostRecentAssets;
+        if (i == originTime) {
             mostRecentAssets = getMostRecentBalance(originTime, data);
             mostRecentBalance = await formatAssets(mostRecentAssets.assets, i, counter);
             previousBalance = mostRecentAssets;
-        } else {
-            mostRecentBalance = await formatAssets(previousBalance.assets, i, counter);
+        } else if (balanceUpdates.length > 0) {
+            let mostRecentUpdate = balanceUpdates[balanceUpdates.length - 1];
+            mostRecentAssets = {
+                assets: mostRecentUpdate,
+                time: i
+            };
+            mostRecentBalance = await formatAssets(mostRecentAssets.assets, i, counter);
+            previousBalance = mostRecentAssets;
+        }  else {
+            mostRecentAssets = previousBalance;
+            mostRecentBalance = await formatAssets(mostRecentAssets.assets, i, counter);
         }
 
         previousBalance = mostRecentAssets;
@@ -460,22 +471,24 @@ const formatHistoricalData = async (data) => {
                 }
             }
             let mostRecentBalance;
-            if (balanceUpdates.length > 0) {
+            let mostRecentAssets;
+            if (i == originTime) {
+                mostRecentAssets = getMostRecentBalance(originTime, data);
+                mostRecentBalance = await formatAssets(mostRecentAssets.assets, i, counter);
+                previousBalance = mostRecentAssets;
+            } else if (balanceUpdates.length > 0) {
                 let mostRecentUpdate = balanceUpdates[balanceUpdates.length - 1];
-                let mostRecentAssets = {
+                mostRecentAssets = {
                     assets: mostRecentUpdate,
                     time: i
                 };
                 mostRecentBalance = await formatAssets(mostRecentAssets.assets, i, counter);
                 previousBalance = mostRecentAssets;
-            } else if (i == originTime) {
-                mostRecentAssets = getMostRecentBalance(originTime, data);
+            }  else {
+                mostRecentAssets = previousBalance;
                 mostRecentBalance = await formatAssets(mostRecentAssets.assets, i, counter);
-                previousBalance = mostRecentAssets;
-            } else {
-                mostRecentBalance = await formatAssets(previousBalance.assets, i, counter);
             }
-    
+
             previousBalance = mostRecentAssets;
             formattedBalances.push(mostRecentBalance);
             counter++;
