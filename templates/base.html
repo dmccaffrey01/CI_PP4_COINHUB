@@ -10,6 +10,12 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
 
+    <!-- Cropper -->
+    {% if edit_profile_picture %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.12/dist/cropper.min.js"></script>
+    {% endif %}
+
     <!-- CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
@@ -48,7 +54,7 @@
                         <a href="{% url 'trade' %}" class="nav-link">Trade</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Convert</a>
+                        <a href="{% url 'contact' %}" class="nav-link">Contact</a>
                     </li>
                 </ul>
                 <div class="hamburger">
@@ -61,23 +67,41 @@
             <div class="account-login-container">
                 <div class="account-login-btns-container">
                     {% if user.is_authenticated %}
-                    <a href="{% url 'portfolio' %}" class="dark-text nav-link">
-                        Assets
-                    </a>
-                    <a href="{% url 'account_logout' %}" class="btn logout-btn">
-                        Log Out
-                    </a>
+                    <div class="account-profile-container">
+                        <div class="account-profile-img-container">
+                            {% if member_profile %}
+                            <img src="{{ member_profile.profile_image }}" alt="Profile Picture" class="account-profile-img img-100a">
+                            {% else %}
+                            <img src="https://res.cloudinary.com/dzwyiggcp/image/upload/v1689692743/MREEA/default-profile-pic_yp9kzz.png" alt="Profile Picture" class="account-profile-img img-100a">
+                            {% endif %}
+                        </div>
+                        <div class="profile-btns-container content-container">
+                            <a href="{% url 'profileapp:profile' %}" class="profile-btn-link">
+                                View Profile
+                            </a>
+                            <a href="{% url 'portfolio' %}" class="profile-btn-link">
+                                Portfolio
+                            </a>
+                            <a href="{% url 'account_logout' %}" class="btn logout-btn">
+                                Log Out
+                            </a>
+                        </div>
+                    </div>
                     {% else %}
-                    <a href="{% url 'account_login' %}" class="dark-text">
-                        Login
-                    </a>
-                    <a href="{% url 'account_signup' %}" class="btn register-btn">
-                        Register
-                    </a>
+                    <div class="account-profile-container">
+                        <div class="account-profile-img-container not-logged-in">
+                            <img src="https://res.cloudinary.com/dzwyiggcp/image/upload/v1690486403/log-in_qo9dg3.png" alt="Profile Picture" class="account-profile-img img-100a">
+                        </div>
+                        <div class="profile-btns-container content-container">
+                            <a href="{% url 'account_login' %}" class="dark-text">
+                                Login
+                            </a>
+                            <a href="{% url 'account_signup' %}" class="btn register-btn">
+                                Register
+                            </a>
+                        </div>
+                    </div>
                     {% endif %}
-                </div>
-                <div class="account-login-icon-container">
-                    <i class="fa-solid fa-right-to-bracket account-login-icon"></i>
                 </div>
             </div>
         </div>

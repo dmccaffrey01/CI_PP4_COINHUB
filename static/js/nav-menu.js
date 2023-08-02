@@ -31,3 +31,9 @@ navLinks.forEach((navLink) => {
         navLink.classList.add("active");
     }
 });
+
+const accountProfileContainer = document.querySelector(".account-profile-container");
+
+accountProfileContainer.addEventListener("click", () => {
+    accountProfileContainer.classList.toggle("active");
+})

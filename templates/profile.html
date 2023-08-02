@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="section member-profile-section">
+    <div class="section-container member-profile-section-container">
+        <div class="profile-card content-container profile-picture-card">
+            <div class="profile-picture-col-container content-container">
+                <div class="profile-img-container">
+                    <img src="{{ member_profile.profile_image.url }}" alt="{{ member_profile.first_name }} Profile Image" class="profile-img img-100a"></img>
+                    <a href="{% url 'profileapp:edit_profile_picture' %}" class="edit-picture-btn">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    <div class="edit-picture-overlay"></div>
+                </div>
+                <div class="content-container gp-20 first-last-name-pp">
+                    {% if member_profile.first_name %}
+                    <div class="dark-text">First Name: {{ member_profile.first_name }}</div>
+                    {% else %}
+                    <div class="dark-text nothing-displayed">First Name: *Nothing Displayed</div>
+                    {% endif %}
+                    {% if member_profile.last_name %}
+                    <div class="dark-text">Last Name: {{ member_profile.last_name }}</div>
+                    {% else %}
+                    <div class="dark-text nothing-displayed">Last Name: *Nothing Displayed</div>
+                    {% endif %}
+                </div>
+                
+                <a href="{% url 'profileapp:edit_profile' %}" class="btn">Edit Profile</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if edit_profile %}
+
+<section class="edit-profile-section section">
+    <div class="edit-profile-card content-container">
+        <div class="edit-profile-form-container content-container gp-20">
+            <div class="heading dark-text">Edit Profile </div>
+            <form method="post" class="edit-profile-form">
+                {% csrf_token %}
+                {% if edit_profile_picture %}
+                <div class="edit-profile-picture-form-wrapper content-container">
+                    {{ form }}
+                    <input type="hidden" name="croppedImageData" id="croppedImageData">
+                </div>
+                <div class="edit-pp-container content-container">
+                    <div class="edit-pp-input-container">
+                        <input type="file" id="imageInput" accept="image/*">
+                    </div>
+
+                    <div class="clear-pp-container content-container-rows">
+                        <div class="clear-pp-text">Clear</div>
+                        <input type="checkbox" id="clearPP">
+                    </div>
+
+                    <div class="sub-heading dark-text">Crop</div>
+                    <div class="crop-pp-img-container">
+                        <img id="croppedImage" src="{{ member_profile.profile_image }}" alt="Cropped Image Preview" class="crop-image">
+                    </div>
+
+                    <input type="submit" name="cancel" value="&#10006;" class="form-close-btn">
+
+                    <div class="btn preview-btn">Preview</div>
+                </div>
+                <div class="preview-pp-container content-container">
+                    <div class="sub-heading dark-text">Preview</div>
+                    <div class="preview-pp-img-container content-container">
+                        <img id="previewImage" src="{{ member_profile.profile_image }}" alt="Cropped Image Preview" class="img-100a">
+                    </div>
+
+                    <div class="create-event-form-btns-container content-container-rows">
+                        <input type="submit" name="cancel" value="Cancel" class="form-cancel-btn btn">
+                        <input type="submit" value="Save" class="btn form-save-btn">
+                    </div>
+                    <input type="submit" name="cancel" value="&#10006;" class="form-close-btn">
+                </div>
+                {% else %}
+                {{ form.as_p }}
+                <div class="create-event-form-btns-container content-container-rows">
+                    <input type="submit" name="cancel" value="Cancel" class="form-cancel-btn btn">
+                    <input type="submit" value="Save" class="btn form-save-btn">
+                </div>
+                <input type="submit" name="cancel" value="&#10006;" class="form-close-btn">
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endif %}
+
+{% endblock %}
+
+{% block js %}
+
+{% if edit_profile_picture %}
+
+<script src="{% static 'js/crop-pp.js' %}"></script>
+
+{% endif %}
+
+
+{% endblock %}

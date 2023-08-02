@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="section contact-form-section light-gray-1">
+    <div class="section-contianer">
+        <div class="content-container contact-form-container">
+            <form method="post" class="contact-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn">Submit</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
