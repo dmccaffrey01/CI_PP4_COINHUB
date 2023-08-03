@@ -96,13 +96,20 @@ def deposit_page(request):
 
 def portfolio(request):
     user = request.user
+
     assets = Asset.objects.filter(user=user)
     asset_symbols = []
     for asset in assets:
         asset_symbol = asset.symbol
         asset_symbols.append(asset_symbol)
+        asset_data = CryptoCurrency.objects.filter(symbol=asset_symbol).first()
+        if asset_symbol != 'EUR':
+            asset.current_price = asset_data.price
+            asset.current_change = asset_data.change
+            
+        asset.current_balance = round(asset.current_price * asset.total_amount, 2)
+        asset.save()
 
-    asset_details = CryptoCurrency.objects.filter()
     euro = Asset.objects.filter(user=user, symbol='EUR').first()
     euro_amount = round(euro.total_amount, 2)
 

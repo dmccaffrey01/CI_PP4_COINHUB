@@ -441,7 +441,7 @@ const updateResourceLinks = (links) => {
     }
 })();
 
-const navLinks = document.querySelectorAll('.side-nav-link');
+const sideNavLinks = document.querySelectorAll('.side-nav-link');
 
 window.addEventListener("scroll", () => {
     const scrollPosition = window.scrollY;
@@ -456,7 +456,7 @@ window.addEventListener("scroll", () => {
         const arr = [sectionId, targetScrollPosition, scrollPositionHalfWay];
         
         if (targetScrollPosition < scrollPositionHalfWay) {
-            navLinks.forEach((link) => {
+            sideNavLinks.forEach((link) => {
                 if (link.getAttribute("href") === `#${sectionId}`) {
                     link.classList.add("active");
                 } else {
@@ -469,10 +469,8 @@ window.addEventListener("scroll", () => {
     const sideNavWrapper = document.querySelector(".side-nav-wrapper");
     if (scrollPosition <= 1 || scrollPosition + viewportHeight >= documentHeight - 1) {
         sideNavWrapper.style.height = "calc(100vh - 200px)";
-        console.log("no");
     } else {
         sideNavWrapper.style.height = "100vh";
-        console.log("yes");
     }
 });
   

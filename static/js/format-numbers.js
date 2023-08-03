@@ -29,12 +29,20 @@ function formatPrices(prices) {
 function commaFormatNumbers(elements) {
     elements.forEach(element => {
         let num = element.innerText;
+        let symbol = '';
         if (num[0] == '€') {
             num = num.slice(1);
-            newNum = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            element.innerText = `€${newNum}`
+            symbol = '€';
+        }
+
+        if (num.includes('.')) {
+            const [integerPart, decimalPart] = num.split('.');
+
+            const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+            element.innerText = `${symbol}${formattedIntegerPart}.${decimalPart}`;
         } else {
-            element.innerText = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            element.innerText = `${symbol}${num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
         }
     })
 }
@@ -42,8 +50,8 @@ function commaFormatNumbers(elements) {
 function addPositiveOrNegative(elements) {
     elements.forEach(element => {
         let num = parseFloat(element.innerText.replace('%', ''));
-  
-        if (num > 0 ) {
+        console.log(num);
+        if (num > 0) {
             if (element.classList.contains('negative')) {
                 element.classList.remove('negative');
             }
@@ -57,7 +65,7 @@ function addPositiveOrNegative(elements) {
     });
 }
 
-window.addEventListener('load', function() {
+document.addEventListener('DOMContentLoaded', function() {
     const marketsTable = document.querySelector('.markets-table-wrapper');
     const tradeTable = document.querySelector('.trading-pairs-table-wrapper');
     const cryptoDetails = document.querySelector('.crypto-details-heading-section');
@@ -65,7 +73,7 @@ window.addEventListener('load', function() {
     const commaFormats = document.querySelectorAll('.comma-format');
     const changes = document.querySelectorAll('.pos-neg-change');
 
-    this.window.setTimeout(function() {
+    window.setTimeout(function() {
         if (marketsTable) {
             const trendingPrices = document.querySelectorAll('.trending-crypto-price');
             const marketCaps = document.querySelectorAll('.crypto-market-cap');
@@ -83,6 +91,7 @@ window.addEventListener('load', function() {
             formatPrices(letterFormats);
             commaFormatNumbers(commaFormats);
             addPositiveOrNegative(changes);
+            console.log(changes);
         }
     }, 800);
 });

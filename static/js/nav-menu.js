@@ -33,7 +33,9 @@ navLinks.forEach((navLink) => {
 });
 
 const accountProfileContainer = document.querySelector(".account-profile-container");
+const accountLoginContainer = document.querySelector(".account-login-btns-container");
 
 accountProfileContainer.addEventListener("click", () => {
+    accountLoginContainer.classList.toggle("active");
     accountProfileContainer.classList.toggle("active");
 })

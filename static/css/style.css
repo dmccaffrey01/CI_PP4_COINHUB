@@ -52,8 +52,9 @@ header {
     justify-content: center;
     align-items: center;
     font-family: "Montserrat", sans-serif;
-    z-index: 4;
+    z-index: 999;
     border-bottom: 1px solid var(--GRAY-LIGHT-2);
+    position: relative;
 }
 
 .header-container {
@@ -193,7 +194,15 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 30px;
+}
+
+.account-login-btns-container.active {
+    position: absolute;
+    left: calc(50% - 300px);
+    width: 600px;
+    height: 100%;
+    background-color: var(--GRAY-LIGHT-1);
+    justify-content: flex-start;
 }
 
 .account-login-icon-container {
@@ -459,6 +468,11 @@ footer {
     font-size: 1.5rem;
     color: var(--GRAY-DARK-1);
 }
+
+.text-gd-2 {
+    color: var(--GRAY-DARK-2);
+}
+
 
 .dark-blue-text {
     font-size: 1.5rem;
@@ -781,10 +795,6 @@ canvas.price-sparkline {
     padding-bottom: 20px;
 }
 
-.text-gd-2 {
-    color: var(--GRAY-DARK-2);
-}
-
 .gp-50 {
     gap: 50px;
 }
@@ -840,13 +850,14 @@ canvas.price-sparkline {
 }
 
 .phone-portfolio-img-container {
-    width: 175px;
-    height: 350px;
+    width: 180px;
+    height: 315px;
     background-color: var(--BLUE-LIGHT-1);
     position: absolute;
     right: 70px;
     bottom: -50px;
-    border-radius: 30px;
+    border-radius: 15px;
+    overflow: hidden;
 }
 
 .box-shadow {
@@ -2009,7 +2020,7 @@ footer.active {
 
 header.active {
     position: fixed;
-    z-index: 15;
+    z-index: 999;
     background-color: var(--GRAY-LIGHT-1);
 }
 
@@ -2799,17 +2810,14 @@ td.orders-cancel, th.orders-cancel-heading {
 
 .profile-btns-container {
     position: absolute;
-    top: calc(100% + 8px);
-    padding: 20px;
-    width: 250px;
-    border-radius: 15px;
-    background-color: var(--GRAY-LIGHT-2);
-    left: 50%;
-    z-index: 999;
-    transform: translateX(-50%);
-    border: 2px solid var(--GRAY-DARK-1);
-    gap: 20px;
+    top: 0;
+    width: 600px;
+    border-radius: 0 0 15px 15px;
+    gap: 50px;
     display: none;
+    height: 100%;
+    flex-direction: row;
+    left: 100%;
 }
 
 .account-profile-container.active .profile-btns-container {

@@ -74,14 +74,14 @@
                                 </td>
                                 <td class="crypto-price asset-balance">
                                     <div class="asset-balance-amount-container content-container gp-10">
-                                        <div class="asset-balance comma-format dark-text">€{{ asset.total_balance }}</div>
+                                        <div class="asset-balance comma-format dark-text">€{{ asset.current_balance }}</div>
                                         <div class="asset-amount comma-format text-gd-2 dark-text">{{ asset.total_amount }} {{asset.symbol }}</div>
                                     </div>
                                 </td>
                                 <td class="crypto-change asset-price">
                                     <div class="asset-balance-amount-container content-container gp-10">
-                                        <div class="asset-balance comma-format dark-text">€{{ asset.price }}</div>
-                                        <div class="asset-amount text-gd-2 dark-text pos-neg-change">{{ asset.price_change }}%</div>
+                                        <div class="asset-balance comma-format dark-text">€{{ asset.current_price }}</div>
+                                        <div class="asset-amount text-gd-2 dark-text pos-neg-change">{{ asset.current_change }}%</div>
                                     </div>
                                 </td>
                             </tr>
