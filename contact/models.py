@@ -12,6 +12,7 @@ class Contact(models.Model):
     email = models.EmailField()
     issue = models.CharField(max_length=255, choices=ISSUE_CHOICES, default='other')
     message = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name

@@ -97,10 +97,19 @@ def deposit_page(request):
 def portfolio(request):
     user = request.user
     assets = Asset.objects.filter(user=user)
+    asset_symbols = []
+    for asset in assets:
+        asset_symbol = asset.symbol
+        asset_symbols.append(asset_symbol)
+
+    asset_details = CryptoCurrency.objects.filter()
+    euro = Asset.objects.filter(user=user, symbol='EUR').first()
+    euro_amount = round(euro.total_amount, 2)
 
     context = {
         'user': user,
-        'assets': assets
+        'assets': assets,
+        'euro': euro_amount,
     }
 
     return render(request, 'portfolio.html', context)

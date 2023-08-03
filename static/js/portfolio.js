@@ -504,8 +504,8 @@ const formatHistoricalData = async (data) => {
 const historicalPriceChange = document.querySelector('.historical-crypto-change');
 const historicalPrice = document.querySelector('.historical-crypto-price');
 
-const updateHistoricalPriceChange = (data) => {
-    const originPrice = data[0][0];
+const updateHistoricalPriceChange = (prices) => {
+    const originPrice = prices[0];
 
     const currentPrice = historicalPrice.innerText.slice(1).replace(/,/g, '');
     const difference = (currentPrice - originPrice).toFixed(2);
@@ -644,7 +644,9 @@ const createHistoricalPriceChart = async (data) => {
 
     await new Promise((resolve) => setTimeout(resolve, 100));
 
-    // updateHistoricalPriceChange();
+    updateHistoricalPrice(prices[prices.length - 1]);
+    updateHistoricalPriceChange(prices);
+    
     
     newCanvas.addEventListener('mousemove', function (event) {
         let rect = newCanvas.getBoundingClientRect();
@@ -661,7 +663,7 @@ const createHistoricalPriceChart = async (data) => {
         let date = new Date(timestamp);
 
         updateHistoricalPrice(price);
-        // updateHistoricalPriceChange();
+        updateHistoricalPriceChange(prices);
         updateTimestampDate(date);
 
         verticalLineContainer.style.left = x + 'px';
@@ -680,6 +682,7 @@ const createHistoricalPriceChart = async (data) => {
         verticalLineContainer.style.display = 'none';
         chartOverlay.style.display = 'none';
         timestampDate.style.display = 'none';
+        updateHistoricalPrice(prices[prices.length - 1]);
     });
     
 };

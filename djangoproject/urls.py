@@ -9,5 +9,6 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('contact/', contact_view, name='contact'),
     path('profile/', include('profileapp.urls')),
+    path('summernote/', include('django_summernote.urls')),
 ]
 
