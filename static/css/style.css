@@ -54,7 +54,6 @@ header {
     font-family: "Montserrat", sans-serif;
     z-index: 999;
     border-bottom: 1px solid var(--GRAY-LIGHT-2);
-    position: relative;
 }
 
 .header-container {
@@ -64,6 +63,7 @@ header {
     justify-content: space-around;
     align-items: center;
     color: var(--GRAY-DARK-1);
+    position: relative;
 }
 
 /* Logo */
@@ -198,8 +198,8 @@ header {
 
 .account-login-btns-container.active {
     position: absolute;
-    left: calc(50% - 300px);
-    width: 600px;
+    left: 40px;
+    width: calc(100vw - 80px);
     height: 100%;
     background-color: var(--GRAY-LIGHT-1);
     justify-content: flex-start;
@@ -308,6 +308,10 @@ header {
     .nav-link {
         color: var(--WHITE);
     }
+
+    .nav-menu a:visited {
+        color: var(--WHITE)
+    }
 }
 
 @media (max-width: 768px) {
@@ -323,21 +327,7 @@ header {
         width: 100px;
     }
 
-    .account-login-btns-container {
-        display: none;
-    }
-
-    .account-login-icon-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100px;
-    }
-
-    .account-login-icon {
-        font-size: 2.9rem;
-        color: var(--GRAY-DARK-1);
-    }
+    
 }
 
 /* Footer */
@@ -887,8 +877,7 @@ canvas.price-sparkline {
     .phone-portfolio-img-container {
         width: 30%;
         height: 0;
-        padding-bottom: 60%;
-        border-radius: 20px;
+        padding-bottom: 52.5%;
     }
 
     .portfolio-benefits {
@@ -1544,7 +1533,7 @@ canvas.price-sparkline {
 
 .deposit-card {
     padding: 50px 80px;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
     border-radius: 15px;
     position: relative;
     box-shadow: rgba(0, 0, 0, 0.42) 0px 19px 38px, rgba(0, 0, 0, 0.32) 0px 15px 12px;
@@ -1639,7 +1628,8 @@ canvas.price-sparkline {
 .deposit-card-balance {
     position: absolute;
     top: -30px;
-    left: 20px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .euro-symbol {
@@ -1647,6 +1637,35 @@ canvas.price-sparkline {
     top: 50%;
     transform: translateY(-50%);
     left: 8px;
+}
+
+@media (max-width: 768px) {
+    .deposit-section {
+        min-height: 800px;
+    }
+
+    .deposit-card {
+        padding: 30px;
+        background-color: var(--GRAY-LIGHT-1);
+    }
+
+    .deposit-form-input {
+        font-size: 1.2rem;
+        width: 250px;
+    }
+
+    .expire-cvv-container {
+        width: 250px;
+    }
+
+    .expire-cvv-container .deposit-form-input {
+        width: 100px;
+    }
+
+    .deposit-card-balance {
+        top: -50px;
+        text-align: center;
+    }
 }
 
 /* Portfolio Section */
@@ -2792,8 +2811,6 @@ td.orders-cancel, th.orders-cancel-heading {
 
 .account-profile-container {
     cursor: pointer;
-    position: relative;
-    
 }
 
 .account-profile-img-container {
@@ -2801,7 +2818,7 @@ td.orders-cancel, th.orders-cancel-heading {
     width: 75px;
     height: 75px;
     border-radius: 50%;
-    border: 3px solid var(--RED-LOGO);
+    border: 3px solid var(--BLUE-DARK-1);
 }
 
 .account-profile-img-container.not-logged-in {
@@ -2811,13 +2828,12 @@ td.orders-cancel, th.orders-cancel-heading {
 .profile-btns-container {
     position: absolute;
     top: 0;
-    width: 600px;
-    border-radius: 0 0 15px 15px;
+    width: calc(100vw - 230px);
     gap: 50px;
     display: none;
     height: 100%;
     flex-direction: row;
-    left: 100%;
+    left: 75px;
 }
 
 .account-profile-container.active .profile-btns-container {
@@ -2828,3 +2844,37 @@ td.orders-cancel, th.orders-cancel-heading {
     font-size: 1.5rem;
     color: var(--GRAY-DARK-1);
 }
+
+@media (max-width: 768px) {
+    .profile-btns-container {
+        gap: 20px;
+        width: calc(100vw - 100px);
+        left: 80px;
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
+
+    .profile-btn-link {
+        font-size: 1.2rem;
+    }
+
+    .logout-btn, .register-btn {
+        font-size: 1.2rem;
+        padding: 8px 12px;
+    }
+
+    .account-profile-img-container {
+        width: 60px;
+        height: 60px;
+    }
+
+    .account-login-btns-container.active {
+        left: 10px;
+    }
+
+    .login-register-container {
+        flex-direction: row;
+        gap: 30px;
+    }
+}
+

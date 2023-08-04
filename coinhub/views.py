@@ -530,38 +530,55 @@ def get_user_data(request):
 
 @login_required
 def deposit(request, amount):
-    user = request.user
-    deposit_amount = Decimal(amount)
-    symbol = 'EUR'
-
-    asset, created = Asset.objects.get_or_create(user=user, symbol=symbol)
+    try:
+        deposit_amount = Decimal(amount)
+        if deposit_amount <= 0:
+            response = {
+                'success': False,
+                'message': 'Amount must be a positive number.',
+            }
+            return JsonResponse(response)
+        
+        user = request.user
+        symbol = 'EUR'
+        asset, created = Asset.objects.get_or_create(user=user, symbol=symbol)
     
-    if created:
-        asset.symbol = symbol
-        asset.iconUrl = 'https://res.cloudinary.com/dzwyiggcp/image/upload/v1687604163/CI_PP4_COINHUB/icons/vskcbpae6osco4zr3btg.png'
-        asset.total_amount = 0
-    
-    old_amount = asset.total_amount
-    new_amount = old_amount + deposit_amount
-    asset.total_amount = new_amount
-    
-    asset.save()
+        if created:
+            asset.symbol = symbol
+            asset.iconUrl = 'https://res.cloudinary.com/dzwyiggcp/image/upload/v1687604163/CI_PP4_COINHUB/icons/vskcbpae6osco4zr3btg.png'
+            asset.total_amount = 0
+        
+        old_amount = asset.total_amount
+        new_amount = old_amount + deposit_amount
+        asset.total_amount = new_amount
+        
+        asset.save()
 
-    amount_entry = {
-        'amount': float(deposit_amount),
-        'timestamp': int(time.time()),
-        'old_amount': float(old_amount),
-        'new_amount': float(new_amount),
-    }
+        amount_entry = {
+            'amount': float(deposit_amount),
+            'timestamp': int(time.time()),
+            'old_amount': float(old_amount),
+            'new_amount': float(new_amount),
+        }
 
-    amount_history = asset.amount_history
-    new_amount_history = amount_history.replace("'", "\"")
-    new_amount_history = json.loads(new_amount_history)
-    new_amount_history.append(amount_entry)
-    asset.amount_history = new_amount_history
-    asset.save()
+        amount_history = asset.amount_history
+        new_amount_history = amount_history.replace("'", "\"")
+        new_amount_history = json.loads(new_amount_history)
+        new_amount_history.append(amount_entry)
+        asset.amount_history = new_amount_history
+        asset.save()
 
-    return JsonResponse({'total_amount': new_amount})
+        response = {
+            'success': True,
+            'total_amount': new_amount,
+        }
+
+    except ValueError:
+        response = {
+            'success': False,
+            'message': 'Invalid amount provided.',
+        }
+        return JsonResponse(response)
 
 
 def get_crypto_detail_data(request, cryptocurrency):

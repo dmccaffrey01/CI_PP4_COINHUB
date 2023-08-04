@@ -44,7 +44,7 @@ const createValidationError = (input) => {
 }
 
 const validateInputValue = (val) => {
-    if (val["value"] === "" || val["value"] === undefined || (Number(val["value"]) > 1000000 && val["input"].classList.contains("amount-input"))) {
+    if (val["value"] === "" || val["value"] === undefined || ((Number(val["value"]) > 1000000 || Number(val["value"]) < 0) && val["input"].classList.contains("amount-input"))) {
         createValidationError(val["input"]);
         return false;
     } else {
@@ -81,7 +81,7 @@ const validateInput = () => {
             "value": amount,
         }
     ];
-
+removeLoadingIcon
     let validation = true;
     inputValues.forEach(val => {
         validation = validateInputValue(val);
