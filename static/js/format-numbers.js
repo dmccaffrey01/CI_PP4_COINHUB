@@ -21,7 +21,12 @@ function formatPrices(prices) {
         }
 
         if (number == 0) {
-            price.innerHTML = `<i class="fa-solid fa-infinity"></i>`;
+            if (price.classList.contains("trending-crypto-price")) {
+                price.innerHTML = `${currencySymbol}0.00`;
+            } else {
+                price.innerHTML = `<i class="fa-solid fa-infinity"></i>`;
+            }
+            
         }
     })
 }

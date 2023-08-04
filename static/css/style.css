@@ -740,7 +740,6 @@ canvas.price-sparkline {
     
     .crypto-list-home-table .crypto-price,
     .crypto-list-home-table .crypto-price-heading,
-    .crypto-list-home-table .crypto-change,
     .crypto-list-home-table .crypto-trade {
         width: 33%;
     }
@@ -1000,6 +999,27 @@ canvas.price-sparkline {
     padding-top: 20px;
 }
 
+@media (max-width: 768px) {
+    .crypto-search-section .heading-container {
+        width: calc(100vw - 50px);
+    }
+    
+    .heading-3 {
+        font-size: 2rem;
+    }
+
+    .sub-heading-3 {
+        font-size: 1.5rem;
+    }
+
+    .crypto-search-input {
+        width: calc(100vw - 70px);
+        font-size: 1.2rem;
+        padding: 20px 60px;
+    }
+
+}
+
 /* Trending Crypto Section */
 
 .trending-crypto-container {
@@ -1054,6 +1074,30 @@ canvas.price-sparkline {
     width: 20%;
 }
 
+@media (max-width: 1250px) {
+    .trending-crypto-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .trending-crypto-card {
+        width: calc(100vw - 300px);
+    }
+}
+
+@media (max-width: 768px) {
+    .trending-crypto-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .trending-crypto-card {
+        width: calc(100vw - 40px);
+    }
+}
+
 /* Crypto Markets Section */
 
 .crypto-list-markets-table .crypto-price,
@@ -1075,6 +1119,32 @@ canvas.price-sparkline {
 
 .markets-table-wrapper {
     display: none;
+}
+
+@media (max-width: 768px) {
+    
+    .crypto-list-markets-table .crypto-market-cap,
+    .crypto-list-markets-table .crypto-market-cap-heading,
+    .crypto-list-markets-table .crypto-volume,
+    .crypto-list-markets-table .crypto-volume-heading {
+        display: none;
+    }
+    
+    .crypto-list-home-table td.crypto-name-symbol, .crypto-list-home-table .crypto-name-symbol-heading {
+        width: 33%;
+        text-align: center;
+    }
+    
+    .crypto-list-home-table .crypto-price,
+    .crypto-list-home-table .crypto-price-heading,
+    .crypto-list-home-table .crypto-trade {
+        width: 33%;
+    }
+
+    .crypto-details {
+        max-width: 70px;
+    }
+
 }
 
 /* Crypto Details Section */

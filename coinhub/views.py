@@ -579,6 +579,8 @@ def deposit(request, amount):
             'message': 'Invalid amount provided.',
         }
         return JsonResponse(response)
+    
+    return JsonResponse(response)
 
 
 def get_crypto_detail_data(request, cryptocurrency):
