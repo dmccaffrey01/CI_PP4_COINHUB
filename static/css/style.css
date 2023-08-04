@@ -1179,6 +1179,16 @@ canvas.price-sparkline {
     color: var(--BLUE-LIGHT-1);
 }
 
+.side-nav-menu a:visited {
+    color: var(--GRAY-DARK-1);
+}
+
+@media (max-width: 1250px) {
+    .crypto-details-side-nav {
+        display: none;
+    }
+}
+
 /* Historical Price Chart Section */
 
 .crypto-details-section {
@@ -1220,7 +1230,7 @@ canvas.price-sparkline {
 
 .historical-price-time-periods-btn {
     padding: 12px 18px;
-    border-radius: 15px;
+    border-radius: 10px;
     cursor: pointer;
 }
 
@@ -1313,6 +1323,113 @@ canvas.price-sparkline {
     pointer-events: none;
 }
 
+@media (max-width: 1250px) {
+    .crypto-details-section {
+        margin: 0;
+        width: 100%;
+        border: none;
+    }
+
+    .crypto-details-section-container {
+        flex-direction: column;
+        gap: 30px;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 50px
+    }
+
+    .historical-chart-buy-section .crypto-details-container-rows {
+        flex-direction: column;
+        width: 100%;
+        gap: 100px;
+    }
+
+    .historical-section-container-wrapper,
+    .historical-price-heading-container,
+    .historical-price-chart-container,
+    .historical-price-chart-section-container,
+    .historical-price-chart-wrapper {
+        width: 100%;
+    }
+
+    .historical-price-chart-section-container .content-container {
+        width: calc(100% - 100px);
+    }
+
+    .historical-price-chart-section-container {
+        justify-content: center;
+    }
+
+    .historical-price-chart-container {
+        height: 400px;
+    }
+
+    .historical-section-container-wrapper {
+        height: 600px;
+    }
+
+    .vertical-line-container {
+        height: 408px;
+    }
+
+}
+
+@media (max-width: 768px) {
+  
+
+    .crypto-details-section-container {
+        padding: 30px
+    }
+
+    .historical-chart-buy-section .crypto-details-container-rows {
+        gap: 70px;
+    }
+
+    .historical-price-chart-section-container .content-container {
+        width: calc(100% - 30px);
+    }
+
+    .historical-price-chart-section-container {
+        justify-content: center;
+    }
+
+    .historical-price-chart-container {
+        height: 200px;
+    }
+
+    .historical-section-container-wrapper {
+        height: 500px;
+    }
+
+    .vertical-line-container {
+        height: 210px;
+    }
+
+    .historical-price-heading-container {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 300px;
+    }
+
+    .historical-price-container {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .historical-price-time-periods {
+        font-size: 1.2rem;
+        gap: 5px;
+    }
+
+    .historical-price-time-periods-btn.active {
+        border-radius: 5px;
+        padding: 6px 8px;
+    }
+
+}
+
 /* Buy Section */
 
 .crypto-details-buy-section {
@@ -1339,6 +1456,48 @@ canvas.price-sparkline {
     padding: 0 0 50px 50px;
 }
 
+@media (max-width: 1250px) {
+    .crypto-details-buy-section {
+        height: 400px;
+        flex-direction: row;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .buy-section-img-container {
+        width: 50%;
+        padding-bottom: 50%;
+    }
+
+    .buy-section-text-container {
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        width: 50%;
+        padding: 30px;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .crypto-details-buy-section {
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        padding: 30px 0;
+        height: fit-content;
+    }
+
+    .buy-section-img-container {
+        width: 80%;
+        padding-bottom: 80%;
+    }
+
+    .buy-section-text-container {
+        width: 80%;
+    }
+}
+
 
 /* Market Stats Section */
 
@@ -1360,6 +1519,55 @@ canvas.price-sparkline {
     align-items: flex-start;
 }
 
+@media (max-width: 768px) {
+    .crypto-details-market-stats-container {
+        padding: 20px;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .crypto-details-heading {
+        align-self: center;
+    }
+
+    .market-stats-container {
+        flex-wrap: wrap;
+    }
+
+    .market-stats-item {
+        height: 90px;
+        text-align: center;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        gap: 5px;
+    }
+
+    .market-stats-col {
+        width: 50%;
+        justify-content: center;
+        align-items: center;
+        gap: 0px;
+    }
+
+    .market-stats-item .dark-text {
+        font-size: 1.2rem;
+    }
+
+    .market-stats-col.third {
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 100%;
+        margin-top: 20px;
+        gap: 0px;
+    }
+
+    .market-stats-col.third .market-stats-item {
+        width: 50%;
+    }
+}
+
 /* Crypto Details About Section */
 
 .crypto-details-about-container {
@@ -1376,6 +1584,23 @@ canvas.price-sparkline {
 
 .weekly-summary, .resource-link-container, .official-resource-link-container, .about-text-container, .extra-resource-link-container {
     align-items: flex-start;
+}
+
+@media (max-width: 1250px) {
+    .crypto-details-about-container {
+        max-width: 100%;
+        text-align: center;
+        align-items: center;
+        align-self: center;
+    }
+
+    .crypto-details-about-container .heading-3, .crypto-details-about-container .sub-heading-3 {
+        align-self: center;
+    }
+
+    .weekly-summary, .resource-link-container, .official-resource-link-container, .about-text-container, .extra-resource-link-container {
+        align-items: center;
+    }
 }
 
 /* Account Login Section */
