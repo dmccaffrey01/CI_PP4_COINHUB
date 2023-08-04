@@ -1817,6 +1817,34 @@ canvas.price-sparkline {
     padding: 40px;
 }
 
+@media (max-width: 1000px) {
+    .crypto-list-trading-pairs-table .crypto-volume,
+    .crypto-list-trading-pairs-table .crypto-volume-heading {
+        display: none;
+    }
+
+    .crypto-list-trading-pairs-table .crypto-change,
+    .crypto-name-symbol-heading,
+    .crypto-name-symbol,
+    .crypto-list-trading-pairs-table .crypto-price,
+    .crypto-list-trading-pairs-table .crypto-price-heading {
+        display: table-cell;
+        width: 33%;
+        font-size: 1.2rem;
+        padding: 0px;
+        text-align: center;
+    }
+
+    .crypto-list-trading-pairs-table .crypto-name-symbol,
+    .crypto-list-trading-pairs-table .crypto-name-symbol-heading {
+        font-size: 1.2rem;
+    }
+
+    .crypto-list-trading-pairs-table-body .crypto-details {
+        max-width: 50px;
+    }
+}
+
 /* Deposit Page */
 
 .deposit-section {
@@ -2126,6 +2154,33 @@ canvas.price-sparkline {
     z-index: 5;
 }
 
+@media (max-width: 1250px) {
+
+    .trading-pair-page-container {
+        flex-direction: column;
+    }
+
+    .trading-pair-left-side, .trading-pair-right-side {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .trading-pair-heading-container {
+        width: calc(100vw - 100px);
+        padding: 30px;
+    }
+
+    .trading-pair-left-side-section {
+        justify-content: center;
+    }
+
+    .crypto-trade-table-trading-pair {
+        top: calc(100% + 20px);
+        width: 100vw;
+    }
+
+}
+
 /* Trading Pair Price Chart Section */
 
 .trading-pair-chart-heading-container {
@@ -2230,6 +2285,7 @@ canvas.price-sparkline {
     gap: 5px
 }
 
+
 .orders-card-container {
     width: 1200px;
     height: 300px;
@@ -2272,6 +2328,34 @@ canvas.price-sparkline {
 
 .buy-sell-message-text {
     text-align: center;
+}
+
+@media (max-width: 1250px) {
+    .trading-pair-price-chart-wrapper {
+        height: 420px;
+    }
+
+    .trading-pair-price-chart-container {
+        height: 390px;
+    }
+
+    .crosshair-vertical-line-container {
+        height: 420px;
+    }
+
+    .crosshair-horizontal-line-container {
+        width: 100%;
+    }
+ 
+    .portfolio-price-chart-container,
+    .portfolio-price-heading-container,
+    .portfolio-chart-wrapper-container  {
+        width: calc(100% - 100px);
+    }
+
+    .portfolio-price-chart-wrapper, .portfolio-price-chart-container  {
+        width: calc(100vw - 140px);
+    }
 }
 
 /* Order Book Section */
@@ -2410,6 +2494,12 @@ header.active {
 
 .trading-pair-heading {
     font-size: 2rem;
+}
+
+@media (max-width: 1250px) {
+    .trading-pair-order-book-section {
+        display: none;
+    }
 }
 
 /* Buy Sell Tab Section */
@@ -2771,6 +2861,17 @@ td.orders-cancel, th.orders-cancel-heading {
     top: 50%;
     left: 50%;
     transform: translateX(-50%);
+}
+
+@media (max-width: 1250px) {
+    .orders-card-container {
+        width: calc(100vw - 100px);
+    }
+
+    .cancel-order-btn {
+        padding: 5px 7px;
+        font-size: 0.8rem;
+    }
 }
 
 /* Contact Form Section */

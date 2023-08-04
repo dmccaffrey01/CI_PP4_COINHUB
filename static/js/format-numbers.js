@@ -55,7 +55,6 @@ function commaFormatNumbers(elements) {
 function addPositiveOrNegative(elements) {
     elements.forEach(element => {
         let num = parseFloat(element.innerText.replace('%', ''));
-        console.log(num);
         if (num > 0) {
             if (element.classList.contains('negative')) {
                 element.classList.remove('negative');
@@ -96,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function() {
             formatPrices(letterFormats);
             commaFormatNumbers(commaFormats);
             addPositiveOrNegative(changes);
-            console.log(changes);
         }
     }, 800);
 });

@@ -340,23 +340,38 @@ const createCrosshair = (num, x, y) => {
 }
 
 canvas.addEventListener('mousemove', (e) => {
-    let rect = canvas.getBoundingClientRect();
-    let x = e.clientX - rect.left;
-    let y = e.clientY - rect.top;
-    createCrosshair(30, x, y);
-    updateTimestampAndPriceLabel(x, y);
+    let chart = document.querySelector('.trading-pair-chart');
+    if (!chart) {
+        return;
+    } else {
+        let rect = canvas.getBoundingClientRect();
+        let x = e.clientX - rect.left;
+        let y = e.clientY - rect.top;
+        createCrosshair(30, x, y);
+        updateTimestampAndPriceLabel(x, y);
+    }
 });
 
 canvas.addEventListener('mouseenter', function () {
-    crosshair.style.display = 'flex';
-    timestampCrosshairLabel.style.display = 'flex';
-    priceCrosshairLabel.style.display = 'flex';
+    let chart = document.querySelector('.trading-pair-chart');
+    if (!chart) {
+        return;
+    } else {
+        crosshair.style.display = 'flex';
+        timestampCrosshairLabel.style.display = 'flex';
+        priceCrosshairLabel.style.display = 'flex';
+    }
 });
 
 canvas.addEventListener('mouseleave', function () {
-    crosshair.style.display = 'none';
-    timestampCrosshairLabel.style.display = 'none';
-    priceCrosshairLabel.style.display = 'none';
+    let chart = document.querySelector('.trading-pair-chart');
+    if (!chart) {
+        return;
+    } else {
+        crosshair.style.display = 'none';
+        timestampCrosshairLabel.style.display = 'none';
+        priceCrosshairLabel.style.display = 'none';
+    }
 });
 
 changeTradingPairBtn.addEventListener("click", () => {
@@ -527,9 +542,9 @@ const createChart = async () => {
     let canvasElement = document.createElement('canvas');
     canvasElement.classList.add('trading-pair-chart');
     canvasContainer.appendChild(canvasElement);
-
+    console.log('1');
     let formattedData = await getFormattedChartData();
-
+    console.log('2');
     const dataOptions = {
         hour: '2-digit',
         minute: '2-digit',
@@ -704,13 +719,13 @@ const createChart = async () => {
         },
         plugins: [candlestick, customScale]
         };
-
+        console.log('3');
         // render init block
         const myChart = new Chart(
         document.querySelector('.trading-pair-chart'),
         config
         );
-
+        console.log('4');
         const getFilteredPriceMovements = (arr) => {
             let newArr = [];
             for (let i = 0; i < arr.length; i++) {
@@ -720,7 +735,7 @@ const createChart = async () => {
             }
             return newArr;
         }
-        
+        console.log('5');
         const createNewDataPoint = (i, newDataPoint) => {
             let d = nextFiveData[i];
             let priceMovements = getPriceMovements(i);
@@ -780,6 +795,7 @@ const createChart = async () => {
                     clearInterval(msInterval);
                 }
             }, 1000);
+            console.log('6');
         }
 
     window.setTimeout(() => {
@@ -796,7 +812,7 @@ const createChart = async () => {
             myChart.data.datasets[0].backgroundColor.push("#4ec437");
 
             if (myChart.data.datasets[0].data.length >= 30) {
-                myChart.data.datasets[0].data.shift();
+                myChart.data.datasets[0].data.shift();canvas
                 myChart.data.datasets[0].backgroundColor.shift();
             }
             myChart.update();
@@ -824,7 +840,10 @@ const createChart = async () => {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    createChart();
+    
+    window.setTimeout(() => {
+        createChart();
+    }, 1000);
 });
 
 
@@ -1051,6 +1070,12 @@ const switchToBuyTab = async () => {
         buySellBtn.classList.add("buy");
         buySellBtnText.innerText = "Buy";
     }
+
+    let amountInput = document.querySelector(".buy-sell-tab-amount-input");
+    let totalInput = document.querySelector(".buy-sell-tab-total-input");
+
+    amountInput.value = "";
+    totalInput.value = "";
 }
 
 const switchToSellTab = async () => {
@@ -1064,6 +1089,12 @@ const switchToSellTab = async () => {
         buySellBtn.classList.add("sell");
         buySellBtnText.innerText = "Sell";
     }
+
+    let amountInput = document.querySelector(".buy-sell-tab-amount-input");
+    let totalInput = document.querySelector(".buy-sell-tab-total-input");
+
+    amountInput.value = "";
+    totalInput.value = "";
 }
 
 buyTabButton.addEventListener('click', () => {
@@ -1136,17 +1167,19 @@ const updateAmountTotalInputs = (percentValue, euroAvailable, type, assetAvailab
     let buySellType = getBuySellType(orderType);
 
     let totalValue;
+    let amountValue;
 
     if (percentValue == 0 || percentValue == "" || percentValue == NaN) {
         totalValue = 1;
     } else if (buySellType == "Buy") {
         totalValue = euroAvailable * (percentValue / 100);
+        amountValue = totalValue / price;
     } else {
-        totalValue = assetAvailable * price * (percentValue / 100);
+        amountValue = assetAvailable * (percentValue / 100);
+        totalValue = amountValue * price;
     }
-    console.log(totalValue, assetAvailable, price);
-    let amountValue = totalValue / price;
-
+    
+    console.log(price, totalValue, amountValue, percentValue, assetAvailable, price);
     if (type == "slider" || type == "total") {
         amountInput.value = amountValue.toFixed(8);
     }
@@ -1342,7 +1375,7 @@ totalInput.addEventListener("keydown", () => {
         if (orderType == "Limit") {
             price = document.querySelector(".limit-price-input").value;
         }
-
+        
         updateAmountTotalInputs(percentValue, euroAvailable, "total", assetAvailable, price);
     }, 0);
 })
@@ -1579,7 +1612,7 @@ buySellBtn.addEventListener("click", async () => {
 
     window.setTimeout( () => {
         window.location.reload();
-    }, 3000);
+    }, 1000);
 });
 
 

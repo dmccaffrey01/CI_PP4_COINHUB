@@ -260,6 +260,27 @@ def buy_sell_order(request, time_placed, symbol, orderType, bsType, price, amoun
             euro_asset.amount_history = new_amount_history
 
             euro_asset.save()
+        else:
+            old_amount = float(asset.total_amount)
+            new_amount = old_amount - amount
+            asset.total_amount = new_amount
+
+            timestamp = int(time.time())
+
+            amount_entry = {
+                'amount': float(amount),
+                'timestamp': timestamp,
+                'old_amount': float(old_amount),
+                'new_amount': float(new_amount),
+            }
+
+            amount_history = asset.amount_history
+            new_amount_history = amount_history.replace("'", "\"")
+            new_amount_history = json.loads(new_amount_history)
+            new_amount_history.append(amount_entry)
+            asset.amount_history = new_amount_history
+
+            asset.save()
 
         transaction = Transaction.objects.create(
             user=user,
@@ -386,6 +407,9 @@ def check_transactions(request):
 def fulfill_transaction(request, transaction):
     user = request.user
 
+    if transaction.status == 'Fulfilled':
+        return 'Fulfilled'
+
     symbol = transaction.symbol
 
     total = transaction.total
@@ -393,9 +417,9 @@ def fulfill_transaction(request, transaction):
     euro = Asset.objects.get(symbol='EUR', user=user)
 
     if transaction.type == 'Sell - Limit' or transaction.type == 'Sell - Market':
-        transaction_amount = -transaction.amount
+        transaction_type = 'Sell'
     else:
-        transaction_amount = transaction.amount
+        transaction_type = 'Buy'
 
     crypto = CryptoCurrency.objects.get(symbol=symbol)
 
@@ -405,26 +429,27 @@ def fulfill_transaction(request, transaction):
         asset.iconUrl = crypto.icon
         asset.name = crypto.name
 
-    old_amount = asset.total_amount
-    new_amount = old_amount + transaction_amount
-    asset.total_amount = new_amount
+    if transaction_type == 'Buy':
+        old_amount = asset.total_amount
+        new_amount = old_amount + transaction.amount
+        asset.total_amount = new_amount
 
-    amount_entry = {
-        'amount': float(total),
-        'timestamp': int(time.time()),
-        'old_amount': float(old_amount),
-        'new_amount': float(new_amount),
-    }
+        amount_entry = {
+            'amount': float(transaction.amount),
+            'timestamp': int(time.time()),
+            'old_amount': float(old_amount),
+            'new_amount': float(new_amount),
+        }
 
-    amount_history = asset.amount_history
-    new_amount_history = amount_history.replace("'", "\"")
-    new_amount_history = json.loads(new_amount_history)
-    new_amount_history.append(amount_entry)
-    asset.amount_history = new_amount_history
+        amount_history = asset.amount_history
+        new_amount_history = amount_history.replace("'", "\"")
+        new_amount_history = json.loads(new_amount_history)
+        new_amount_history.append(amount_entry)
+        asset.amount_history = new_amount_history
 
-    asset.save()
+        asset.save()
 
-    if transaction.type == "Sell - Market" or transaction.type == "Sell - Limit":
+    if transaction_type == 'Sell':
         old_amount = euro.total_amount
         new_amount = old_amount + total
         euro.total_amount = new_amount
@@ -448,7 +473,7 @@ def fulfill_transaction(request, transaction):
 
     transaction.save()
 
-    return new_amount
+    return 'Fulfilled'
 
 
 def delete_transaction(request, transaction_uuid, symbol):
@@ -456,30 +481,52 @@ def delete_transaction(request, transaction_uuid, symbol):
 
     transaction = Transaction.objects.get(transaction_uuid=transaction_uuid, user=user)
 
-    asset = Asset.objects.get(user=user, symbol='EUR')
+    euro_asset = Asset.objects.get(user=user, symbol='EUR')
+    asset = Asset.objects.get(user=user, symbol=symbol)
 
-    deposit_amount = transaction.total
 
-    old_amount = asset.total_amount
-    new_amount = old_amount + deposit_amount
-    asset.total_amount = new_amount
+    if transaction.type == 'Buy - Market' or transaction.type == 'Buy - Limit':
+        transaction_type = 'Buy'
+    else:
+        transaction_type = 'Sell'
+
+    if transaction_type == 'Buy':
+        old_amount = euro_asset.total_amount
+        new_amount = old_amount + transaction.total
+        euro_asset.total_amount = new_amount
+
+        amount_entry = {
+            'amount': float(transaction.total),
+            'timestamp': int(time.time()),
+            'old_amount': float(old_amount),
+            'new_amount': float(new_amount),
+        }
+
+        amount_history = euro_asset.amount_history
+        new_amount_history = amount_history.replace("'", "\"")
+        new_amount_history = json.loads(new_amount_history)
+        new_amount_history.append(amount_entry)
+        euro_asset.amount_history = new_amount_history
+        euro_asset.save()
+    else:
+        old_amount = asset.total_amount
+        new_amount = old_amount + transaction.amount
+        asset.total_amount = new_amount
+
+        amount_entry = {
+            'amount': float(transaction.amount),
+            'timestamp': int(time.time()),
+            'old_amount': float(old_amount),
+            'new_amount': float(new_amount),
+        }
+
+        amount_history = asset.amount_history
+        new_amount_history = amount_history.replace("'", "\"")
+        new_amount_history = json.loads(new_amount_history)
+        new_amount_history.append(amount_entry)
+        asset.amount_history = new_amount_history
+        asset.save()
     
-    asset.save()
-
-    amount_entry = {
-        'amount': float(deposit_amount),
-        'timestamp': int(time.time()),
-        'old_amount': float(old_amount),
-        'new_amount': float(new_amount),
-    }
-
-    amount_history = asset.amount_history
-    new_amount_history = amount_history.replace("'", "\"")
-    new_amount_history = json.loads(new_amount_history)
-    new_amount_history.append(amount_entry)
-    asset.amount_history = new_amount_history
-    asset.save()
-
     transaction.delete()
 
     return redirect('trading_pair', symbol)
