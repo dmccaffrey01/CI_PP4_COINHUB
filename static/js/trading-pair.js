@@ -542,9 +542,7 @@ const createChart = async () => {
     let canvasElement = document.createElement('canvas');
     canvasElement.classList.add('trading-pair-chart');
     canvasContainer.appendChild(canvasElement);
-    console.log('1');
     let formattedData = await getFormattedChartData();
-    console.log('2');
     const dataOptions = {
         hour: '2-digit',
         minute: '2-digit',
@@ -719,13 +717,11 @@ const createChart = async () => {
         },
         plugins: [candlestick, customScale]
         };
-        console.log('3');
         // render init block
         const myChart = new Chart(
         document.querySelector('.trading-pair-chart'),
         config
         );
-        console.log('4');
         const getFilteredPriceMovements = (arr) => {
             let newArr = [];
             for (let i = 0; i < arr.length; i++) {
@@ -735,7 +731,6 @@ const createChart = async () => {
             }
             return newArr;
         }
-        console.log('5');
         const createNewDataPoint = (i, newDataPoint) => {
             let d = nextFiveData[i];
             let priceMovements = getPriceMovements(i);
@@ -795,7 +790,6 @@ const createChart = async () => {
                     clearInterval(msInterval);
                 }
             }, 1000);
-            console.log('6');
         }
 
     window.setTimeout(() => {
@@ -1171,6 +1165,7 @@ const updateAmountTotalInputs = (percentValue, euroAvailable, type, assetAvailab
 
     if (percentValue == 0 || percentValue == "" || percentValue == NaN) {
         totalValue = 1;
+        amountValue = 1 / price;
     } else if (buySellType == "Buy") {
         totalValue = euroAvailable * (percentValue / 100);
         amountValue = totalValue / price;
@@ -1178,8 +1173,8 @@ const updateAmountTotalInputs = (percentValue, euroAvailable, type, assetAvailab
         amountValue = assetAvailable * (percentValue / 100);
         totalValue = amountValue * price;
     }
+
     
-    console.log(price, totalValue, amountValue, percentValue, assetAvailable, price);
     if (type == "slider" || type == "total") {
         amountInput.value = amountValue.toFixed(8);
     }
@@ -1335,7 +1330,7 @@ const showBuySellError = (input) => {
 
 totalInput.addEventListener("keydown", () => {
     window.setTimeout(async () => {
-        let type = getOrderType();
+        let orderType = getOrderType();
 
         let bsType = getBuySellType();
         
@@ -1352,7 +1347,21 @@ totalInput.addEventListener("keydown", () => {
 
         let assetAvailable = await getUserAsset();
 
-        if ((parseFloat(inputValue) > euroAvailable && bsType == "Buy") || (parseFloat(inputValue) > (assetAvailable * globalCurrentPrice) && bsType == "Sell")) {
+        let price = globalCurrentPrice;
+        if (orderType == "Limit") {
+            price = document.querySelector(".limit-price-input").value;
+        }
+
+        let newInputValue;
+        if (inputValue == "") {
+            newInputValue = 1 / price;
+        } else {
+            newInputValue = parseFloat(inputValue);
+        }
+
+        let assetValue = newInputValue / price;
+
+        if ((parseFloat(inputValue) > euroAvailable && bsType == "Buy") || (parseFloat(inputValue) > (assetAvailable * price) && bsType == "Sell")) {
             inputValue = inputValue.substr(0, inputValue.length - 1);
             totalInput.value = inputValue;
             showBuySellError(totalInput);
@@ -1365,24 +1374,20 @@ totalInput.addEventListener("keydown", () => {
 
         let initialX = (inputToEuroValue * barWidth)
 
-        let percentValue = (initialX / barWidth) * 100;
-
-        globalUpdateBar(initialX, percentValue);
-
-        let orderType = getOrderType();
-
-        let price = globalCurrentPrice;
-        if (orderType == "Limit") {
-            price = document.querySelector(".limit-price-input").value;
+        if (bsType == "Sell") {
+            let assetValueToAssetAvailable = assetValue / assetAvailable;
+            initialX = (assetValueToAssetAvailable * barWidth);
         }
-        
+
+        let percentValue = (initialX / barWidth) * 100;
+        globalUpdateBar(initialX, percentValue);
         updateAmountTotalInputs(percentValue, euroAvailable, "total", assetAvailable, price);
     }, 0);
 })
 
 amountInput.addEventListener("keydown", () => {
     window.setTimeout(async () => {
-        let type = getOrderType();
+        let orderType = getOrderType();
 
         let bsType = getBuySellType();
         
@@ -1399,14 +1404,20 @@ amountInput.addEventListener("keydown", () => {
 
         let assetAvailable = await getUserAsset();
 
+        let price = globalCurrentPrice;
+        if (orderType == "Limit") {
+            price = parseFloat(document.querySelector(".limit-price-input").value);
+        }
+
         let newInputValue;
         if (inputValue == "") {
-            newInputValue = 1 / globalCurrentPrice;
+            newInputValue = 1 / price;
         } else {
             newInputValue = parseFloat(inputValue);
         }
 
-        let euroValue = newInputValue * globalCurrentPrice;
+        let euroValue = newInputValue * price;
+        
 
         if ((euroValue > euroAvailable && bsType == "Buy") || (newInputValue > assetAvailable && bsType == "Sell")) {
             inputValue = inputValue.substr(0, inputValue.length - 1);
@@ -1421,16 +1432,14 @@ amountInput.addEventListener("keydown", () => {
 
         let initialX = (euroValueToEuroAvailable * barWidth)
 
-        let percentValue = (initialX / barWidth) * 100;
-        globalUpdateBar(initialX, percentValue);
-
-        let orderType = getOrderType();
-
-        let price = globalCurrentPrice;
-        if (orderType == "Limit") {
-            price = document.querySelector(".limit-price-input").value;
+        if (bsType == "Sell") {
+            let inputToAssetAvailable = newInputValue / assetAvailable;
+            initialX = (inputToAssetAvailable * barWidth)
         }
 
+        let percentValue = (initialX / barWidth) * 100;
+
+        globalUpdateBar(initialX, percentValue);
         updateAmountTotalInputs(percentValue, euroAvailable, "amount", assetAvailable, price);
     }, 0);
 })
@@ -1513,7 +1522,7 @@ const showBuySellMessage = (message, success) => {
 
     buySellMessageText.innerText = message;
 
-    if (success) {
+    if (success == 'true') {
         buySellMessageBtn.innerText = "Place Another Order";
     } else {
         buySellMessageBtn.innerText = "Try Again";
@@ -1606,26 +1615,39 @@ buySellBtn.addEventListener("click", async () => {
     
     removeLoadingIcon();
 
-    showBuySellMessage(responseJson["message"], responseJson["success"])
+    let cacheData = {
+        notificationData: {
+            'message': responseJson["message"],
+            'success': responseJson["success"],
+        }
+    }
+
+    const cacheDataString = JSON.stringify(cacheData);
+
+    localStorage.setItem('notificationCache', cacheDataString);
     
     updateOrdersTable();
 
-    window.setTimeout( () => {
+    window.setTimeout(() => {
         window.location.reload();
-    }, 1000);
+    }, 500);
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    const cachedDataString = localStorage.getItem('notificationCache');
 
+    if (cachedDataString) {
+        const cachedData = JSON.parse(cachedDataString);
 
-
-
-
-
-
-
-
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState == 'visible') {
-        window.location.reload();
+        let type;
+        if (cachedData.notificationData.success == 'true') {
+            type = 'positive';
+        } else {
+            type = 'negative';
+        }
+        window.setTimeout(() => {
+            displayNotification(cachedData.notificationData.message, type);
+        }, 1000);
+        localStorage.removeItem('notificationCache');
     }
-});
+})

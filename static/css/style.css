@@ -3274,3 +3274,25 @@ td.orders-cancel, th.orders-cancel-heading {
     }
 }
 
+/* Notification Section */
+
+.notification-container {
+    position: fixed;
+    top: 120px;
+    width: 50vw;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 500px;
+    min-width: 300px;
+    padding: 30px 50px;
+    border-radius: 15px;
+    justify-content: center;
+    z-index: 999;
+    opacity: 0;
+}
+
+.notification-message {
+    text-align: center;
+}
+
+

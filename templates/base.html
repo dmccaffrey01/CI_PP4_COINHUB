@@ -106,6 +106,9 @@
             </div>
         </div>
     </header>
+    <div class="notification-container content-container-rows">
+        <div class="notification-message white-text"></div>
+    </div>
     {% block content %}
     {% endblock %}
     <!-- Footer -->
@@ -134,6 +137,7 @@
     <script src="https://kit.fontawesome.com/5821df7d40.js" crossorigin="anonymous"></script>
 
     <script src="{% static 'js/nav-menu.js' %}"></script>
+    <script src="{% static 'js/notification.js' %}"></script>
     {% block js %}
     {% endblock %}
     
