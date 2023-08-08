@@ -56,5 +56,5 @@ const displayNotification = (message, type) => {
 
     window.setTimeout(() => {
         closeNotification();
-    }, 5000);
+    }, 4000);
 }

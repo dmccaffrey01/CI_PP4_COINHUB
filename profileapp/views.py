@@ -55,24 +55,26 @@ def edit_profile_picture(request):
         if 'cancel' in request.POST:
             return redirect('profileapp:profile')
         form = MemberProfilePictureForm(request.POST, instance=member_profile)
-        print(form.is_valid())
         if form.is_valid():
             form.save()
             cropped_image_data = request.POST.get('croppedImageData')
-        if cropped_image_data:
-            # Decode the Base64 image data
-            image_data = base64.b64decode(cropped_image_data.split(',')[-1])
+            if cropped_image_data.startswith('https://res.cloudinary.com'):
+                return redirect('profileapp:profile')
+            else:
+                if cropped_image_data:
+                    # Decode the Base64 image data
+                    image_data = base64.b64decode(cropped_image_data.split(',')[-1])
 
-            image_file = ContentFile(image_data)
+                    image_file = ContentFile(image_data)
 
-            # Upload the image file to Cloudinary
-            cloudinary_response = cloudinary.uploader.upload(image_file, public_id="profile_image")
+                    # Upload the image file to Cloudinary
+                    cloudinary_response = cloudinary.uploader.upload(image_file, public_id="profile_image")
 
-            # Save the Cloudinary image URL in the profile_image field of the MemberProfile model
-            member_profile = MemberProfile.objects.get(user=request.user)
-            member_profile.profile_image = cloudinary_response['secure_url']
-            member_profile.save()
-            return redirect('profileapp:profile')
+                    # Save the Cloudinary image URL in the profile_image field of the MemberProfile model
+                    member_profile = MemberProfile.objects.get(user=request.user)
+                    member_profile.profile_image = cloudinary_response['secure_url']
+                    member_profile.save()
+                    return redirect('profileapp:profile')
     else:
         form = MemberProfilePictureForm(instance=member_profile)
 

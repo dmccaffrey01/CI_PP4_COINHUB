@@ -165,6 +165,7 @@ const depositToBalance = async () => {
     let balance = balanceData["total_amount"];
     window.setTimeout(() => {
         showBalance(Number(balance).toFixed(2), amount);
+        displayNotification(`Successfully added ${amount} to balance`, 'positive');
     }, 1000);
 }
 

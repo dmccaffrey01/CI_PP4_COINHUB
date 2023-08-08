@@ -2176,9 +2176,85 @@ canvas.price-sparkline {
 
     .crypto-trade-table-trading-pair {
         top: calc(100% + 20px);
-        width: 100vw;
+        width: calc(100vw - 100px);
+        left: 0;
     }
 
+    .crypto-trade-table-trading-pair .crypto-list-trading-pairs-container {
+        padding: 0;
+    }
+
+    .trading-pairs-table-wrapper .search-container .heading-3 {
+        font-size: 2rem;
+    }
+
+    .trading-pairs-table-wrapper .search-container .input-container {
+        font-size: 1.2rem;
+        width: calc(100% - 40px);
+        align-content: center;
+        justify-content: center;
+        align-self: center;
+    }
+
+    .trading-pairs-table-wrapper .search-container input, 
+    .trading-pairs-search-form {
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+    }
+
+}
+
+@media(max-width: 1000px) {
+    .dropdown-btn {
+        padding: 10px 15px;
+        gap: 5px;
+    }
+
+    .dropdown-btn .crypto-euro-trading-pair {
+        width: fit-content;
+        font-size: 1.2rem;
+    }
+
+    .dropdown-btn .trending-icon-container {
+        width: 30px;
+        height: 30px;
+    }
+
+    .dropdown-btn-icon {
+        font-size: 1.2rem;
+    }
+
+    .trading-pair-heading-item-container .dark-text {
+        font-size: 1.2rem;
+    }
+
+    .trading-pair-heading-item-container {
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@media(max-width: 768px) {
+    
+    .trading-pair-heading-container {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .trading-pair-heading-item-container {
+        display: none;
+    }
+
+    .trading-pair-chart-heading-container {
+        display: none;
+    }
+
+    .trading-pair-chart-container,
+    .trading-pair-orders-section {
+        display: none;
+    }
 }
 
 /* Trading Pair Price Chart Section */
@@ -2354,7 +2430,35 @@ canvas.price-sparkline {
     }
 
     .portfolio-price-chart-wrapper, .portfolio-price-chart-container  {
-        width: calc(100vw - 140px);
+        width: calc(100vw - 100px);
+    }
+}
+
+@media (max-width: 1000px) {
+    .trading-pair-price-chart-wrapper {
+        height: 350px;
+    }
+
+    .trading-pair-price-chart-container {
+        height: 320px;
+    }
+
+    .crosshair-vertical-line-container {
+        height: 350px;
+    }
+
+    .crosshair-horizontal-line-container {
+        width: 100%;
+    }
+ 
+    .portfolio-price-chart-container,
+    .portfolio-price-heading-container,
+    .portfolio-chart-wrapper-container  {
+        width: calc(100% - 100px);
+    }
+
+    .portfolio-price-chart-wrapper, .portfolio-price-chart-container  {
+        width: calc(100vw - 100px);
     }
 }
 
@@ -2804,6 +2908,33 @@ header.active {
     border: 1px solid var(--RED-1);
 }
 
+@media (max-width: 768px) {
+    .buy-sell-card-container {
+        width: calc(100vw - 50px);
+    }
+
+    .trading-pair-right-side,
+    .trading-pair-right-side-section {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .trading-pair-right-side-section .dark-text {
+        font-size: 1.2rem;
+    }
+
+    .trading-pair-menu-btn {
+        left: 50%;
+        transform: translateX(-50%);
+        position: absolute;
+        bottom: 50px;
+    }
+
+    .trading-pair-buy-sell-section {
+        padding-bottom: 200px;
+    }
+}
+
 
 /* Orders Section */
 
@@ -2906,7 +3037,7 @@ td.orders-cancel, th.orders-cancel-heading {
     outline: none;
 }
 
-.contact-form button{
+.contact-form button {
     width: 100%;
     border: none;
     padding: 20px;
@@ -2929,6 +3060,52 @@ td.orders-cancel, th.orders-cancel-heading {
 .contact-form select:focus {
     border: none;
     outline: none;
+}
+
+.messages {
+    display: none;
+}
+
+@media (max-width: 1000px) {
+    .contact-form-container, .contact-form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    
+    .contact-form p {
+        width: 600px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .contact-form label {
+        align-self: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-form-section, .contact-form-section .section-container {
+        padding: 0;
+    }
+
+    .contact-form-container {
+        width: 100vw;
+        height: fit-content;
+        border-radius: 0px;
+        padding: 50px 0px;
+    }
+    
+    .contact-form p, .contact-form button {
+        width: 300px
+    }
+
+    .contact-form label {
+        align-self: flex-start;
+    }
 }
 
 
@@ -2998,6 +3175,19 @@ td.orders-cancel, th.orders-cancel-heading {
 
 .profile-img-container:hover .edit-picture-btn, .profile-img-container:hover .edit-picture-overlay {
     display: flex;
+}
+
+@media (max-width: 768px) {
+    .member-profile-section .member-profile-section-container {
+        padding: 0;
+    }
+    
+    .profile-card {
+        padding: 100px 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 0px;
+    }
 }
 
 /* Edit Profile Section */
@@ -3201,6 +3391,59 @@ td.orders-cancel, th.orders-cancel-heading {
 .crop-image {
     display: block;
     max-width: 100%;
+}
+
+@media (max-width: 1000px) {
+    .edit-profile-section {
+        background-color: var(--GRAY-LIGHT-1);
+        backdrop-filter: blur(0px);
+        height: calc(100% - 350px);
+        overflow-y: scroll;
+        top: 100px;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .edit-profile-card {
+        width: 100%;
+        max-height: 100%;
+    }
+
+    .edit-profile-form-container {
+        max-height: fit-content;
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .edit-profile-form {
+        padding-top: 70px;
+    }
+    
+    .edit-profile-form p {
+        flex-basis: 100%;
+    }
+
+    .edit-profile-form .form-close-btn {
+        top: 100px;
+        right: 50%;
+        transform: translateX(50%);
+    }
+
+    .edit-pp-input-container {
+        width: 100%;
+    }
+
+    .crop-pp-img-container {
+        width: 335px;
+        height: 335px;
+    }
+
+    .preview-pp-img-container {
+        width: 335px;
+    }
 }
 
 /* Profile Btns */
