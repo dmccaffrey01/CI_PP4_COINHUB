@@ -4,6 +4,7 @@ from .forms import MemberProfileForm, MemberProfilePictureForm
 import base64
 from django.core.files.base import ContentFile
 import cloudinary.uploader
+from django.contrib import messages
 
 
 def profile(request):
@@ -32,6 +33,7 @@ def edit_profile(request):
         form = MemberProfileForm(request.POST, instance=member_profile)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Successfully edited profile', extra_tags='notification')
             return redirect('profileapp:profile')
     else:
         form = MemberProfileForm(instance=member_profile)
@@ -74,6 +76,7 @@ def edit_profile_picture(request):
                     member_profile = MemberProfile.objects.get(user=request.user)
                     member_profile.profile_image = cloudinary_response['secure_url']
                     member_profile.save()
+                    messages.success(request, 'Successfully edited profile picture', extra_tags='notification')
                     return redirect('profileapp:profile')
     else:
         form = MemberProfilePictureForm(instance=member_profile)

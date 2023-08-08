@@ -1783,6 +1783,70 @@ canvas.price-sparkline {
     z-index: 5;
 }
 
+.forget-password {
+    color: var(--BLUE-DARK-1);
+}
+
+.account-form a:visited {
+    color: var(--BLUE-DARK-1);
+}
+
+@media (max-width: 768px) {
+
+    .account-card-section {
+        padding: 20px;
+        min-width: auto;
+        height: 100%;
+        width: 100%;
+    }
+
+    .account-card .white-text {
+        font-size: 1rem;
+    }
+
+    .account-card .sub-heading-3 {
+        color: var(--GRAY-LIGHT-1);
+    }
+
+    .login-account-section-upper {
+        padding: 20px;
+    }
+
+    .account-form .form-input {
+        font-size: 1.2rem;
+        padding: 10px 30px 10px 50px;
+        width: 80%;
+        align-self: center;
+    }
+
+    .account-form p {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .login-form {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .remember-checkbox-container {
+        gap: 10px;
+        flex-direction: column;
+    }
+
+    .account-input-icon-container {
+        width: 20px;
+        left: 30px;
+    }
+
+    .form-input-icon {
+        font-size: 1.2rem;
+    }
+}
+
 /* Trading Pairs Section */
 
 .trading-pairs-table-wrapper {
@@ -3536,6 +3600,47 @@ td.orders-cancel, th.orders-cancel-heading {
 
 .notification-message {
     text-align: center;
+}
+
+@media (max-width: 768px) {
+    .asset-icon-container {
+        width: 30px;
+        height: 30px;
+    }
+
+    .asset-balance, .asset-amount {
+        font-size: 1.2rem;
+    }
+
+    .portfolio-assets-section .asset-price,
+    .portfolio-assets-section .asset-price-heading {
+        display: none;
+    }
+
+    .portfolio-assets-section .asset-name,
+    .portfolio-assets-section .asset-name-heading {
+        width: 35%;
+    }
+
+    .portfolio-assets-section .asset-balance,
+    .portfolio-assets-section .asset-balance-heading {
+        width: 65%;
+        text-align: center;
+    }
+
+    .portfolio-assets-section .asset-balance-amount-container {
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .portfolio-assets-section .crypto-name {
+        display: none;
+    }
+
+    .portfolio-assets-section .crypto-symbol {
+        display: flex;
+    }
 }
 
 
