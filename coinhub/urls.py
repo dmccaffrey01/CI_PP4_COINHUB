@@ -1,6 +1,10 @@
 from . import views
 from django.urls import path
+from django.conf.urls import handler404, handler500, handler403
 
+handler404 = 'coinhub.views.handler404'
+handler403 = 'coinhub.views.handler403'
+handler500 = 'coinhub.views.handler500'
 
 urlpatterns = [
     path('', views.index, name='home'),

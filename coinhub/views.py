@@ -404,6 +404,18 @@ def check_transactions(request):
     return True
 
 
+def handler500(request):
+    return render(request, 'error/500.html', status=500)
+
+
+def handler403(request):
+    return render(request, 'error/403.html', status=403)
+
+
+def handler404(request, exception):
+    return render(request, 'error/404.html', status=404)
+
+
 def fulfill_transaction(request, transaction):
     user = request.user
 
