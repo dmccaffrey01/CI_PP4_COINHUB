@@ -94,9 +94,7 @@ currencyConversion();
 const getPopularCrypto = async () => {
   try {
     const response = await fetch(`/get_popular_crypto/`);
-    console.log(response);
     const results = await response.json();
-    console.log(results);
     return results;
   } catch (error) {
     return null;
@@ -195,11 +193,9 @@ const createSparklines = async (coins, changeIndex) => {
 (async () => {
   let homeList = document.querySelector('.crypto-list-home-section');
   let marketsList = document.querySelector('.crypto-list-markets-section');
-  console.log(homeList);
   if (homeList) {
     let changeIndex = 1;
     let popularCrypto = await getPopularCrypto();
-    console.log(popularCrypto);
     await createSparklines(popularCrypto, changeIndex);
   } else if (marketsList) {
     let changeIndex = 10;
