@@ -408,7 +408,7 @@ def handler500(request):
     return render(request, 'error/500.html', status=500)
 
 
-def handler403(request):
+def handler403(request, exception):
     return render(request, 'error/403.html', status=403)
 
 
