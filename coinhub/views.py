@@ -846,6 +846,7 @@ def create_crypto_list(request):
         print('API request successful')
     else:
         print('API request failed with status code:', response.status_code)
+        print('Response content:', response.content)
 
     data = response.json()
     CryptoCurrency.objects.all().delete()
