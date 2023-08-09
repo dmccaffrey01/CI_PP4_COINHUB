@@ -1791,11 +1791,6 @@ canvas.price-sparkline {
     color: var(--BLUE-DARK-1);
 }
 
-.p-reset {
-    height: calc(100vh - 200px);
-    flex-direction: column;
-}
-
 @media (max-width: 768px) {
 
     .account-card-section {
