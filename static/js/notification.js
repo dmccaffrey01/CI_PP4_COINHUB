@@ -59,8 +59,9 @@ const displayNotification = (message, type) => {
     }, 4000);
 }
 
-const successMessage = document.querySelector('.messages').querySelector('.notification');
+const messages = document.querySelector('.messages');
 
-if (successMessage) {
+if (messages) {
+    let successMessage = messages.querySelector('.notification');
     displayNotification(successMessage.innerHTML, 'positive');
 }

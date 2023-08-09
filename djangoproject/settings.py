@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'coinhub',
     'contact',
     'profileapp',
+    'django_extensions',
 ]
 
 SITE_ID = 1
@@ -166,3 +167,8 @@ EMAIL_USE_TLS = True  # Add this line to enable TLS
 EMAIL_HOST_USER = os.environ.get('HOST_EMAIL')
 DEFAULT_FROM_EMAIL = os.environ.get('HOST_EMAIL')
 EMAIL_HOST_PASSWORD = os.environ.get('HOST_EMAIL_PASSWORD')
+
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': True,
+}
