@@ -897,6 +897,9 @@ def get_popular_crypto(request):
 
     json_filtered_crypto = filtered_cryptocurrencies.values()
 
+    print(json_filtered_crypto)
+    print(json_filtered_crypto)
+
     return JsonResponse(list(json_filtered_crypto), safe=False)
 
 
