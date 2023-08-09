@@ -32,11 +32,6 @@ const volumes = document.querySelectorAll('.crypto-volume');
  */
 const priceConversion = async (usdAmount) => {
   try {
-    /*
-    const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
-    const data = await response.json();
-    const exchangeRate = data.rates.EUR;
-    */
     const exchangeRate = 1;
     const eurAmount = usdAmount * exchangeRate;
 
@@ -100,6 +95,7 @@ const getPopularCrypto = async () => {
   try {
     const response = await fetch(`/get_popular_crypto/`);
     const results = await response.json();
+    console.log(results);
     return results;
   } catch (error) {
     return null;
