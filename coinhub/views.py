@@ -5,14 +5,12 @@ from .models import CryptoCurrency, PopularCryptoCurrency, TopGainerCrypto, TopL
 from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
-from django.core.paginator import Paginator
 from datetime import datetime
-from django.core import serializers
 from django.db.models import Q
 from decimal import Decimal
-from django.utils import timezone
 import time
 import math
+
 
 
 def index(request):
@@ -402,18 +400,6 @@ def check_transactions(request):
             fulfill_transaction(request, transaction)
 
     return True
-
-
-def handler500(request):
-    return render(request, 'error/500.html', status=500)
-
-
-def handler403(request, exception):
-    return render(request, 'error/403.html', status=403)
-
-
-def handler404(request, exception):
-    return render(request, 'error/404.html', status=404)
 
 
 def fulfill_transaction(request, transaction):
