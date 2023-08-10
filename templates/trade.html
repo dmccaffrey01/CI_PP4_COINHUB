@@ -9,7 +9,7 @@
         <div class="content-container w-100 gp-10">
             <div class="trading-pairs-table-wrapper table-wrapper content-container gp-50 w-100">
                 <div class="content-container search-container gp-20">
-                    <div class="heading-3 dark-text">Search Trading Pairs</div>
+                    <h2 class="heading-3 dark-text">Search Trading Pairs</h2>
                     <form class="trading-pairs-search-fo rm crypto-search-form" method="GET">
                         <div class="input-container">
                             <input type="text" autocomplete="off" class="trading-pairs-search-input crypto-search-input" name="query" placeholder="Search for an asset">
@@ -38,7 +38,7 @@
                                 <td class="crypto-name-symbol">
                                     <div class="crypto-name-symbol-wrapper">
                                         <div class="crypto-icon-container">
-                                            <img src="{{ crypto.icon }}" alt="{{ crypto.name }} Icon" class="crypto-icon" />
+                                            <img src="{{ crypto.icon }}" alt="{{ crypto.name }} Icon" class="crypto-icon">
                                         </div>
                                         <div class="crypto-details">
                                             <div class="crypto-name">{{ crypto.euro_trading_pair }}</div>

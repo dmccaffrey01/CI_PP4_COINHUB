@@ -4,7 +4,7 @@
 
 **Developer: Dillon Mc Caffrey**
 
-[Visit live website]()  
+[Visit live website](https://ci-pp4-coinhub.herokuapp.com/)  
 
 
 
@@ -626,7 +626,7 @@ The wireframes were created using Balsamiq
 
 
 ## Validation
-
+The W3C Markup Validation Service
 
 ### CSS Validation
 The W3C Jigsaw CSS Validation Service

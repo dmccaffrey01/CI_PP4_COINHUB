@@ -3,12 +3,12 @@
 
 {% block content %}
 
-<div class="section member-profile-section">
+<section class="section member-profile-section">
     <div class="section-container member-profile-section-container">
         <div class="profile-card content-container profile-picture-card">
             <div class="profile-picture-col-container content-container">
                 <div class="profile-img-container">
-                    <img src="{{ member_profile.profile_image.url }}" alt="{{ member_profile.first_name }} Profile Image" class="profile-img img-100a"></img>
+                    <img src="{{ member_profile.profile_image.url }}" alt="{{ member_profile.first_name }} Profile Image" class="profile-img img-100a">
                     <a href="{% url 'profileapp:edit_profile_picture' %}" class="edit-picture-btn">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
@@ -16,7 +16,7 @@
                 </div>
                 <div class="content-container gp-20 first-last-name-pp">
                     {% if member_profile.first_name %}
-                    <div class="dark-text">First Name: {{ member_profile.first_name }}</div>
+                    <h2 class="dark-text">First Name: {{ member_profile.first_name }}</h2>
                     {% else %}
                     <div class="dark-text nothing-displayed">First Name: *Nothing Displayed</div>
                     {% endif %}
@@ -31,14 +31,14 @@
             </div>
         </div>
     </div>
-</div>
+</section>
 
 {% if edit_profile %}
 
 <section class="edit-profile-section section">
     <div class="edit-profile-card content-container">
         <div class="edit-profile-form-container content-container gp-20">
-            <div class="heading dark-text">Edit Profile </div>
+            <h2 class="heading dark-text">Edit Profile </h2>
             <form method="post" class="edit-profile-form">
                 {% csrf_token %}
                 {% if edit_profile_picture %}

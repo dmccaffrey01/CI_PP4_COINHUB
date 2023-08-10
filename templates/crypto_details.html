@@ -31,9 +31,9 @@
             <div class="crypto-details-icon-container">
                 <img src="{{ selected_crypto.icon }}" alt="{{ selected_crypto.name }} icon" class="crypto-details-icon icon">
             </div>
-            <div class="crypto-details-crypto-name">
+            <h2 class="crypto-details-crypto-name">
                 {{ selected_crypto.name }}
-            </div>
+            </h2>
             <div class="crypto-details-crypto-symbol" style="color: {{ selected_crypto.color }}">
                 {{ selected_crypto.symbol }}
             </div>
@@ -63,7 +63,7 @@
                     <div class="historical-price-heading-container content-container-rows">
                         <div class="content-container historical-price-container gp-10">
                             <div class="price-text dark-text">Price</div>
-                            <div class="historical-crypto-price heading-3 dark-text">€{{ selected_crypto.price }}</div>
+                            <h2 class="historical-crypto-price heading-3 dark-text">€{{ selected_crypto.price }}</h2>
                             <div class="historical-crypto-change sub-heading-3">24000%</div>
                         </div>
                         <div class="content-container-rows historical-price-time-periods gp-20">
@@ -94,7 +94,7 @@
                 <img src="https://res.cloudinary.com/dzwyiggcp/image/upload/v1686827411/CI_PP4_COINHUB/welcome-home/sckuca3pd1y7lwwiuas6.png" alt="Buy section image" class="buy-section-img img-100a">
             </div>
             <div class="content-container buy-section-text-container gp-20">
-                <div class="dark-text heading-3">Trade {{ selected_crypto.name }}</div>
+                <h2 class="dark-text heading-3">Trade {{ selected_crypto.name }}</h2>
                 <div class="dark-text text-gd-2">Buy and sell {{ selected_crypto.name }} on the most secure crypto exchange</div>
                 {% if user.is_authenticated %}
                 <a href="{% url 'trading_pair' symbol=selected_crypto.symbol %}" class="btn">Buy {{ selected_crypto.symbol }} <i class="fa-solid fa-cart-shopping"></i></a>
@@ -109,7 +109,7 @@
 
 <section class="crypto-details-market-stats-section crypto-details-section" id="market-stats-section">
     <div class="content-container crypto-details-market-stats-container crypto-details-section-container gp-50">
-        <div class="heading-3 crypto-details-heading">Market Stats</div>
+        <h2 class="heading-3 crypto-details-heading">Market Stats</h2>
         <div class="content-container-rows market-stats-container">
             <div class="content-container market-stats-col gp-50 w-33">
                 <div class="market-stats-item content-container gp-20">
@@ -178,7 +178,7 @@
 <section class="crypto-details-about-section crypto-details-section" id="crypto-details-about-section">
     <div class="content-container crypto-details-section-container">
         <div class="gp-20 content-container crypto-details-about-container">
-            <div class="heading-3 crypto-details-heading">About</div>
+            <h2 class="heading-3 crypto-details-heading">About</h2>
             <div class="content-container dark-text about-text-container gp-20">
                 <div class="description">{{ selected_crypto.about }}</div>
                 <div class="weekly-summary content-container gp-20">

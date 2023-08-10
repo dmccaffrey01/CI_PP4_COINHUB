@@ -5,7 +5,7 @@
 <section class="crypto-search-section section light-gray-1">
     <div class="content-container gp-50">
         <div class="heading-container content-container gp-10">
-            <div class="heading-3 dark-text">Find your cryptocurrency</div>
+            <h2 class="heading-3 dark-text">Find your cryptocurrency</h2>
             <div class="sub-heading-3 dark-text text-gd-2">In the past 24 hours the market is <span class="market-change">...</span></div>
         </div>
         
@@ -26,7 +26,7 @@
 <section class="trending-crypto-section section light-gray-1 markets-section">
     <div class="content-container gp-50 section-container">
         <div class="heading-container content-container gp-10">
-            <div class="heading-3 dark-text">Explore what's hot in the crypto economy</div>
+            <h2 class="heading-3 dark-text">Explore what's hot in the crypto economy</h2>
             <div class="sub-heading-3 dark-text text-gd-2">Here's some popular, top gainers and top losers in the last 24 hours</div>
         </div>
 
@@ -102,7 +102,7 @@
 <section class="crypto-list-markets-section section light-gray-1 markets-section">
     <div class="section-container crypto-list-markets-container content-container gp-50">
         <div class="heading-container content-container gp-10">
-            <div class="heading-3 dark-text">Crypto Markets</div>
+            <h2 class="heading-3 dark-text">Crypto Markets</h2>
             <div class="sort-btns-container content-container-rows">
 
             </div>
@@ -128,7 +128,7 @@
                                 <td class="crypto-name-symbol">
                                     <a href="{% url 'crypto_details' crypto.symbol %}"  class="crypto-name-symbol-wrapper">
                                         <div class="crypto-icon-container">
-                                            <img src="{{ crypto.icon }}" alt="{{ crypto.name }} Icon" class="crypto-icon" />
+                                            <img src="{{ crypto.icon }}" alt="{{ crypto.name }} Icon" class="crypto-icon">
                                         </div>
                                         <div class="crypto-details">
                                             <div class="crypto-name">{{ crypto.name }}</div>

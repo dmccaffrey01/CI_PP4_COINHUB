@@ -6,10 +6,10 @@
 <section class="welcome-section light-gray-1 section">
     <div class="section-container welcome-section-container">
         <div class="content-container welcome-content-container gp-20">
-            <div class="welcome-heading heading dark-text gp-10">
+            <h2 class="welcome-heading heading dark-text gp-10">
                 <div class="line-1">Grow your</div>
                 <div class="line-2">crypto portfolio</div>
-            </div>
+            </h2>
             <div class="welcome-text dark-text">
                 CoinHub is the most popular place to buy and sell cryptocurrency. It's as easy as signing up and you can get started today.
             </div>
@@ -30,15 +30,15 @@
     <div class="section-container stats-container">
         <div class="stat-col content-container">
             <div class="stat-heading white-text">$40B</div>
-            <div class="stat-subheading white-text">24h trading volume</div>
+            <h2 class="stat-subheading white-text">24h trading volume</h2>
         </div>
         <div class="stat-col content-container">
             <div class="stat-heading white-text">110M</div>
-            <div class="stat-subheading white-text">Registered users</div>
+            <h2 class="stat-subheading white-text">Registered users</h2>
         </div>
         <div class="stat-col content-container">
             <div class="stat-heading white-text">&lt;0.05%</div>
-            <div class="stat-subheading white-text">Lowest transaction fees</div>
+            <h2 class="stat-subheading white-text">Lowest transaction fees</h2>
         </div>
     </div>
 </section>
@@ -47,7 +47,7 @@
     <div class="section-container crypto-list-home-container">
         <div class="content-container w-100">
             <div class="crypto-list-home-heading-container w-100 pb-50">
-                <div class="crypto-list-heading dark-text">Popular cryptocurrencies</div>
+                <h2 class="crypto-list-heading dark-text">Popular cryptocurrencies</h2>
                 <a href="{% url 'markets' %}" class="view-more-markets-link text-gd-2">View more markets <i class="fa-solid fa-chevron-right"></i></a>
             </div>
             <!-- Popular Crypto List -->
@@ -68,7 +68,7 @@
                                 <td class="crypto-name-symbol">
                                     <a href="{% url 'crypto_details' crypto.symbol %}" class="crypto-name-symbol-wrapper">
                                         <div class="crypto-icon-container">
-                                            <img src="{{ crypto.icon }}" alt="{{ crypto.name }} Icon" class="crypto-icon" />
+                                            <img src="{{ crypto.icon }}" alt="{{ crypto.name }} Icon" class="crypto-icon">
                                         </div>
                                         <div class="crypto-details">
                                             <div class="crypto-name">{{ crypto.name }}</div>
@@ -107,7 +107,7 @@
     <div class="crypto-portfolio-home-container section-container">
         <div class="content-container w-100 portfolio-home-content-container">
             <div class="crypto-portfolio-heading-container content-container w-100 pb-50 gp-10">
-                <div class="heading-3 dark-text">Create your cryptocurrency portfolio today</div>
+                <h2 class="heading-3 dark-text">Create your cryptocurrency portfolio today</h2>
                 <div class="sub-heading-3 text-gd-2 pb-50">CoinHub is the easiest place in the world to start trading</div>
             </div>
             <div class="crypto-portfolio-showcase-container content-container-rows w-100 gp-50">
@@ -182,7 +182,7 @@
     <div class="section-container">
         <div class="content-container w-100">
             <div class="content-container w-100 trust-heading-container gp-10 pb-50">
-                <div class="heading-3">The most trustworthy cryptocurrency platform</div>
+                <h2 class="heading-3">The most trustworthy cryptocurrency platform</h2>
                 <div class="sub-heading-3 text-gd-2">Here are some reasons to choose CoinHub</div>
             </div>
             <div class="content-container-rows reasons-container gp-50 w-100">
@@ -227,7 +227,7 @@
 <section class="section call-to-action-section light-gray-3">
     <div class="section-container">
         <div class="content-container gp-50">
-            <div class="heading-3 dark-text">Start earning today</div>
+            <h2 class="heading-3 dark-text">Start earning today</h2>
             {% if user.is_authenticated %}
             <a href="{% url 'trade' %}" class="btn">Buy Now</a>
             {% else %}

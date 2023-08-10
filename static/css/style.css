@@ -473,6 +473,10 @@ footer {
     font-size: 4rem;
 }
 
+h1.heading {
+    font-size: 2rem;
+}
+
 .welcome-heading {
     align-self: flex-start;
 }
@@ -3642,5 +3646,6 @@ td.orders-cancel, th.orders-cancel-heading {
         display: flex;
     }
 }
+
 
 
