@@ -1,6 +1,6 @@
 # CoinHub
 
-![Am I Responsive]()
+![Am I Responsive](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/coinhub-ss.png)
 
 **Developer: Dillon Mc Caffrey**
 
