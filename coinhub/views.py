@@ -397,7 +397,7 @@ def check_transactions(request):
 
         for pd in params_data:
             url = f'https://min-api.cryptocompare.com/data/'\
-                   'v2/histo{pd["time_period"]}'
+                   f'v2/histo{pd["time_period"]}'
             fsym = symbol
             tsym = 'EUR'
             api_key = os.environ.get('CRYPTOCOMPARE_API')
@@ -584,8 +584,7 @@ def get_trading_pair_data(request, symbol):
             del d['conversionSymbol']
         d['datetime'] = datetime.fromtimestamp(d['time'])
         d['last_price'] = (d['open'] + d['high'] + d['low'] + d['close'])/4
-    all_data = data_list + all_data
-
+    all_data = data_list
     return JsonResponse(all_data, safe=False)
 
 
@@ -682,7 +681,7 @@ def crypto_detail_price_data_from_api(request, time_period, symbol):
     time_period_data = get_time_period_data(request, time_period)
 
     url = f'https://min-api.cryptocompare.com/data/'\
-          'v2/histo{time_period_data["time"]}'
+          f'v2/histo{time_period_data["time"]}'
     fsym = symbol
     tsym = 'EUR'
     limit = time_period_data['lim']
@@ -696,7 +695,7 @@ def crypto_detail_price_data_from_api(request, time_period, symbol):
         'limit': limit,
         'api_key': api_key,
     }
-
+    
     response = requests.get(url, params=params)
     data = response.json()
     data_list = data['Data']['Data']
@@ -707,7 +706,7 @@ def crypto_detail_price_data_from_api(request, time_period, symbol):
         d['datetime'] = datetime.fromtimestamp(d['time'])
         d['last_price'] = (d['open'] + d['high'] + d['low'] + d['close'])/4
     all_data = data_list + all_data
-
+    
     counter = 1
 
     while counter < counter_limit:
@@ -736,7 +735,7 @@ def crypto_detail_price_data_from_api(request, time_period, symbol):
     elif limit == 365 and counter_limit == 1:
         crypto_detail.chart_1y = all_data
     crypto_detail.save()
-
+    
     return JsonResponse(all_data, safe=False)
 
 

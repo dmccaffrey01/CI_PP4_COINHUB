@@ -36,7 +36,6 @@ const updateLastPrice = () => {
     
     lastPriceElement.innerHTML = `€${currentPrice}`;
 }
-
 const getOrderBookPriceData = () => {
     let maxNum = (globalCurrentPrice * 0.0005);
     let maxRange = [(maxNum - (maxNum * 0.25)), (maxNum + (maxNum * 0.25))];
@@ -108,7 +107,6 @@ const updateOrderBook = () => {
     let sellPrices = getOrderBookPriceData();
     let buyAmounts = getOrderBookAmountData();
     let sellAmounts = getOrderBookAmountData();
-
     for (let i = 0; i < sellPrices.length; i++) {
         let buyPriceElement = document.createElement("div");
         let sellPriceElement = document.createElement("div");
@@ -134,7 +132,6 @@ const updateOrderBook = () => {
         sellPriceList.appendChild(sellPriceElement);
         sellAmountList.appendChild(sellAmountElement);
         buyAmountList.appendChild(buyAmountElement);
-
         if (i == sellPrices.length - 1) {
             globalBuySellMinMax = [buyPrice, sellPrice];
         }
@@ -436,7 +433,6 @@ const getFormattedChartData = async () => {
 
     nextFiveData = formattedData.slice(formattedData.length - 5, formattedData.length);
     globalFormattedData = formattedData.slice(0, formattedData.length - 5);
-
     return globalFormattedData
 }
 
@@ -494,7 +490,6 @@ const getPriceMovements = (index) => {
         let price = startingPrice;
         let avgPrice = startingPrice;
         let avgPriceMovement = firstAvg;
-    
         for (let i = 0; i < (endIndex[k] - startIndex[k]) - 1; i++) {
           let randomNumber;
           do {
@@ -503,7 +498,6 @@ const getPriceMovements = (index) => {
     
           avgPrice += avgPriceMovement;
           price = avgPrice + randomNumber;
-    
           if (!((startIndex[k] === 0) && (i === 0))) {
             priceMovements.push(price.toFixed(2));
           }
@@ -511,7 +505,6 @@ const getPriceMovements = (index) => {
     
         priceMovements.push(targetPrice.toFixed(2));
       }
-
       return priceMovements;
 }
 

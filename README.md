@@ -1162,6 +1162,10 @@ WAVE was used to test the websites accessibility.
 
 ## Bugs
 
+| **Bug** | **Fix** |
+| ------- | ------- |
+| Email backend not working | correctly set a app password for gmail to send emails |
+| Static files not uploading to cloudinary | used collect static with --upload-unhashed-files |
 
 ##### Back to [top](#table-of-contents)<hr>
 
