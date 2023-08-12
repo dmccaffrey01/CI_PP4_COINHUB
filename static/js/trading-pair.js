@@ -1,3 +1,5 @@
+
+
 const changeTradingPairBtn = document.querySelector(".change-trading-pair-btn");
 const tradeTable = document.querySelector(".crypto-trade-table-trading-pair");
 const changeTradingPairBtnIcon = document.querySelector(".change-trading-pair-btn-icon");
@@ -30,7 +32,7 @@ let globalBuySellMinMax = [];
 const updateLastPrice = () => {
     const lastPriceElement = document.querySelector('.last-price-text');
 
-    let currentPrice = globalCurrentPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
+    let currentPrice = globalCurrentPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     
     lastPriceElement.innerHTML = `€${currentPrice}`;
 }
@@ -433,7 +435,7 @@ const getFormattedChartData = async () => {
     }
 
     nextFiveData = formattedData.slice(formattedData.length - 5, formattedData.length);
-    globalFormattedData = formattedData.slice(0, formattedData.length - 5);;
+    globalFormattedData = formattedData.slice(0, formattedData.length - 5);
 
     return globalFormattedData
 }
@@ -762,7 +764,7 @@ const createChart = async () => {
                 let maxDiff = chartMax - updatedDataPoint["h"];
                 let minDiff = chartMin - updatedDataPoint["l"];
 
-                let newMax;globalCurrentPrice
+                let newMax;
                 let newMin;
                 if (maxDiff < 20) {
                     newMax = Math.ceil(updatedDataPoint["h"] / 20) * 20;
@@ -806,7 +808,7 @@ const createChart = async () => {
             myChart.data.datasets[0].backgroundColor.push("#4ec437");
 
             if (myChart.data.datasets[0].data.length >= 30) {
-                myChart.data.datasets[0].data.shift();canvas
+                myChart.data.datasets[0].data.shift();
                 myChart.data.datasets[0].backgroundColor.shift();
             }
             myChart.update();
@@ -934,7 +936,7 @@ const hideHeader = () => {
 
     menuBtn.style.display = 'flex';
 
-    header.style.overflow = 'hidden';
+    headerElement.style.overflow = 'hidden';
 
     let newHeight = headerHeight;
 
@@ -1163,7 +1165,7 @@ const updateAmountTotalInputs = (percentValue, euroAvailable, type, assetAvailab
     let totalValue;
     let amountValue;
 
-    if (percentValue == 0 || percentValue == "" || percentValue == NaN) {
+    if (percentValue == 0 || percentValue == "" || isNaN(percentValue)) {
         totalValue = 1;
         amountValue = 1 / price;
     } else if (buySellType == "Buy") {

@@ -1,3 +1,7 @@
+
+/*jshint esversion: 9 */
+
+
 const priceChanges = document.querySelectorAll('.crypto-change');
 
 /**
@@ -48,23 +52,24 @@ const convertPrices = async (prices, type) => {
   for (const price of prices) {
     const marketList = document.querySelector('.crypto-list-markets-section');
     const homeList = document.querySelector('.crypto-list-home-section');
-    if (marketList) {
+    let parent;
+  	if (marketList) {
       if (marketList.contains(price)) {
-        var parent = 'normal';
+        parent = 'normal';
       } else {
-        var parent = 'letter';
+        parent = 'letter';
       }
     } else if (homeList) {
       if (homeList.contains(price)) {
-        var parent = 'normal';
+        parent = 'normal';
       } else {
-        var parent = 'letter';
+        parent = 'letter';
       }
     }
     let num = parseFloat(price.innerText);
     const convertedPrice = await priceConversion(num);
     if (type === "normal" && parent === "normal") {
-      convertedPrice[1] = addCommasToNumber(convertedPrice[1])
+      convertedPrice[1] = addCommasToNumber(convertedPrice[1]);
     }
     price.innerText = `${convertedPrice[0]}${convertedPrice[1]}`;
   }
@@ -83,7 +88,7 @@ const currencyConversion = function () {
   if (volumes) {
     convertPrices(volumes, "letter");
   }
-}
+};
 
 currencyConversion();
 
@@ -126,7 +131,7 @@ const createSparklines = async (coins, changeIndex) => {
     let change = $('.crypto-change')[index + changeIndex];
     let computedStyle = getComputedStyle(change);
     let color = computedStyle.color;
-    var priceData = sparklineData[index]['sparkline'];
+    var priceData = sparklineData[index].sparkline;
     if (!Array.isArray(priceData)) {
       priceData = JSON.parse(priceData);
     }

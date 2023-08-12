@@ -115,13 +115,30 @@ WSGI_APPLICATION = 'djangoproject.wsgi.application'
 # }
 
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    'default': dj_database_url.parse(os.environ.get("DATABASE_URL")),
+    'test': dj_database_url.parse(os.environ.get('TEST_URL')),
 }
+
 DATABASES['default']['OPTIONS'] = {'options': '-c timezone=UTC'}
 
+# Specify the test runner and test database alias
+TEST_RUNNER = 'djangoproject.custom_test_runner.CustomTestRunner'
+
+
+# Create a custom test runner
+class TestRunner:
+    def __init__(self, *args, **kwargs):
+        self.test_db_alias = 'test'
+
+    def setup_databases(self, **kwargs):
+        return self.test_db_alias, True
+
+    def teardown_databases(self, old_config, **kwargs):
+        pass
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {

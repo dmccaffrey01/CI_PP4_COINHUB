@@ -11,14 +11,16 @@ class CryptoCurrency(models.Model):
     change = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     icon = models.TextField(default="")
     sparkline = models.TextField(default="")
-    market_cap = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    market_cap = models.DecimalField(
+        max_digits=20, decimal_places=2, default=0
+        )
     volume = models.DecimalField(max_digits=20, decimal_places=2, default=0)
     euro_trading_pair = models.CharField(default="", max_length=100)
     uuid = models.CharField(max_length=100, default="")
 
     def __str__(self):
         return self.name
-    
+
 
 class PopularCryptoCurrency(models.Model):
     rank = models.CharField(max_length=100)
@@ -28,13 +30,15 @@ class PopularCryptoCurrency(models.Model):
     change = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     icon = models.TextField(default="")
     sparkline = models.TextField(default="")
-    market_cap = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    market_cap = models.DecimalField(
+        max_digits=20, decimal_places=2, default=0
+    )
     volume = models.DecimalField(max_digits=20, decimal_places=2, default=0)
 
     def __str__(self):
         return self.name
 
- 
+
 class TopGainerCrypto(models.Model):
     rank = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
@@ -43,12 +47,14 @@ class TopGainerCrypto(models.Model):
     change = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     icon = models.TextField(default="")
     sparkline = models.TextField(default="")
-    market_cap = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    market_cap = models.DecimalField(
+        max_digits=20, decimal_places=2, default=0
+    )
     volume = models.DecimalField(max_digits=20, decimal_places=2, default=0)
 
     def __str__(self):
         return self.name
-    
+
 
 class TopLoserCrypto(models.Model):
     rank = models.CharField(max_length=100)
@@ -58,12 +64,14 @@ class TopLoserCrypto(models.Model):
     change = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     icon = models.TextField(default="")
     sparkline = models.TextField(default="")
-    market_cap = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    market_cap = models.DecimalField(
+        max_digits=20, decimal_places=2, default=0
+    )
     volume = models.DecimalField(max_digits=20, decimal_places=2, default=0)
 
     def __str__(self):
         return self.name
-    
+
 
 class CryptoDetail(models.Model):
     uuid = models.CharField(max_length=100, default="")
@@ -80,20 +88,45 @@ class CryptoDetail(models.Model):
     chart_1m = models.TextField(default="")
     chart_1y = models.TextField(default="")
     chart_all = models.TextField(default="")
-    market_cap = models.DecimalField(max_digits=20, decimal_places=2, default=0)
-    fully_diluted_market_cap = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    market_cap = models.DecimalField(
+        max_digits=20, decimal_places=2, default=0
+    )
+    fully_diluted_market_cap = models.DecimalField(
+        max_digits=20, decimal_places=2, default=0
+    )
     volume = models.DecimalField(max_digits=20, decimal_places=2, default=0)
-    max_supply = models.DecimalField(max_digits=20, decimal_places=2, default=0)
-    total_supply = models.DecimalField(max_digits=20, decimal_places=2, default=0)
-    circulating_supply = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    max_supply = models.DecimalField(
+        max_digits=20, decimal_places=2, default=0
+    )
+    total_supply = models.DecimalField(
+        max_digits=20, decimal_places=2, default=0
+    )
+    circulating_supply = models.DecimalField(
+        max_digits=20, decimal_places=2, default=0
+    )
     rank = models.CharField(max_length=100)
-    all_time_high = models.DecimalField(max_digits=20, decimal_places=2, default=0)
-    ath_time_stamp = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    all_time_high = models.DecimalField(
+        max_digits=20,
+        decimal_places=2,
+
+        default=0
+    )
+    ath_time_stamp = models.DecimalField(
+        max_digits=20,
+        decimal_places=2,
+        default=0
+    )
     change_1h = models.DecimalField(max_digits=20, decimal_places=2, default=0)
-    change_24h = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    change_24h = models.DecimalField(
+        max_digits=20, decimal_places=2, default=0
+    )
     change_7d = models.DecimalField(max_digits=20, decimal_places=2, default=0)
-    ath_change = models.DecimalField(max_digits=20, decimal_places=2, default=0)
-    about = models.TextField(default="To find out more about this project visit the resources.")
+    ath_change = models.DecimalField(
+        max_digits=20, decimal_places=2, default=0
+    )
+    about = models.TextField(
+        default="To find out more about this project visit the resources."
+    )
     weekly_incline = models.BooleanField(default=True)
     dayly_incline = models.BooleanField(default=True)
     hourly_incline = models.BooleanField(default=True)
@@ -103,14 +136,24 @@ class CryptoDetail(models.Model):
 
 
 class Asset(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='assets')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='assets'
+    )
     name = models.CharField(max_length=100)
     symbol = models.CharField(max_length=10)
     iconUrl = models.URLField()
-    total_amount = models.DecimalField(max_digits=40, decimal_places=8, default=0)
-    current_price = models.DecimalField(max_digits=50, decimal_places=2, default=1)
-    current_change = models.DecimalField(max_digits=20, decimal_places=2, default=0)
-    current_balance = models.DecimalField(max_digits=40, decimal_places=2, default=1)
+    total_amount = models.DecimalField(
+        max_digits=40, decimal_places=8, default=0
+    )
+    current_price = models.DecimalField(
+        max_digits=50, decimal_places=2, default=1
+    )
+    current_change = models.DecimalField(
+        max_digits=20, decimal_places=2, default=0
+    )
+    current_balance = models.DecimalField(
+        max_digits=40, decimal_places=2, default=1
+    )
     amount_history = models.TextField(default="[]")
 
     def __str__(self):
@@ -121,10 +164,12 @@ class Asset(models.Model):
             self.total_amount = round(self.total_amount, 2)
 
         super().save(*args, **kwargs)
-    
+
 
 class Transaction(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='transactions')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='transactions'
+    )
     time = models.DecimalField(max_digits=20, decimal_places=0, default=0)
     symbol = models.CharField(max_length=10)
     type = models.CharField(max_length=100)
@@ -132,9 +177,9 @@ class Transaction(models.Model):
     amount = models.DecimalField(max_digits=20, decimal_places=8, default=0)
     total = models.DecimalField(max_digits=20, decimal_places=2, default=0)
     status = models.CharField(max_length=20)
-    transaction_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    transaction_uuid = models.UUIDField(
+        default=uuid.uuid4, editable=False, unique=True
+    )
 
     def __str__(self):
         return f"Transaction {self.id}"
-    
-

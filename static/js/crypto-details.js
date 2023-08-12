@@ -1,5 +1,4 @@
 const historicalSectionContainer = document.querySelector('.historical-price-chart-section-container');
-const historicalSectionWrapper = document.querySelector('.historical-section-container-wrapper');
 const historicalPriceChartWrapper = document.querySelector('.historical-price-chart-wrapper');
 const verticalLine = document.querySelector('.vertical-line');
 const verticalLineContainer = document.querySelector('.vertical-line-container');
@@ -36,8 +35,8 @@ const createVerticalLine = (num) => {
 
     verticalLine.appendChild(lastSection);
 
-    return [sectionHeight, gapHeight]
-}
+    return [sectionHeight, gapHeight];
+};
 
 
 
@@ -61,8 +60,8 @@ const formatChartData = (data) => {
     let parsedData = JSON.parse(data);
 
     for (let i = 0; i < parsedData.length; i++) {
-        let lastPrice = parsedData[i]['last_price'];
-        let time = parsedData[i]['time'];
+        let lastPrice = parsedData[i].lastprice;
+        let time = parsedData[i].time;
         lastPriceArr.push(lastPrice);
         timeArr.push(time);
     }
@@ -85,7 +84,7 @@ const getTimePeriod = () => {
 
     return timePeriod;
 
-}
+};
 
 const getFilterNum = () => {
     let num;
@@ -108,7 +107,7 @@ const getFilterNum = () => {
     }
 
     return num;
-}
+};
 
 function filterArray(array) {
     const filteredArray = [array[0]];
@@ -146,7 +145,7 @@ const updateHistoricalPriceChange = () => {
         }
         historicalPriceChange.classList.add('negative');
     }
-}
+};
 
 const updateTimestampDate = (date) => {
     let year = date.getFullYear();
@@ -164,12 +163,12 @@ const updateTimestampDate = (date) => {
     }
 
     timestampDate.innerText = formattedDate;
-}
+};
 
 const updateHistoricalPrice = (num) => {
     let price = addCommasToNumber(num.toFixed(2));
     historicalPrice.innerHTML = `€${price}`;
-}
+};
 
 const createHistoricalPriceChart = async (data) => {
 
@@ -265,13 +264,13 @@ const createHistoricalPriceChart = async (data) => {
     newCanvas.addEventListener('mousemove', function (event) {
         let rect = newCanvas.getBoundingClientRect();
         let x = event.clientX - rect.left;
-        let y = event.clientY - rect.top;
+    
         
         let canvasWidth = rect.width;
 
         let numOfDataPoints = prices.length;
         let numOfPixelsPerDataPoint = canvasWidth / (numOfDataPoints - 2);
-        let priceIndex = Math.round(x / numOfPixelsPerDataPoint)
+        let priceIndex = Math.round(x / numOfPixelsPerDataPoint);
         let price = prices[priceIndex];
         let timestamp = timestamps[priceIndex];
         let date = new Date(timestamp * 1000);
@@ -314,14 +313,14 @@ const displayLoadingIcon = () => {
     const loadingIcon = document.createElement('div');
     loadingIconContainer.appendChild(loadingIcon);
     loadingIcon.classList.add('loading-icon');
-}
+};
 
 const getCurrentCryptoSymbol = () => {
     const url = window.location.href;
     const urlParts = url.split('/');
     const endOfUrl = urlParts[urlParts.length - 2];
-    return endOfUrl
-}
+    return endOfUrl;
+};
 
 const switchTimePeriod = (event) => {
     const clickedBtn = event.target;
@@ -342,11 +341,11 @@ const switchTimePeriod = (event) => {
         loadDataAndCreateChart(timePeriod);
     }
 
-}
+};
 
 timePeriodBtns.forEach(btn => {
-    btn.addEventListener('click', switchTimePeriod)
-})
+    btn.addEventListener('click', switchTimePeriod);
+});
 
 const getCryptoDetailData = async () => {
     try {
@@ -360,7 +359,7 @@ const getCryptoDetailData = async () => {
 
 const getCryptoDetailLinksData = async () => {
     let data = await getCryptoDetailData();
-    let links = data['links'];
+    let links = data.links;
     return links;
 };
 
@@ -386,7 +385,7 @@ const updateResourceLinks = (links) => {
             icon = `<i class="fa-brands fa-reddit"></i>`;
         } else if (link.type == 'github') {
             name = `Github - ${link.url}`;
-            icon = `<i class="fa-brands fa-github"></i>`
+            icon = `<i class="fa-brands fa-github"></i>`;
         } else if (link.type == 'explorer') {
             name = `Blockchain Explorer - ${link.url}`;
             icon = `<i class="fa-brands fa-hive"></i>`;
@@ -434,7 +433,7 @@ const updateResourceLinks = (links) => {
 (async () => {
     try {
       let links = await getCryptoDetailLinksData();
-      parsedLinks = JSON.parse(links)
+      let parsedLinks = JSON.parse(links);
       updateResourceLinks(parsedLinks);
     } catch (error) {
       console.error(error);
@@ -453,7 +452,6 @@ window.addEventListener("scroll", () => {
         const sectionTop = section.offsetTop;
         const targetScrollPosition = sectionTop;
         const sectionId = section.getAttribute("id");
-        const arr = [sectionId, targetScrollPosition, scrollPositionHalfWay];
         
         if (targetScrollPosition < scrollPositionHalfWay) {
             sideNavLinks.forEach((link) => {

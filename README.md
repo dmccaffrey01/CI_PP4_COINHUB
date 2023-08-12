@@ -120,29 +120,29 @@ CoinHub is a educational crypto trading website, where you can view market data 
 
 <details><summary>Epics</summary>
 
-![Epics]()
-![Epic 1]()
-![Epic 2]()
-![Epic 3]()
-![Epic 4]()
-![Epic 5]()
-![Epic 6]()
-![Epic 7]()
-![Epic 8]()
-![Epic 9]()
-![Epic 10]()
-![Epic 11]()
+![Epics](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/epics.png)
+![Epic 1](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/epics-1.png)
+![Epic 2](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/epics-2.png)
+![Epic 3](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/epics-3.png)
+![Epic 4](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/epics-4.png)
+![Epic 5](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/epics-5.png)
+![Epic 6](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/epics-6.png)
+![Epic 7](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/epics-7.png)
+![Epic 8](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/epics-8.png)
+![Epic 9](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/epics-9.png)
+![Epic 10](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/epics-10.png)
+![Epic 11](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/epics-11.png)
 </details>
 
 <details><summary>User Stories</summary>
 
-![User stories]()
+![User stories](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/user-stories.png)
 
 </details>
 
 <details><summary>Projects</summary>
 
-![Projects Board]()
+![Projects Board](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/projects-board.png)
 
 </details>
 
@@ -159,7 +159,7 @@ The logo is a light blue and dark blue campfire in the shape of a coin to repres
 Light blue and dark blue is the theme with light gray to make them stand out throughout the site
 
 <details><summary>See colour pallet</summary>
-<img src="">
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/color-palette.png">
 </details>
 
 ### Fonts
@@ -192,7 +192,7 @@ The footer contains a disclaimer and logo
 - Built with Python and the Django framework with a database of a Postgres for the deployed Heroku version(production)
 
 <details><summary>Show diagram</summary>
-<img src="">
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/my_project_visualized.png">
 </details>
 
 
@@ -347,7 +347,13 @@ The MemberProfile Model contains the following:
 ### Wireframes
 The wireframes were created using Balsamiq
 <details><summary></summary>
-<img src="">
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/wireframe (1).png">
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/wireframe (2).png">
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/wireframe (3).png">
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/wireframe (4).png">
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/wireframe (5).png">
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/wireframe (6).png">
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/wireframe (7).png">
 </details>
 
 
@@ -396,14 +402,14 @@ The wireframes were created using Balsamiq
 - The navbar turns into a hamburger menu at smaller screens
 - There is a profile button that allows users to sign in, once signed in the user can view the profile and portfolio
 
-![Header]()
+![Header](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/header-feature.png)
 
 ### Welcome Section
 - Welcome's the user to the website
 - Call to action to create an account
 - User stories covered: 1
 
-![Welcome Section]()
+![Welcome Section](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/welcome-feature.png)
 
 ### Popular Section
 - Display's popular crypto for the user
@@ -412,14 +418,14 @@ The wireframes were created using Balsamiq
 - User has button to view all markets
 - User stories covered: 3
 
-![Popular]()
+![Popular](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/popular-feature.png)
 
 ### Advantages Section
 - Display's info about coinhub and the advantages of choosing coinhub
 - User can see why to choose coinhub
 - User stories covered: 2
 
-![Advantages]()
+![Advantages](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/advantages-feature.png)
 
 ### Search Markets
 - Display's market stats if market is up or down
@@ -428,7 +434,7 @@ The wireframes were created using Balsamiq
 - User can click into searched results and view crypto detail
 - User stories covered: 4
 
-![Search Markets]()
+![Search Markets](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/search-markets-feature.png)
 
 ### Trending Markets
 - Display's top 3 popular crypto, top 3 gainers by market change in last 24hr, and top 3 losers by market change in last 24hr
@@ -436,7 +442,7 @@ The wireframes were created using Balsamiq
 - User can click into results and view crypto detail
 - User stories covered: 5
 
-![Trending Markets]()
+![Trending Markets](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/trending-markets-feature.png)
 
 ### All Markets
 - Display's crypto markets in table format
@@ -445,21 +451,21 @@ The wireframes were created using Balsamiq
 - User can click buy button to bring them to the trading pair against euro
 - User stories covered: 6, 7, 8, 10
 
-![All Markets]()
+![All Markets](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/all-markets-feature.png)
 
 ### Detail Heading
 - Displays name of crypto
 - Search feature that allows user to switch to different detail
 - User stories covered: 4
 
-![Detail Heading]()
+![Detail Heading](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/detail-heading-feature.png)
 
 ### Detail Sidenav
 - Displays navigation to parts of crypto detail
 - User can return to all assets
 - User stories covered: 9, 11
 
-![Detail Sidenav]()
+![Detail Sidenav](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/detail-sidenav-feature.png)
 
 ### Detail Price
 - Displays price and price change of crypto as numbers and as a graph
@@ -469,21 +475,21 @@ The wireframes were created using Balsamiq
 - User can return to all assets
 - User stories covered: 12
 
-![Detail Price]()
+![Detail Price](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/detail-price-feature.png)
 
 ### Detail Buy
 - Displays call to action to trade the crypto
 - Brings user to trading pair with current crypto
 - Doesn't bring if user is not authenticated
 
-![Detail Buy]()
+![Detail Buy](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/detail-buy-feature.png)
 
 ### Detail Stats
 - Displays market stats of crypto
 - More indepth so user can make better decisions
 - User stories covered: 6, 8, 11
 
-![Detail Stats]()
+![Detail Stats](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/detail-stats-feature.png)
 
 ### Detail About
 - Displays info about crypto
@@ -491,34 +497,33 @@ The wireframes were created using Balsamiq
 - Displays resources so user can learn more about each crypto
 - User stories covered: 6, 8, 11
 
-![Detail About]()
+![Detail About](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/detail-about-feature.png)
 
 ### Deposit
 - User can deposit euro into their account
 - They enter details then the amount the enter
 - They have to enter a positve and limited to 1000000 euro each deposit
 
-![Deposit]()
+![Deposit](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/deposit-feature.png)
 
 ### Trading Search
 - User can search for trading pairs
 - The list of trading pairs gets filter based on the name and sybmol of coins
 
-![Trading Search]()
-
+![Trading Search](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/trading-search-feature.png)
 ### Trading List
 - User can view trading pair list
 - The list of trading pair is clickable where it takes you to the trade page
 - Basic stats are displayed
 - User stories covered: 17
 
-![Trading List]()
+![Trading List](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/trading-list-feature.png)
 
 ### Trade Heading
 - User can view more stats about current crypto being traded
 - The user can switch to different trading pair with dropdown button
 
-![Trade Heading]()
+![Trade Heading](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/trade-heading-feature.png)
 
 ### Trade Candlestick
 - User can view the price action of the coin in a candle stick chart
@@ -530,7 +535,7 @@ The wireframes were created using Balsamiq
 - The candle stick is hovered over it shows the open, high, low and close of the price in that minute and the time
 - User stories covered: 19
 
-![Trade Candlestick]()
+![Trade Candlestick](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/trade-candlestick-feature.png)
 
 ### Trade Buy Sell
 - User can buy and sell crypto from this card
@@ -545,7 +550,7 @@ The wireframes were created using Balsamiq
 - There is validation to stop the user from buying more than they have and also from entering negative values
 - User stories covered: 16, 20, 21, 22, 26
 
-![Trade Buy Sell]()
+![Trade Buy Sell](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/trade-buy-feature.png)
 
 ### Trade Order Book
 - User can view an order book of simulated trades
@@ -553,25 +558,25 @@ The wireframes were created using Balsamiq
 - In the middle is the current traded price
 - User stories covered: 18
 
-![Trade Order Book]()
+![Trade Order Book](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/trade-order-book-feature.png)
 
 ### Contact
 - User can contact the site owner
 - User can enter name, email and message and select the issues they are facing
 
-![Contact]()
+![Contact](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/contact-feature.png)
 
 ### Profile
 - User can view their profile
 - User can select edit profile or hover over and click profile picture to edit profile and picture
 
-![Profile]()
+![Profile](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/profile-feature.png)
 
 ### Edit Profile
 - User can edit their profile by inputing into fields
 - User can cancel or save by clicking buttons
 
-![Edit Profile]()
+![Edit Profile](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/edit-profile-feature.png)
 
 ### Edit Profile Picture
 - User can edit their profile picture by uploading a picture
@@ -579,7 +584,7 @@ The wireframes were created using Balsamiq
 - User can then view the updated picture
 - User can then save or cancel the picture
 
-![Edit Profile Picture]()
+![Edit Profile Picture](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/profile-picture-feature.png)
 
 ### Portfolio Price
 - User can view their portfolio price
@@ -589,20 +594,20 @@ The wireframes were created using Balsamiq
 - User can hover to see price and price change at different times
 - User stories covered: 23
 
-![Portfolio Price]()
+![Portfolio Price](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/portfolio-price-feature.png)
 
 ### Portfolio Assets
 - User can view their assets in their portfolio
 - They can view the balance of each asset
 - User stories covered: 25
 
-![Portfolio Assets]()
+![Portfolio Assets](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/portfolio-asset-feature.png)
 
 ### Logout
 - User can click log out in their account
 - Logout is displayed under the nav menu of profile picture
 
-![Logout]()
+![Logout](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/logout-feature.png)
 
 ### Login
 - User can click log in
@@ -611,7 +616,7 @@ The wireframes were created using Balsamiq
 - User can click remember me to remember their account
 - User stories covered: 13
 
-![Login]()
+![Login](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/login-feature.png)
 
 ### Register
 - User can click register
@@ -619,7 +624,7 @@ The wireframes were created using Balsamiq
 - Displayed with form to fill out and create account
 - User stories covered: 14
 
-![Register]()
+![Register](https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/register-feature.png)
 
 
 ##### Back to [top](#table-of-contents)<hr>
@@ -628,21 +633,114 @@ The wireframes were created using Balsamiq
 ## Validation
 The W3C Markup Validation Service
 
+<details><summary>Home</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/home-validation.png">
+</details>
+
+<details><summary>Markets</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/markets-validation.png">
+<br>
+- 1 error: To do with img source, but I am loading this image source though an api, which I cannot change the name of
+</details>
+
+<details><summary>Trade</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/trade-validation.png">
+<br>
+- 1 error: To do with img source, but I am loading this image source though an api, which I cannot change the name of
+</details>
+
+<details><summary>Crypto Details</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/crypto-detail-validation.png">
+</details>
+
 ### CSS Validation
 The W3C Jigsaw CSS Validation Service
+
+<details><summary>CSS Validation</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/css-validation.png">
+</details>
 
 
 ### JavaScript Validation
 
+<details><summary>Crop PP Validation</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/crop-pp-validation.png">
+</details>
+
+<details><summary>Crypto Details Validation</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/crypto-details-validation.png">
+</details>
+
+<details><summary>Crypto List Validation</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/crypto-list-validation.png">
+</details>
+
+<details><summary>Crypto Search Validation</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/crypto-search-validation.png">
+</details>
+
 ### PEP8 Validation
+
+<details><summary>Admin</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/coinhub-admin-validation.png">
+</details><br>
+
+<details><summary>Models</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/coinhub-models-validation.png">
+</details><br>
+
+<details><summary>Urls</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/coinhub-urls-validation.png">
+</details><br>
+
+<details><summary>Views</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/coinhub-views-validation.png">
+</details><br>
+
 
 ### Lighthouse
 
 Performance, best practices and SEO was tested using Lighthouse.
 
+<details><summary>Home</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/home-lighthouse.png">
+</details>
+
+<details><summary>Markets</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/markets-lighthouse.png">
+</details>
+
+<details><summary>Trade</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/trade-lighthouse.png">
+</details>
+
+<details><summary>Contact</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/contact-lighthouse.png">
+</details>
+
 
 ### Wave
 WAVE was used to test the websites accessibility.
+
+<details><summary>Home</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/home-wave.png">
+</details>
+
+<details><summary>Trade</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/trade-wave.png">
+</details>
+
+<details><summary>Markets</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/markets-wave.png">
+</details>
+
+<details><summary>Contact</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/contact-wave.png">
+</details>
+
+<br>
+
+- Errors due to missing labels on input forms
 
 ##### Back to [top](#table-of-contents)<hr>
 
@@ -654,11 +752,409 @@ WAVE was used to test the websites accessibility.
 
 ### Manual testing
 
+1.	As a Site User I can be welcomed to the website with a landing page so that see what the website does and is about
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Logo' link in the header | Homepage will load | Works as expected |
+
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u1-testing.png">
+</details>
+<br>
+
+2. As a Site User I can view the advantages of investing on this website so that know what this website offers
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Logo' link in the header | Homepage will load | Works as expected |
+| Scroll down page | Advantages will be shown | Works as expected |
+
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u1-testing.png">
+</details>
+<br>
+
+3. As a Site User I can view the popular crypto currency so that I know what are popular and the ones to buy
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Logo' link in the header | Homepage will load | Works as expected |
+| Scroll down page | Popular crypto will be shown | Works as expected |
+
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u3a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u3b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u3c-testing.png"><br>
+</details>
+<br>
+
+4. As a Site User I can search all the available crypto so that find the one I am looking for
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Markets' link in the header | Markets page will load | Works as expected |
+| Click on the 'Search for an asset' input | User then can type and search | Works as expected |
+| Type input | Search results will appear | Works as expected |
+
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u4a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u4b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u4c-testing.png"><br>
+</details>
+<br>
+
+5. As a Site User I can see the trending coins at the minute so that I know what coins to buy
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Markets' link in the header | Markets page will load | Works as expected |
+| Scroll down page | Trending crypto will be shown | Works as expected |
+
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u5a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u5b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u5c-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u5c-testing.png"><br>
+</details>
+<br>
+
+6. As a Site User I can view the crypto markets and their data so that I know what coins to buy and their price
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Markets' link in the header | Markets page will load | Works as expected |
+| Scroll down page | Crypto Markets will be shown | Works as expected |
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6c-testing.png"><br>
+</details>
+<br>
+
+8. As a Site User I can view more info on the coin so that consider buying the coin
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Markets' link in the header | Markets page will load | Works as expected |
+| Scroll down page | Crypto Markets will be shown | Works as expected |
+| View market info on coin | Info on coin is displayed | Works as expected |
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6c-testing.png"><br>
+</details>
+<br>
+
+9. As a Site User I can click on a coin so that open a new page and view more about the coin
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Markets' link in the header | Markets page will load | Works as expected |
+| Scroll down page | Crypto Markets will be shown | Works as expected |
+| Click on one of the coins | Detail page will load | Works as expected |
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6c-testing.png"><br>
+</details>
+<br>
+
+10. As a Site User I can view a list of top coins so that easily select a coin to view
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Markets' link in the header | Markets page will load | Works as expected |
+| Scroll down page | Crypto Markets will be shown | Works as expected |
+| View market info on coin | Info on coin is displayed | Works as expected |
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6c-testing.png"><br>
+</details>
+<br>
+
+11. As a Site User I can view more about each crypto so that make better decisions when buying crypto
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Markets' link in the header | Markets page will load | Works as expected |
+| Scroll down page | Crypto Markets will be shown | Works as expected |
+| Click on one of the coins | Detail page will load | Works as expected |
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6c-testing.png"><br>
+</details>
+<br>
+
+12. As a Site User I can view the price action and history of a coin so that make better decisions when buying crypto
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Markets' link in the header | Markets page will load | Works as expected |
+| Scroll down page | Crypto Markets will be shown | Works as expected |
+| Click on one of the coins | Detail page will load | Works as expected |
+| Scroll down to price section | Price action and history is displayed | Works as expected |
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u6c-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u12d-testing.png"><br>
+</details>
+<br>
+
+13. As a Site User I can log in to an account so that check my portfolio and buy and sell coins
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Account' Image in the header | Account buttons will appear in header | Works as expected |
+| Click the log in button | Login page will load | Works as expected |
+| Click on username input | User can enter input | Works as expected |
+| Enter username and password | User can enter input | Works as expected |
+| Click Sign in | User will be redirected to home page | Works as expected |
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u13a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u13b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u13c-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u13d-testing.png"><br>
+</details>
+<br>
+
+14. As a Site User I can sign up for an account so that buy and sell coins
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Account' Image in the header | Account buttons will appear in header | Works as expected |
+| Click the Sign up button | Login page will load | Works as expected |
+| Click on username input | User can enter input | Works as expected |
+| Enter username, email, password and confirm password | User can enter input | Works as expected |
+| Click Sign up | User will be redirected to home page | Works as expected |
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u13a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u13b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u13c-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u13d-testing.png"><br>
+</details>
+<br>
+
+17. As a Site User I can view the available trading pairs so that I know what coins I can buy
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Trade' link in the header | Trade page will load | Works as expected |
+| Scroll down to trading pairs | Trading pairs will be shown | Works as expected |
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17b-testing.png"><br>
+</details>
+<br>
+
+18. As a Site User I can see the order book so that make better decisions when buying a coin
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Trade' link in the header | Trade page will load | Works as expected |
+| Scroll down to trading pairs | Trading pairs will be shown | Works as expected |
+| Click on a trading pair | Trading view page will load | Works as expected |
+| Scroll down to order book section | Order book will be shown | Works as expected |
+
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u18c-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u18d-testing.png"><br>
+</details>
+<br>
+
+19. As a Site User I can view the price of a coin on a trading view so that make better decisions when buying a coin
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Trade' link in the header | Trade page will load | Works as expected |
+| Scroll down to trading pairs | Trading pairs will be shown | Works as expected |
+| Click on a trading pair | Trading view page will load | Works as expected |
+| Scroll down to order book section | Order book will be shown | Works as expected |
+
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u18c-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u18d-testing.png"><br>
+</details>
+<br>
+
+22. As a Site User I can buy and sell my assets so that I can make or sell my investment
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Trade' link in the header | Trade page will load | Works as expected |
+| Scroll down to trading pairs | Trading pairs will be shown | Works as expected |
+| Click on a trading pair | Trading view page will load | Works as expected |
+| Go to buy sell seciton | Buy sell section will be shown | Works as expected |
+
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u18c-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u20a-testing.png"><br>
+</details>
+<br>
+
+21. As a Site User I can create a limit order so that buy or sell an asset at the price I would like
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Trade' link in the header | Trade page will load | Works as expected |
+| Scroll down to trading pairs | Trading pairs will be shown | Works as expected |
+| Click on a trading pair | Trading view page will load | Works as expected |
+| Go to buy sell seciton | Buy sell section will be shown | Works as expected |
+| Create a limit order | Creates a limit order | Works as expected |
+
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u18c-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u20a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u21a-testing.png"><br>
+</details>
+<br>
+
+20. As a Site User I can create a market order to buy or sell so that buy or sell my asset at current market value
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Trade' link in the header | Trade page will load | Works as expected |
+| Scroll down to trading pairs | Trading pairs will be shown | Works as expected |
+| Click on a trading pair | Trading view page will load | Works as expected |
+| Go to buy sell seciton | Buy sell section will be shown | Works as expected |
+| Create a market order | Creates a limit order | Works as expected |
+
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u18c-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u20a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u21a-testing.png"><br>
+</details>
+<br>
+
+15. As a Site User I can view my recent transactions so that I know what I have bought
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Trade' link in the header | Trade page will load | Works as expected |
+| Scroll down to trading pairs | Trading pairs will be shown | Works as expected |
+| Click on a trading pair | Trading view page will load | Works as expected |
+| Go to orders seciton | Orders will be shown | Works as expected |
+
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u18c-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u15a-testing.png"><br>
+</details>
+<br>
+
+16. As a Site User I can manage my order so that I have more control over what I buy
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Trade' link in the header | Trade page will load | Works as expected |
+| Scroll down to trading pairs | Trading pairs will be shown | Works as expected |
+| Click on a trading pair | Trading view page will load | Works as expected |
+| Go to orders seciton | Orders will be shown | Works as expected |
+
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u18c-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u15a-testing.png"><br>
+</details>
+<br>
+
+23. As a Site User I can view my portfolio balance so that I can view my profit and loss
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Account' image link in the header | Account buttons will show in header | Works as expected |
+| Click the portfolio button | Portfolio page will load | Works as expected |
+| Scroll to price | price and history balance will show | Works as expected |
+
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u26a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u26b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u26c-testing.png"><br>
+</details>
+<br>
+
+24. As a Site User I can manage my assets so that I can control my account
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Trade' link in the header | Trade page will load | Works as expected |
+| Scroll down to trading pairs | Trading pairs will be shown | Works as expected |
+| Click on a trading pair | Trading view page will load | Works as expected |
+| Go to orders seciton | Orders will be shown | Works as expected |
+
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u17b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u18c-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u15a-testing.png"><br>
+</details>
+<br>
+
+25. As a Site User I can view my portfolio assets so that manage what assets to buy
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Account' image link in the header | Account buttons will show in header | Works as expected |
+| Click the portfolio button | Portfolio page will load | Works as expected |
+| Scroll to assets | assets will show | Works as expected |
+
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u26a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u26b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u26d-testing.png"><br>
+</details>
+<br>
+
+26. As a Site User I can add coins to my portfolio so that buy other assets and coins
+
+**Step** | **Expected Result** | **Actual Result**
+------------ | ------------ | ------------ |
+| Click on the 'Account' image link in the header | Account buttons will show in header | Works as expected |
+| Click the portfolio button | Portfolio page will load | Works as expected |
+| Scroll to assets | assets will show | Works as expected |
+
+<details><summary>Images</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u26a-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u26b-testing.png"><br>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/u26d-testing.png"><br>
+</details>
+<br>
+
+
 ### Automated testing
 
 - Testing was done using the built in Django module, unittest.
 - Coverage was also usesd to generate a report
 
+<details><summary>Models</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/test_models.png"><br>
+</details>
+<br>
+
+<details><summary>Views</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/test_views.png"><br>
+</details>
+<br>
+
+<details><summary>Urls</summary>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/test_urls.png"><br>
+</details>
+<br>
 
 
 ##### Back to [top](#table-of-contents)<hr>
@@ -674,94 +1170,61 @@ WAVE was used to test the websites accessibility.
 
 [Official Page](https://devcenter.heroku.com/articles/git) (Ctrl + click)
 
-This application has been deployed from Github using Heroku. Here's how:
+## Deployment
+This application has been deployed from GitHub to Heroku. A guide to deploying to Heroku can be found [here](https://devcenter.heroku.com/articles/github-integration)
+Here are the steps to deployment
+- Login or create an account at [Heroku](https://dashboard.heroku.com/)
 
-1. Create an account at heroku.com
-<details>
-<img src="">
-</details>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/deployment-1.png">
 
-2. Create an app, give it a name for such as ci-pp4-the-diplomat, and select a region
-<details>
-<img src="">
-<img src="">
-</details>
+- Click on New > Create new app in the top right of the screen.
 
-3. Under resources search for postgres, and add a Postgres database to the app
-<details>
-<img src="">
-</details>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/deployment-2.png">
 
-Heroku Postgres
+- Add an app name and select location, then click 'create app'.
 
-1. Note the DATABASE_URL, this can be set as an environment variable in Heroku and your local deployment(env.py)
-<details>
-<img src="">
-<img src="">
-</details>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/deployment-3.png">
 
-2. Install the plugins dj-database-url and psycopg2-binary.
+- Under the deploy tab of the next page, select connect to GitHub.
 
-3. Run pip3 freeze > requirements.txt so both are added to the requirements.txt file
-<details>
-<img src="">
-</details>
+- Log in to your GitHub account when prompted.
 
-4. Create a Procfile with the text: web: gunicorn the_diplomat.wsgi
-<details>
-<img src="">
-</details>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/deployment-4.png">
 
-5. In the settings.py ensure the connection is to the Heroku postgres database, no indentation if you are not using a seperate test database.
-I store mine in env.py
-<details>
-<img src="">
-<img src="">
-</details>
+- Select the repository that you want to be connected to the Heroku app.
 
-6. Ensure debug is set to false in the settings.py file
-<details>
-<img src="">
-</details>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/deployment-5.png">
 
-7. Add localhost, and ci-pp4-the-diplomat.herokuapp.com to the ALLOWED_HOSTS variable in settings.py
+- Click on the settings tab.
 
-8. Run "python3 manage.py showmigrations" to check the status of the migrations
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/deployment-6.png">
 
-9. Run "python3 manage.py migrate" to migrate the database
+- Scroll down to the config vars section, and add 2 config vars:
+    * The first key is CREDS and the value here is the creds.json file that was generated for the google sheets API to work properly.
+    * The second key is PORT and the Value is 8000
+  
 
-10. Run "python3 manage.py createsuperuser" to create a super/admin user
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/deployment-7.png">
 
-11. Run "python3 manage.py loaddata categories.json" on the categories file in products/fixtures to create the categories
+- Once you have set up the config vars, scroll down to buildpacks (still under the settings tab)
 
-12. Run "python3 manage.py loaddata products.json" on the products file in products/fixtures to create the products
+- Add the Python and Node.js buildpacks to your app and make sure that when they are displayed, they appear in the order:
+    * Python
+    * Node.JS
+  
 
-13. Install gunicorn and add it to the requirements.txt file using the command pip3 freeze > requirements.txt
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/deployment-8.png">
 
-14. Disable collectstatic in Heroku before any code is pushed using the command heroku config:set DISABLE_COLLECTSTATIC=1 -a ci-pp4-the-diplomat
-<details>
-<img src="">
-<img src="">
-</details>
+- Navigate back to the settings tab.
 
+- Select automatic deploys to allow Heroku to build the site with new changes each time changes are pushed to GitHub.
 
-15. Ensure the following environment variables are set in Heroku
-<details>
-<img src="">
-</details>
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/deployment-9.png">
 
-16. Connect the app to GitHub, and enable automatic deploys from main if you wish
-<details>
-<img src="">
-<img src="">
-</details>
+- In the 'manual deploy' section beneath this, make sure the branch selected is 'main' and click deploy branch.
 
-17. Click deploy to deploy your application to Heroku for the first time
+<img src="https://raw.githubusercontent.com/dmccaffrey01/CI_PP4_COINHUB/main/docs/features/deployment-10.png">
 
-18. Click on the link provided to access the application
-
-19. If you encounter any issues accessing the build logs is a good way to troubleshoot the issue
-<hr>
 
 ### Fork Repository
 To fork the repository by following these steps:

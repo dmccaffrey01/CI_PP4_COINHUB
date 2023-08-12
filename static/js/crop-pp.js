@@ -6,23 +6,18 @@ document.getElementById('imageInput').addEventListener('change', function() {
         const img = document.createElement('img');
         img.src = event.target.result;
 
-        // Remove any previously added cropper instances
         if (window.cropper) {
           window.cropper.destroy();
         }
 
-        // Attach the new image to the DOM
         const imageContainer = document.querySelector('.crop-pp-img-container');
         imageContainer.innerHTML = '';
         imageContainer.appendChild(img);
 
-        // Initialize Cropper.js
         window.cropper = new Cropper(img, {
-          aspectRatio: 1, // Set to 1 for square cropping
-          viewMode: 1,    // Set to 1 to restrict the crop box to the container
+          aspectRatio: 1,
+          viewMode: 1,  
           crop(event) {
-            // Update the cropped preview image
-            const croppedImage = document.getElementById('croppedImage');
           },
         });
       };

@@ -1,4 +1,7 @@
-const searchForm = document.querySelector(".crypto-search-form");
+
+/*jshint esversion: 9 */
+
+
 const searchInput = document.querySelector(".crypto-search-input");
 const searchResults = document.querySelector(".crypto-search-results");
 const minHeight = searchResults.clientHeight;
@@ -24,7 +27,7 @@ searchInput.addEventListener("input", () => {
                             <div class="crypto-search-result-name dark-text">${result.name}</div>
                         </div>
                         <div class="crypto-search-result-symbol dark-text">${result.symbol}</div>
-                    </a>`
+                    </a>`;
                 }).join('');
             searchResults.innerHTML = html;
             searchResults.style.display = "flex";
@@ -50,7 +53,7 @@ const addScrollbar = () => {
     } else {
         searchResults.style.overflowY = "auto";
     }
-}
+};
 
 closeIcon.addEventListener("click", () => {
     searchInput.value = "";
@@ -78,17 +81,17 @@ const updateMarketChange = () => {
             if (results.totalChange !== undefined) {
                 if (results.totalChange > 0) {
                     marketChangeElement.classList.add("positive");
-                    marketChangeElement.innerHTML = `up ${results.totalChange}% <i class="fa-solid fa-up-long"></i>`
+                    marketChangeElement.innerHTML = `up ${results.totalChange}% <i class="fa-solid fa-up-long"></i>`;
                 } else {
                     marketChangeElement.classList.add("negative");
-                    marketChangeElement.innerHTML = `down ${results.totalChange}% <i class="fa-solid fa-down-long"></i>`
+                    marketChangeElement.innerHTML = `down ${results.totalChange}% <i class="fa-solid fa-down-long"></i>`;
                 }
             }
             else {
-                marketChangeElement.innerHTML = "..."
+                marketChangeElement.innerHTML = "...";
             }
         });
     }
-}
+};
 
 updateMarketChange();

@@ -1,7 +1,9 @@
 import os
 import requests
 from django.shortcuts import render, redirect
-from .models import CryptoCurrency, PopularCryptoCurrency, TopGainerCrypto, TopLoserCrypto, CryptoDetail, Asset, Transaction
+from .models import CryptoCurrency, PopularCryptoCurrency
+from .models import TopGainerCrypto, TopLoserCrypto
+from .models import CryptoDetail, Asset, Transaction
 from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
@@ -19,7 +21,7 @@ def index(request):
     create_crypto_list(request)
 
     get_popular_crypto(request)
-    
+
     popular_crypto = PopularCryptoCurrency.objects.all()
 
     context = {
@@ -81,7 +83,6 @@ def trade_page(request):
 
 
 def deposit_page(request):
-    
     user = request.user
 
     euro_symbol = "EUR"
@@ -106,8 +107,10 @@ def portfolio(request):
         if asset_symbol != 'EUR':
             asset.current_price = asset_data.price
             asset.current_change = asset_data.change
-            
-        asset.current_balance = round(asset.current_price * asset.total_amount, 2)
+
+        asset.current_balance = round(
+            asset.current_price * asset.total_amount, 2
+        )
         asset.save()
 
     euro = Asset.objects.filter(user=user, symbol='EUR').first()
@@ -125,9 +128,13 @@ def portfolio(request):
 def trading_pair(request, symbol):
     user = request.user
     crypto = CryptoCurrency.objects.filter(symbol=symbol).first()
-    asset, asset_created = Asset.objects.get_or_create(user=user, symbol=symbol)
+    asset, asset_created = Asset.objects.get_or_create(
+        user=user, symbol=symbol
+    )
     euro_symbol = 'EUR'
-    euro, euro_created = Asset.objects.get_or_create(user=user, symbol=euro_symbol)
+    euro, euro_created = Asset.objects.get_or_create(
+        user=user, symbol=euro_symbol
+    )
 
     if asset_created:
         asset.name = crypto.name
@@ -136,17 +143,25 @@ def trading_pair(request, symbol):
 
     if euro_created:
         euro.name = 'Euro'
-        euro.iconUrl = 'https://res.cloudinary.com/dzwyiggcp/image/upload/v1687604163/CI_PP4_COINHUB/icons/vskcbpae6osco4zr3btg.png'
+        euro.iconUrl = 'https://res.cloudinary.com/dzwyiggcp/image/'\
+                       'upload/v1687604163/CI_PP4_COINHUB/'\
+                       'icons/vskcbpae6osco4zr3btg.png'
         euro.save()
 
     create_crypto_list(request)
-    
+
     cryptocurrencies = CryptoCurrency.objects.all()
 
     sparkline_data = json.loads(crypto.sparkline)
-    sparkline_numbers = [float(num) for num in sparkline_data] if sparkline_data else []
-    lowest_number = format(min(sparkline_numbers), '.2f') if sparkline_numbers else None
-    highest_number = format(max(sparkline_numbers), '.2f') if sparkline_numbers else None
+    sparkline_numbers = [
+        float(num) for num in sparkline_data
+    ] if sparkline_data else []
+    lowest_number = format(
+        min(sparkline_numbers), '.2f'
+    ) if sparkline_numbers else None
+    highest_number = format(
+        max(sparkline_numbers), '.2f'
+    ) if sparkline_numbers else None
 
     check_transactions(request)
 
@@ -175,7 +190,7 @@ def trading_pair(request, symbol):
 
 def get_transaction_data(request):
     user = request.user
-    
+
     pending_status = "Pending"
     hour_time = int(time.time()) - 3660
     transactions = Transaction.objects.filter(
@@ -192,7 +207,9 @@ def get_transaction_data(request):
     return JsonResponse(data, safe=False)
 
 
-def buy_sell_order(request, time_placed, symbol, orderType, bsType, price, amount, total):
+def buy_sell_order(
+    request, time_placed, symbol, orderType, bsType, price, amount, total
+):
     user = request.user
 
     time_placed = float(time_placed)
@@ -210,7 +227,9 @@ def buy_sell_order(request, time_placed, symbol, orderType, bsType, price, amoun
     crypto = CryptoCurrency.objects.filter(symbol=symbol).first()
 
     asset_symbol = symbol
-    asset, created = Asset.objects.get_or_create(user=user, symbol=asset_symbol)
+    asset, created = Asset.objects.get_or_create(
+        user=user, symbol=asset_symbol
+    )
 
     if not created:
         asset_available = asset.total_amount
@@ -291,7 +310,7 @@ def buy_sell_order(request, time_placed, symbol, orderType, bsType, price, amoun
             total=total
         )
 
-        transaction.type = f"{bsType} - {orderType}"    
+        transaction.type = f"{bsType} - {orderType}"
         transaction.status = "Pending"
 
         transaction.save()
@@ -323,7 +342,8 @@ def check_transactions(request):
 
     for transaction in transactions:
 
-        if transaction.type == "Buy - Market" or transaction.type == "Sell - Market":
+        if (transaction.type == "Buy - Market" or
+                transaction.type == "Sell - Market"):
             fulfill_transaction(request, transaction)
 
         t_time = transaction.time
@@ -333,15 +353,19 @@ def check_transactions(request):
 
         highs = []
         lows = []
-        
+
         if time_diff > (UNIX_HOUR * 5):
-            rounded_current_time = math.floor(current_time / UNIX_HOUR) * UNIX_HOUR
+            rounded_current_time = math.floor(
+                current_time / UNIX_HOUR
+            ) * UNIX_HOUR
             rounded_time = math.ceil(t_time / UNIX_HOUR) * UNIX_HOUR
             rounded_time_diff = rounded_current_time - rounded_time
 
             hour_limit_counter = int(rounded_time_diff / UNIX_HOUR)
             t_time_limit_counter = (rounded_time - t_time) / UNIX_MIN
-            current_time_limit_counter = (current_time - rounded_current_time) / UNIX_MIN
+            current_time_limit_counter = (
+                current_time - rounded_current_time
+            ) / UNIX_MIN
 
             params_data = [
                 {
@@ -362,7 +386,7 @@ def check_transactions(request):
             ]
         else:
             limit_counter = time_diff / UNIX_MIN
-            
+
             params_data = [
                 {
                     "time_period": "minute",
@@ -372,7 +396,8 @@ def check_transactions(request):
             ]
 
         for pd in params_data:
-            url = f'https://min-api.cryptocompare.com/data/v2/histo{pd["time_period"]}'
+            url = f'https://min-api.cryptocompare.com/data/'\
+                   'v2/histo{pd["time_period"]}'
             fsym = symbol
             tsym = 'EUR'
             api_key = os.environ.get('CRYPTOCOMPARE_API')
@@ -394,7 +419,7 @@ def check_transactions(request):
                 lows.append(d["low"])
                 if (i == (len(data_list) - 1)):
                     current_price = d["close"]
-                
+
         max_high = max(highs)
         min_low = min(lows)
 
@@ -416,7 +441,8 @@ def fulfill_transaction(request, transaction):
 
     euro = Asset.objects.get(symbol='EUR', user=user)
 
-    if transaction.type == 'Sell - Limit' or transaction.type == 'Sell - Market':
+    if (transaction.type == 'Sell - Limit' or
+            transaction.type == 'Sell - Market'):
         transaction_type = 'Sell'
     else:
         transaction_type = 'Buy'
@@ -479,13 +505,15 @@ def fulfill_transaction(request, transaction):
 def delete_transaction(request, transaction_uuid, symbol):
     user = request.user
 
-    transaction = Transaction.objects.get(transaction_uuid=transaction_uuid, user=user)
+    transaction = Transaction.objects.get(
+        transaction_uuid=transaction_uuid, user=user
+    )
 
     euro_asset = Asset.objects.get(user=user, symbol='EUR')
     asset = Asset.objects.get(user=user, symbol=symbol)
 
-
-    if transaction.type == 'Buy - Market' or transaction.type == 'Buy - Limit':
+    if (transaction.type == 'Buy - Market' or
+            transaction.type == 'Buy - Limit'):
         transaction_type = 'Buy'
     else:
         transaction_type = 'Sell'
@@ -526,7 +554,7 @@ def delete_transaction(request, transaction_uuid, symbol):
         new_amount_history.append(amount_entry)
         asset.amount_history = new_amount_history
         asset.save()
-    
+
     transaction.delete()
 
     return redirect('trading_pair', symbol)
@@ -585,20 +613,22 @@ def deposit(request, amount):
                 'message': 'Amount must be a positive number.',
             }
             return JsonResponse(response)
-        
+
         user = request.user
         symbol = 'EUR'
         asset, created = Asset.objects.get_or_create(user=user, symbol=symbol)
-    
+
         if created:
             asset.symbol = symbol
-            asset.iconUrl = 'https://res.cloudinary.com/dzwyiggcp/image/upload/v1687604163/CI_PP4_COINHUB/icons/vskcbpae6osco4zr3btg.png'
+            asset.iconUrl = 'https://res.cloudinary.com/dzwyiggcp/image/'\
+                            'upload/v1687604163/CI_PP4_COINHUB/'\
+                            'icons/vskcbpae6osco4zr3btg.png'
             asset.total_amount = 0
-        
+
         old_amount = asset.total_amount
         new_amount = old_amount + deposit_amount
         asset.total_amount = new_amount
-        
+
         asset.save()
 
         amount_entry = {
@@ -626,7 +656,7 @@ def deposit(request, amount):
             'message': 'Invalid amount provided.',
         }
         return JsonResponse(response)
-    
+
     return JsonResponse(response)
 
 
@@ -646,12 +676,13 @@ def get_crypto_detail_price_data(request, cryptocurrency):
     crypto_detail = CryptoDetail.objects.first()
 
     return crypto_detail
-    
+
 
 def crypto_detail_price_data_from_api(request, time_period, symbol):
     time_period_data = get_time_period_data(request, time_period)
 
-    url = f'https://min-api.cryptocompare.com/data/v2/histo{time_period_data["time"]}'
+    url = f'https://min-api.cryptocompare.com/data/'\
+          'v2/histo{time_period_data["time"]}'
     fsym = symbol
     tsym = 'EUR'
     limit = time_period_data['lim']
@@ -705,7 +736,7 @@ def crypto_detail_price_data_from_api(request, time_period, symbol):
     elif limit == 365 and counter_limit == 1:
         crypto_detail.chart_1y = all_data
     crypto_detail.save()
-    
+
     return JsonResponse(all_data, safe=False)
 
 
@@ -750,7 +781,7 @@ def get_crypto_detail_main_data(request, cryptocurrency):
     }
 
     time_periods = ['1h', '24h', '7d']
-    
+
     url = f"https://api.coinranking.com/v2/coin/{cryptocurrency.uuid}"
 
     for time_period in time_periods:
@@ -767,12 +798,15 @@ def get_crypto_detail_main_data(request, cryptocurrency):
             print('API request failed')
 
         data = response.json()
-        
+
         if 'data' in data:
             crypto_data = data['data']['coin']
 
-            max_supply = crypto_data['supply']['max'] if crypto_data['supply']['max'] is not None else 0
-        
+            if crypto_data['supply']['max'] is not None:
+                max_supply = crypto_data['supply']['max']
+            else:
+                max_supply = 0
+
             crypto_detail, _ = CryptoDetail.objects.get_or_create(
                 uuid=crypto_data['uuid'],
                 defaults={
@@ -784,7 +818,9 @@ def get_crypto_detail_main_data(request, cryptocurrency):
                     'links': json.dumps(crypto_data['links']),
                     'price': crypto_data['price'],
                     'market_cap': crypto_data['marketCap'],
-                    'fully_diluted_market_cap': crypto_data['fullyDilutedMarketCap'],
+                    'fully_diluted_market_cap': crypto_data[
+                        'fullyDilutedMarketCap'
+                        ],
                     'volume': crypto_data['24hVolume'],
                     'max_supply': max_supply,
                     'total_supply': crypto_data['supply']['total'],
@@ -793,7 +829,18 @@ def get_crypto_detail_main_data(request, cryptocurrency):
                     'all_time_high': crypto_data['allTimeHigh']['price'],
                     'ath_time_stamp': crypto_data['allTimeHigh']['timestamp'],
                     'about': crypto_data['description'],
-                    'ath_change': ((float(crypto_data['price']) - float(crypto_data['allTimeHigh']['price'])) / float(crypto_data['allTimeHigh']['price'])) * 100, 
+                    'ath_change': (
+                        (
+                            float(
+                                crypto_data['price']
+                            ) - float(
+                                crypto_data['allTimeHigh']['price']
+                            )
+
+                        ) / float(
+                            crypto_data['allTimeHigh']['price']
+                        )
+                    ) * 100,
                 }
             )
             if time_period == '1h':
@@ -840,7 +887,12 @@ def create_crypto_list(request):
         'referenceCurrencyUuid': '5k-_VTxqtCEI'
     }
 
-    response = requests.request("GET", "https://api.coinranking.com/v2/coins", headers=headers, params=params)
+    response = requests.request(
+        "GET",
+        "https://api.coinranking.com/v2/coins",
+        headers=headers,
+        params=params
+    )
 
     if response.status_code == 200:
         print('API request successful')
@@ -880,8 +932,12 @@ def create_crypto_list(request):
 
 
 def get_popular_crypto(request):
-    popular_crypto_list = ['Bitcoin', 'Ethereum', 'Polkadot', 'Solana', 'Dogecoin']
-    filtered_cryptocurrencies = CryptoCurrency.objects.filter(name__in=popular_crypto_list)
+    popular_crypto_list = [
+        'Bitcoin', 'Ethereum', 'Polkadot', 'Solana', 'Dogecoin'
+    ]
+    filtered_cryptocurrencies = CryptoCurrency.objects.filter(
+        name__in=popular_crypto_list
+    )
     PopularCryptoCurrency.objects.all().delete()
 
     for crypto in filtered_cryptocurrencies:
@@ -943,10 +999,12 @@ def get_top_losers(request):
 
 def crypto_search_results(request):
     query = request.GET.get('query')
-    results = CryptoCurrency.objects.filter(Q(name__icontains=query) | Q(symbol__icontains=query))
+    results = CryptoCurrency.objects.filter(
+        Q(name__icontains=query) | Q(symbol__icontains=query)
+    )
     results_data = [{
-            'name': result.name, 
-            'icon': result.icon, 
+            'name': result.name,
+            'icon': result.icon,
             'symbol': result.symbol,
         } for result in results]
     return JsonResponse(results_data, safe=False)
@@ -955,15 +1013,19 @@ def crypto_search_results(request):
 def get_market_data(request):
     coins = CryptoCurrency.objects.all()
     coins_data = [{
-        'name': coin.name, 
-        'currentPrice': coin.price, 
+        'name': coin.name,
+        'currentPrice': coin.price,
         'change': coin.change,
-        'price24hrAgo': coin.price + (coin.price * coin.change), 
+        'price24hrAgo': coin.price + (coin.price * coin.change),
         'marketCap': coin.market_cap,
         } for coin in coins]
-    
+
     totalMarketCap = sum(coin['marketCap'] for coin in coins_data)
-    weights = sum(coin['marketCap'] + (coin['change'] * coin['marketCap']) for coin in coins_data)
+    weights = sum(
+        coin['marketCap'] + (
+            coin['change'] * coin['marketCap']
+        ) for coin in coins_data
+    )
     totalChange = round(weights / totalMarketCap, 2)
 
     market_data = {
@@ -972,4 +1034,3 @@ def get_market_data(request):
     }
 
     return JsonResponse(market_data, safe=False)
-
