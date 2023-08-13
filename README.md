@@ -37,6 +37,10 @@
 ### About
 
 CoinHub is a educational crypto trading website, where you can view market data on each cryptocurrency and mock trade to grow your portfolio
+
+Login Details for admin:
+- username: admin
+- password: coinhubsuperuser
 <hr>
 
 ### User Goals

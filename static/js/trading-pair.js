@@ -538,6 +538,7 @@ const createChart = async () => {
     canvasElement.classList.add('trading-pair-chart');
     canvasContainer.appendChild(canvasElement);
     let formattedData = await getFormattedChartData();
+    console.log('1');
     const dataOptions = {
         hour: '2-digit',
         minute: '2-digit',
@@ -712,7 +713,7 @@ const createChart = async () => {
         },
         plugins: [candlestick, customScale]
         };
-        // render init block
+        console.log('2');
         const myChart = new Chart(
         document.querySelector('.trading-pair-chart'),
         config
@@ -785,6 +786,7 @@ const createChart = async () => {
                     clearInterval(msInterval);
                 }
             }, 1000);
+            console.log('3');
         }
 
     window.setTimeout(() => {
@@ -1646,3 +1648,18 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.removeItem('notificationCache');
     }
 })
+
+let cancelOrderBtns = document.querySelectorAll('.cancel-order-btn');
+
+cancelOrderBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+        let parent = btn.parentNode;
+        let grandparent = parent.parentNode;
+        let message = grandparent.querySelector('.delete-transaction-confirm-message');
+        message.style.display = 'flex';
+
+        message.querySelector('.cancel-delete-btn').addEventListener('click', () => {
+            message.style.display = 'none';
+        });
+    });
+});

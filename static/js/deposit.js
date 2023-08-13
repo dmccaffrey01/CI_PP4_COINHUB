@@ -81,7 +81,6 @@ const validateInput = () => {
             "value": amount,
         }
     ];
-removeLoadingIcon();
     let validation = true;
     inputValues.forEach(val => {
         validation = validateInputValue(val);

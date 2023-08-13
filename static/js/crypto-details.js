@@ -58,9 +58,8 @@ const formatChartData = (data) => {
     let timeArr = [];
 
     let parsedData = JSON.parse(data);
-
     for (let i = 0; i < parsedData.length; i++) {
-        let lastPrice = parsedData[i].lastprice;
+        let lastPrice = parsedData[i].last_price;
         let time = parsedData[i].time;
         lastPriceArr.push(lastPrice);
         timeArr.push(time);

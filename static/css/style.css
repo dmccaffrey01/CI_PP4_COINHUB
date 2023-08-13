@@ -3055,6 +3055,10 @@ td.orders-cancel, th.orders-cancel-heading {
     margin: auto;
 }
 
+td.orders-cancel a:visited {
+    color: var(--WHITE);
+}
+
 .no-order-to-show-container {
     position: absolute;
     top: 50%;
@@ -3647,5 +3651,23 @@ td.orders-cancel, th.orders-cancel-heading {
     }
 }
 
+.delete-transaction-confirm-message {
+    position: fixed;
+    padding: 50px;
+    background-color: var(--BLUE-DARK-1);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    border-radius: 15px;
+}
 
+.confirm-delete-btn {
+    background-color: var(--GREEN-1);
+    color: var(--WHITE);
+}
 
+.cancel-delete-btn {
+    background-color: var(--RED-1);
+    color: var(--WHITE);
+}

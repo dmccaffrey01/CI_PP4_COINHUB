@@ -14,6 +14,7 @@ from django.db.models import Q
 from decimal import Decimal
 from django.utils import timezone
 import time
+from django.contrib import messages
 import math
 
 
@@ -556,7 +557,7 @@ def delete_transaction(request, transaction_uuid, symbol):
         asset.save()
 
     transaction.delete()
-
+    messages.success(request, 'You successfully deleted transaction.', extra_tags='notification')
     return redirect('trading_pair', symbol)
 
 

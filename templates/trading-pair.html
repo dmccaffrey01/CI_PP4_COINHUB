@@ -161,8 +161,17 @@
                                 <td class="orders-status">{{ transaction.status }}</td>
                                 <td class="orders-cancel">
                                     {% if transaction.status == "Pending" %}
-                                    <a href="{% url 'delete_transaction' transaction.transaction_uuid crypto.symbol %}" class="btn cancel-order-btn">CANCEL <i class="fa-solid fa-xmark"></i></a>
+                                    <div class="btn cancel-order-btn">CANCEL <i class="fa-solid fa-xmark"></i></div>
                                     {% endif %}
+                                </td>
+                                <td class="delete-transaction-confirm-message content-container">
+                                    <div class="content-container gp-20">
+                                        <div class="white-text">Are you sure you want to delete order?</div>
+                                        <div class="content-container delete-transaction-btns gp-10">
+                                            <a href="{% url 'delete_transaction' transaction.transaction_uuid crypto.symbol %}" class="btn confirm-delete-btn">Yes</a>
+                                            <div class="btn cancel-delete-btn">No</div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         {% endfor %}
