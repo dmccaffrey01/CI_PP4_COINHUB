@@ -538,7 +538,6 @@ const createChart = async () => {
     canvasElement.classList.add('trading-pair-chart');
     canvasContainer.appendChild(canvasElement);
     let formattedData = await getFormattedChartData();
-    console.log('1');
     const dataOptions = {
         hour: '2-digit',
         minute: '2-digit',
@@ -713,7 +712,6 @@ const createChart = async () => {
         },
         plugins: [candlestick, customScale]
         };
-        console.log('2');
         const myChart = new Chart(
         document.querySelector('.trading-pair-chart'),
         config
@@ -786,7 +784,6 @@ const createChart = async () => {
                     clearInterval(msInterval);
                 }
             }, 1000);
-            console.log('3');
         }
 
     window.setTimeout(() => {
@@ -831,8 +828,9 @@ const createChart = async () => {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    
+    let priceChartSection = document.querySelector('.trading-pair-chart-section');
     window.setTimeout(() => {
+        priceChartSection.style.display = 'flex';
         createChart();
     }, 1000);
 });

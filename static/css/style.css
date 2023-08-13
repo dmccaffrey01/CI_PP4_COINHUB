@@ -2136,6 +2136,10 @@ canvas.price-sparkline {
 
 /* Trading Pair Seciton */
 
+.trading-pair-chart-section {
+    display: none;
+}
+
 .trading-pair-page-container {
     display: flex;
     justify-content: center;
@@ -2222,7 +2226,7 @@ canvas.price-sparkline {
     z-index: 5;
 }
 
-@media (max-width: 1250px) {
+@media (max-width: 1800px) {
 
     .trading-pair-page-container {
         flex-direction: column;

@@ -633,6 +633,55 @@ The wireframes were created using Balsamiq
 
 ##### Back to [top](#table-of-contents)<hr>
 
+## CRUD Functionality
+
+### Create
+
+- Create Transaction
+  1. Login
+  2. Deposit euro to your account by going to deposit page and filling out fake details and click deposit
+  3. Go to trade page
+  4. Click into btc-eur trading pair
+  5. Go to buy sell tab
+  6. Make sure you have buy and market selected to create market order
+  7. Enter in euro you deposited into the total input field
+  8. Click buy button
+  9. In the orders section, your transaction will be created
+  10. You can then go to your portfolio and see your assets and the price action of it
+
+### Read
+
+- Read Transaction
+  1. After creating your transaction
+  2. Go to your portfolio under your profile image buttons
+  3. On that page you can view your assets and the price action of it
+
+### Update
+
+- Update profile
+  1. Login
+  2. Go to profile page under the account image
+  3. Select edit profile button
+  4. Fill out form to change your name and last name
+  5. Click save
+  6. Your profile details are updated
+  7. To update profile picture, on the same page click on your profile picture
+  8. You can then upload a photo
+  9. Then you can crop the photo
+  10. Click preview
+  11. Then save, and your profile picture is uploaded and updated
+
+### Delete
+
+- Delete Transaction
+  1. To delete a transaction you must have created a limit order
+  2. To create a limit order follow the steps to creating a market order but make sure you have limit selected
+  3. Enter in a price, and total or amount
+  4. Click buy or sell
+  5. In the orders section at the bottom of the trading pair page, your transactions can be viewed
+  6. If it is a limit order, the transaction will be pending and a cancel button will be displayed
+  7. If you click the cancel button, an alert will popup
+  8. If you confirm to delete, the transaction will be deleted from the database and your euro or asset will be returned to your account
 
 ## Validation
 The W3C Markup Validation Service
@@ -1170,6 +1219,7 @@ WAVE was used to test the websites accessibility.
 | ------- | ------- |
 | Email backend not working | correctly set a app password for gmail to send emails |
 | Static files not uploading to cloudinary | used collect static with --upload-unhashed-files |
+| Error that causes crashing in trading pair page | Delayed the loading of a lot of data and displaying the section after |
 
 ##### Back to [top](#table-of-contents)<hr>
 

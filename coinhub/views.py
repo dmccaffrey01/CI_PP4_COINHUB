@@ -19,6 +19,9 @@ import math
 
 
 def index(request):
+    """
+    Creates crypto list and popular crypto and creates models for them
+    """
     create_crypto_list(request)
 
     get_popular_crypto(request)
@@ -33,6 +36,9 @@ def index(request):
 
 
 def markets(request):
+    """
+    Gets crypto list and renders market template
+    """
     create_crypto_list(request)
     cryptocurrencies = CryptoCurrency.objects.all()
 
@@ -56,6 +62,9 @@ def markets(request):
 
 
 def crypto_details(request, symbol):
+    """
+    Gets crypot currency from input and renders crypto details template
+    """
     cryptocurrency = CryptoCurrency.objects.get(symbol=symbol)
 
     CryptoDetail.objects.all().delete()
@@ -73,6 +82,9 @@ def crypto_details(request, symbol):
 
 
 def trade_page(request):
+    """
+    Gets cryto list and renders trade page template
+    """
     create_crypto_list(request)
     cryptocurrencies = CryptoCurrency.objects.all()
 
@@ -84,6 +96,9 @@ def trade_page(request):
 
 
 def deposit_page(request):
+    """
+    Gets euro asset or creates it and renders depoist template
+    """
     user = request.user
 
     euro_symbol = "EUR"
@@ -97,6 +112,9 @@ def deposit_page(request):
 
 
 def portfolio(request):
+    """
+    Gets all user assets and renders portfolio template
+    """
     user = request.user
 
     assets = Asset.objects.filter(user=user)
@@ -127,6 +145,9 @@ def portfolio(request):
 
 
 def trading_pair(request, symbol):
+    """
+    Gets crypto from input symbol and renders a trade pair template
+    """
     user = request.user
     crypto = CryptoCurrency.objects.filter(symbol=symbol).first()
     asset, asset_created = Asset.objects.get_or_create(
@@ -190,6 +211,9 @@ def trading_pair(request, symbol):
 
 
 def get_transaction_data(request):
+    """
+    Gets all the transactions for user
+    """
     user = request.user
 
     pending_status = "Pending"
@@ -211,6 +235,9 @@ def get_transaction_data(request):
 def buy_sell_order(
     request, time_placed, symbol, orderType, bsType, price, amount, total
 ):
+    """
+    Validates buy or sell order by getting transaction info and user assets and euro info
+    """
     user = request.user
 
     time_placed = float(time_placed)
@@ -327,6 +354,9 @@ def buy_sell_order(
 
 
 def check_transactions(request):
+    """
+    Validates the transaction then fulfills it
+    """
     user = request.user
 
     pending_text = "Pending"
@@ -431,6 +461,9 @@ def check_transactions(request):
 
 
 def fulfill_transaction(request, transaction):
+    """
+    Fulfills transaction and updates models
+    """
     user = request.user
 
     if transaction.status == 'Fulfilled':
@@ -504,6 +537,9 @@ def fulfill_transaction(request, transaction):
 
 
 def delete_transaction(request, transaction_uuid, symbol):
+    """
+    Delete a transaction
+    """
     user = request.user
 
     transaction = Transaction.objects.get(
@@ -562,6 +598,9 @@ def delete_transaction(request, transaction_uuid, symbol):
 
 
 def get_trading_pair_data(request, symbol):
+    """
+    Gets data from api for requested inputted symbol
+    """
     url = f'https://min-api.cryptocompare.com/data/v2/histominute'
     fsym = symbol
     tsym = 'EUR'
@@ -591,6 +630,9 @@ def get_trading_pair_data(request, symbol):
 
 @login_required
 def get_user_data(request):
+    """
+    Gets user assets and euro
+    """
     user = request.user
     assets = Asset.objects.filter(user=user).values()
     euro_symbol = 'EUR'
@@ -605,6 +647,9 @@ def get_user_data(request):
 
 @login_required
 def deposit(request, amount):
+    """
+    Validates deposit request and fulfills by updating euro
+    """
     try:
         deposit_amount = Decimal(amount)
         if deposit_amount <= 0:
@@ -661,6 +706,9 @@ def deposit(request, amount):
 
 
 def get_crypto_detail_data(request, cryptocurrency):
+    """
+    Gets the data for the crypto detail
+    """
     get_crypto_detail_main_data(request, cryptocurrency)
     get_crypto_detail_price_data(request, cryptocurrency)
 
@@ -670,6 +718,9 @@ def get_crypto_detail_data(request, cryptocurrency):
 
 
 def get_crypto_detail_price_data(request, cryptocurrency):
+    """
+    Calls request from api to get price data
+    """
     symbol = cryptocurrency.symbol
     crypto_detail_price_data_from_api(request, '1m', symbol)
 
@@ -679,6 +730,9 @@ def get_crypto_detail_price_data(request, cryptocurrency):
 
 
 def crypto_detail_price_data_from_api(request, time_period, symbol):
+    """
+    Gets the price data from the api
+    """
     time_period_data = get_time_period_data(request, time_period)
 
     url = f'https://min-api.cryptocompare.com/data/'\
@@ -741,6 +795,9 @@ def crypto_detail_price_data_from_api(request, time_period, symbol):
 
 
 def get_time_period_data(request, time_period):
+    """
+    Returns the time period data necessary for calling api
+    """
     data = {
         'time': 'hour',
         'lim': 720,
@@ -776,6 +833,9 @@ def get_time_period_data(request, time_period):
 
 
 def get_crypto_detail_main_data(request, cryptocurrency):
+    """
+    Gets the other data apart from price
+    """
     headers = {
         'x-access-token': os.environ.get('COINRANKING_API')
     }
@@ -874,11 +934,17 @@ def get_crypto_detail_main_data(request, cryptocurrency):
 
 
 def get_crypto_detail_json(request):
+    """
+    Returns the crypto detail data
+    """
     crypto = CryptoDetail.objects.values('name', 'symbol', 'links').first()
     return JsonResponse(crypto, safe=False)
 
 
 def create_crypto_list(request):
+    """
+    Gets crypto data from api and creates models
+    """
     headers = {
         'x-access-token': os.environ.get('COINRANKING_API')
     }
@@ -932,6 +998,9 @@ def create_crypto_list(request):
 
 
 def get_popular_crypto(request):
+    """
+    Filters popular crypto
+    """
     popular_crypto_list = [
         'Bitcoin', 'Ethereum', 'Polkadot', 'Solana', 'Dogecoin'
     ]
@@ -958,6 +1027,9 @@ def get_popular_crypto(request):
 
 
 def get_top_gainers(request):
+    """
+    Filters top gainers crypto
+    """
     top_gainers = CryptoCurrency.objects.order_by('-change')[:5]
     TopGainerCrypto.objects.all().delete()
 
@@ -978,6 +1050,9 @@ def get_top_gainers(request):
 
 
 def get_top_losers(request):
+    """
+    Filters top losers crypto
+    """
     top_losers = CryptoCurrency.objects.order_by('change')[:5]
     TopLoserCrypto.objects.all().delete()
 
@@ -998,6 +1073,9 @@ def get_top_losers(request):
 
 
 def crypto_search_results(request):
+    """
+    Gets search results from query
+    """
     query = request.GET.get('query')
     results = CryptoCurrency.objects.filter(
         Q(name__icontains=query) | Q(symbol__icontains=query)
@@ -1011,6 +1089,9 @@ def crypto_search_results(request):
 
 
 def get_market_data(request):
+    """
+    Gets the total market data
+    """
     coins = CryptoCurrency.objects.all()
     coins_data = [{
         'name': coin.name,

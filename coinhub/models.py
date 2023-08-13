@@ -4,6 +4,9 @@ import uuid
 
 
 class CryptoCurrency(models.Model):
+    """
+    Store data from api
+    """
     name = models.CharField(max_length=100)
     rank = models.IntegerField()
     symbol = models.CharField(max_length=10)
@@ -23,6 +26,9 @@ class CryptoCurrency(models.Model):
 
 
 class PopularCryptoCurrency(models.Model):
+    """
+    Store data from api
+    """
     rank = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     symbol = models.CharField(max_length=10)
@@ -40,6 +46,9 @@ class PopularCryptoCurrency(models.Model):
 
 
 class TopGainerCrypto(models.Model):
+    """
+    Store data from api
+    """
     rank = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     symbol = models.CharField(max_length=10)
@@ -57,6 +66,9 @@ class TopGainerCrypto(models.Model):
 
 
 class TopLoserCrypto(models.Model):
+    """
+    Store data from api
+    """
     rank = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     symbol = models.CharField(max_length=10)
@@ -74,6 +86,9 @@ class TopLoserCrypto(models.Model):
 
 
 class CryptoDetail(models.Model):
+    """
+    Store data from api
+    """
     uuid = models.CharField(max_length=100, default="")
     name = models.CharField(max_length=100, default="")
     symbol = models.CharField(max_length=100, default="")
@@ -136,6 +151,9 @@ class CryptoDetail(models.Model):
 
 
 class Asset(models.Model):
+    """
+    Store user data for each asset
+    """
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='assets'
     )
@@ -167,6 +185,9 @@ class Asset(models.Model):
 
 
 class Transaction(models.Model):
+    """
+    Store user data fro each transaction
+    """
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='transactions'
     )
